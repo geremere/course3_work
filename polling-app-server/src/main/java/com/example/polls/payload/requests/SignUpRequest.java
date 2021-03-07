@@ -1,10 +1,6 @@
-package com.example.polls.payload;
+package com.example.polls.payload.requests;
 
 import javax.validation.constraints.*;
-
-/**
- * Created by rajeevkumarsingh on 02/08/17.
- */
 
 public class SignUpRequest {
     @NotBlank

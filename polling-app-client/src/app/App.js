@@ -9,15 +9,16 @@ import {
 import { getCurrentUser } from '../util/APIUtils';
 import { ACCESS_TOKEN } from '../constants';
 
-import Login from '../user/login/Login';
-import Signup from '../user/signup/Signup';
-import Profile from '../user/profile/Profile';
-import AppHeader from '../header/AppHeader';
-import NotFound from '../common/NotFound';
-import LoadingIndicator from '../common/LoadingIndicator';
-import PrivateRoute from '../common/PrivateRoute';
+import Login from '../components/user/login/Login';
+import Signup from '../components/user/signup/Signup';
+import Profile from '../components/user/profile/Profile';
+import AppHeader from '../components/header/AppHeader';
+import NotFound from '../components/common/NotFound';
+import LoadingIndicator from '../components/common/LoadingIndicator';
+import PrivateRoute from '../components/common/PrivateRoute';
 
 import { Layout, notification } from 'antd';
+import VKAuth from "../APIServices/VkAuth";
 const { Content } = Layout;
 
 class App extends Component {
@@ -99,6 +100,9 @@ class App extends Component {
           <Content className="app-content">
             <div className="container">
               <Switch>
+                {/*<Route path="mainpage" render = {}>*/}
+                {/*</Route>*/}
+                <Route path='/vkauth' render={(props) => <VKAuth/>}/>
                 <Route path="/login" 
                   render={(props) => <Login onLogin={this.handleLogin} {...props} />}></Route>
                 <Route path="/signup" component={Signup}></Route>

@@ -1,4 +1,4 @@
-package com.example.polls.model;
+package com.example.polls.model.user;
 
 import com.example.polls.model.audit.DateAudit;
 import org.hibernate.annotations.NaturalId;
@@ -8,10 +8,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
-
-/**
- * Created by rajeevkumarsingh on 01/08/17.
- */
 
 @Entity
 @Table(name = "users", uniqueConstraints = {
@@ -50,6 +46,12 @@ public class User extends DateAudit {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_regtypes",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "regtype_id"))
+    private Set<RegType> regTypes = new HashSet<>();
 
     public User() {
 
@@ -108,5 +110,20 @@ public class User extends DateAudit {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Set<RegType> getRegType(){
+        return regTypes;
+    }
+    public Set<RegTypeName> getRegTypeNames() {
+        Set<RegTypeName> regTypeNameSet = new HashSet<>();
+        for( RegType it:regTypes){
+            regTypeNameSet.add(it.getName());
+        }
+        return regTypeNameSet;
+    }
+
+    public void setRegTypes(Set<RegType> regTypes) {
+        this.regTypes = regTypes;
     }
 }

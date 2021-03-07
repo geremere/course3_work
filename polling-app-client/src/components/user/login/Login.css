@@ -1,0 +1,23 @@
+.login-container {
+    max-width: 420px;
+    margin: 0 auto;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+
+.login-form-button {
+    width: 100%;
+}
+
+.ico_wrapper {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    top: -10px;
+    left: -10px;
+}
+
+.vk_ico {
+    height: 30px;
+    width: 30px;
+}

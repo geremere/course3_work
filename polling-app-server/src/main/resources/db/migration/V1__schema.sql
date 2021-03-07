@@ -30,7 +30,29 @@ CREATE TABLE roles
     PRIMARY KEY (id)
 ) ;
 
+CREATE TABLE regtypes
+(
 
+    id         SERIAL4,
+
+    name varchar(60) NOT NULL unique ,
+
+    PRIMARY KEY (id)
+) ;
+
+CREATE TABLE user_regtypes
+(
+
+   user_id bigint NOT NULL,
+
+    regtype_id bigint NOT NULL,
+
+    PRIMARY KEY (user_id, regtype_id),
+
+    CONSTRAINT fk_user_regtypes_type_id FOREIGN KEY (regtype_id) REFERENCES regtypes (id),
+
+    CONSTRAINT fk_user_regtypes_user_id FOREIGN KEY (user_id) REFERENCES users (id)
+) ;
 
 CREATE TABLE user_roles
 (

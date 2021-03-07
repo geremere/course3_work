@@ -1,26 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b1ffdfb6-2e95-4116-8602-fd402e031711" name="Default Changelist" comment="" />
+    <list default="true" id="b1ffdfb6-2e95-4116-8602-fd402e031711" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/APIServices/VkAuth.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/mainpage/MainPage.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/user/profile/Profile.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/model/RegType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/model/RegTypeName.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/payload/VkUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/payload/requests/VkSignInRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/payload/response/VkAuthResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/payload/response/VkResponseUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/repository/RegTypeRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/service/RegTypeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/service/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/testMain.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../polling-app-server/src/main/resources/db/migration/V3__default_regtypes.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/LoadingIndicator.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/LoadingIndicator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/NotFound.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/NotFound.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/NotFound.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/NotFound.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/PrivateRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/PrivateRoute.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/ServerError.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/ServerError.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/ServerError.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/ServerError.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/header/AppHeader.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/AppHeader.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/header/AppHeader.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/AppHeader.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user/login/Login.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/user/login/Login.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user/login/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/user/login/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user/profile/Profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mainpage/MainPage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user/profile/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/user/profile/Profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user/signup/Signup.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/user/signup/Signup.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/user/signup/Signup.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/user/signup/Signup.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/util/APIUtils.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/APIUtils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/model/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/model/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/model/RoleName.java" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/model/TypeName.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/payload/ApiResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/payload/response/ApiResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/payload/ChoiceRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/payload/ChoiceResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/payload/JwtAuthenticationResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/payload/response/JwtAuthenticationResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/payload/LoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/payload/requests/LoginRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/payload/PagedResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/payload/response/PagedResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/payload/SignUpRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/payload/requests/SignUpRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/repository/RoleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/repository/RoleRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/security/CustomUserDetailsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/security/CustomUserDetailsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/security/JwtAuthenticationEntryPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/security/JwtAuthenticationEntryPoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/security/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/security/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/security/UserPrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/security/UserPrincipal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/util/AppConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/src/main/java/com/example/polls/util/AppConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../polling-app-server/src/main/resources/db/migration/V1__schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../polling-app-server/src/main/resources/db/migration/V1__schema.sql" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="1mEoJSjgokZiWcHjNkYdtIEJAUD" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/components/mainpage" />
     <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\kr_course_3\course3_work\polling-app-client\src\components\mainpage" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\kr_course_3\course3_work\polling-app-client\src\util" />
+      <recent name="D:\kr_course_3\course3_work\polling-app-client\src\APIServer" />
+      <recent name="D:\kr_course_3\course3_work\polling-app-client\src\components\user" />
+      <recent name="D:\kr_course_3\course3_work\polling-app-client\src\components" />
       <recent name="D:\kr_course_3\course3_work\SpringAuth\polling-app-client\src\header" />
     </key>
   </component>
@@ -47,6 +117,14 @@
       <option name="presentableId" value="Default" />
       <updated>1609068038216</updated>
       <workItem from="1609068039410" duration="2057000" />
+      <workItem from="1609071258569" duration="4060000" />
+      <workItem from="1610099885111" duration="1893000" />
+      <workItem from="1610112858932" duration="2752000" />
+      <workItem from="1610284449582" duration="623000" />
+      <workItem from="1611044775366" duration="2000" />
+      <workItem from="1611140187376" duration="601000" />
+      <workItem from="1614279974296" duration="630000" />
+      <workItem from="1615146471869" duration="2103000" />
     </task>
     <servers />
   </component>
@@ -58,7 +136,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

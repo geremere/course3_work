@@ -1,4 +1,4 @@
-package com.example.polls.payload;
+package com.example.polls.payload.response;
 
 /**
  * Created by rajeevkumarsingh on 19/08/17.

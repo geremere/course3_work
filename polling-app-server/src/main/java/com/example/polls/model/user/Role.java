@@ -1,11 +1,8 @@
-package com.example.polls.model;
+package com.example.polls.model.user;
 
 import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 
-/**
- * Created by rajeevkumarsingh on 01/08/17.
- */
 @Entity
 @Table(name = "roles")
 public class Role {
@@ -16,13 +13,13 @@ public class Role {
     @Enumerated(EnumType.STRING)
     @NaturalId
     @Column(length = 60)
-    private RoleName name;
+    private TypeName name;
 
     public Role() {
 
     }
 
-    public Role(RoleName name) {
+    public Role(TypeName name) {
         this.name = name;
     }
 
@@ -34,11 +31,11 @@ public class Role {
         this.id = id;
     }
 
-    public RoleName getName() {
+    public TypeName getName() {
         return name;
     }
 
-    public void setName(RoleName name) {
+    public void setName(TypeName name) {
         this.name = name;
     }
 
