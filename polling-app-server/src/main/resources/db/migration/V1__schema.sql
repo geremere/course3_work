@@ -42,12 +42,13 @@ CREATE TABLE user_roles
     CONSTRAINT fk_user_roles_user_id FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
--- CREATE TABLE messageStatus
--- (
---     id         SERIAL4,
---     name varchar(60) NOT NULL unique ,
---     PRIMARY KEY (id)
--- ) ;
+CREATE TABLE messageStatus
+(
+    id         SERIAL4,
+    name varchar(60) NOT NULL unique ,
+    PRIMARY KEY (id)
+) ;
+
 CREATE TABLE chatMessage
 (
     id SERIAL,
@@ -57,10 +58,8 @@ CREATE TABLE chatMessage
     senderName varchar(15)  NOT NULL unique ,
     recipientName varchar(15)  NOT NULL unique ,
     content varchar(1000) NOT NULL,
-    content varchar() NOT NULL,
-    timestamp timestamp DEFAULT CURRENT_TIMESTAMP,
---     updated_at timestamp DEFAULT CURRENT_TIMESTAMP,
--- status
+    status_id bigint NOT NULL,
+    CONSTRAINT fk_user_roles_role_id FOREIGN KEY (status_id) REFERENCES messageStatus (id),
     PRIMARY KEY (id)
 );
 
@@ -74,7 +73,7 @@ CREATE TABLE chatNotification
 
 CREATE TABLE chatRoom
 (
-    id SERIAL,
+    id varchar,
     chatId bigint  NOT NULL,
     senderId bigint NOT NULL,
     recipientId bigint NOT NULL,

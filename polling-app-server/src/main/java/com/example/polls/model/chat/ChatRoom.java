@@ -12,12 +12,12 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "chatRoom")
+@Table(name = "chatroom")
 public class ChatRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long chatId;
+    private String id;
+    private String chatId;
     private Long senderId;
     private Long recipientId;
 }

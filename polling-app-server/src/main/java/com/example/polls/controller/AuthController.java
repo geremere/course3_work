@@ -86,7 +86,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin/vk")
-    public ResponseEntity<?> authenticateUserAPI(@Validated @RequestBody VkSignInRequest vkSignInRequest) throws IOException {
+    public ResponseEntity<?> authenticateVkUser(@Validated @RequestBody VkSignInRequest vkSignInRequest) throws IOException {
         String jwt = "";
         OkHttpClient vk = new OkHttpClient();
 

@@ -115,6 +115,7 @@ public class User extends DateAudit {
     public Set<RegType> getRegType(){
         return regTypes;
     }
+
     public Set<RegTypeName> getRegTypeNames() {
         Set<RegTypeName> regTypeNameSet = new HashSet<>();
         for( RegType it:regTypes){
