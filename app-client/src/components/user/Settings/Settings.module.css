@@ -1,0 +1,102 @@
+.Settings {
+    /*background-color: #4285f4;*/
+    grid-area: content;
+    text-align: center;
+    height: 534px;
+    margin-top: 75px;
+    min-width: 1200px;
+    font-family: inherit;
+}
+
+.UserSettings {
+    position: relative;
+    float: left;
+    width: 300px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    margin-left: 175px;
+    font-family: inherit;
+}
+
+.SettingsItem {
+    float: left;
+    height: 40px;
+    width: 300px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    align-items: center;
+}
+
+.SettingsLink {
+    position: absolute;
+    left: 0;
+    height: 20px;
+    color: black;
+    width: 285px;
+    transition: none;
+    border-left: 3px solid transparent;
+    font-family: inherit;
+}
+
+.selected_link {
+    color: red;
+    border-left: 3px solid red;
+    transition: none;
+}
+
+.SettingsItem:hover {
+    background-color: #c7c5ce;
+}
+
+.separator1 {
+    border: none;
+    background-color: rgba(0, 0, 0, 0.1);
+    height: 1px;
+    width: 635px;
+}
+
+.MainBlock {
+    position: relative;
+    margin-left: 410px;
+    height: 280px;
+}
+
+.Submit {
+    position: absolute;
+    border-radius: 5px;
+    height: 38px;
+    width: 455px;
+    left: 275px;
+    background-color: red;
+    outline: none;
+    color: white;
+    border: 0;
+}
+
+.Changes {
+    position: absolute;
+    border-radius: 5px;
+    left: 275px;
+    height: 33px;
+    width: 445px;
+    padding-left: 5px;
+}
+
+.Inform {
+    position: absolute;
+    font-size: medium;
+    color: black;
+    left: 55px;
+    top: 15px;
+}
+
+.Submit:disabled {
+    background-color: rgba(255, 0, 0, 0.5);
+}
+
+.f {
+    height: 60px;
+    color: red;
+    position: relative;
+    font-size: small;
+    text-align: center;
+    padding: 10px;
+}

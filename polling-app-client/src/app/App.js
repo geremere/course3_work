@@ -19,6 +19,7 @@ import PrivateRoute from '../components/common/PrivateRoute';
 
 import { Layout, notification } from 'antd';
 import VKAuth from "../APIServices/VkAuth";
+import Messenger from "../components/user/chat/Messenger";
 const { Content } = Layout;
 
 class App extends Component {
@@ -108,6 +109,9 @@ class App extends Component {
                 <Route path="/signup" component={Signup}></Route>
                 <Route path="/users/:username" 
                   render={(props) => <Profile isAuthenticated={this.state.isAuthenticated} currentUser={this.state.currentUser} {...props}  />}>
+                </Route>
+                <Route path="/chat"
+                render = {()=><Messenger/>}>
                 </Route>
                 <Route component={NotFound}></Route>
               </Switch>

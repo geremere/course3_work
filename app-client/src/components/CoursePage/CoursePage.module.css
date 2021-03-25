@@ -1,0 +1,128 @@
+.CoursePage {
+    grid-area: content;
+    text-align: center;
+    height: 1200px;
+    font-family: inherit;
+    min-width: 1200px;
+}
+
+.NavBar {
+    position: relative;
+    float: left;
+    height: 70px;
+    bottom: 15px;
+}
+
+
+.SettingsItem {
+    position: relative;
+    height: 40px;
+    margin: 10px;
+    display: inline-block;
+    width: 150px;
+    font-family: inherit;
+}
+
+.secondHead {
+    height: 70px;
+    min-width: 1200px;
+    display: inline-block;
+    width: 87vw;
+    font-family: inherit;
+}
+
+.SettingsLink {
+    border-radius: 5px;
+    position: absolute;
+    display: block;
+    height: 20px;
+    color: black;
+    width: 135px;
+    font-family: inherit;
+    transition: none;
+}
+
+.selected_link {
+    background-color: rgba(211, 211, 211, 0.25);
+    transition: none;
+}
+
+.SettingsLink:hover {
+    background-color: rgba(211, 211, 211, 0.25);
+    transition: none;
+}
+
+.ImgAbout {
+    width: 500px;
+}
+
+.loading_wrapper{
+    position: absolute;
+    top:15%;
+    left: 45%;
+}
+
+.Subscribe:hover{
+    background-color: rgb(235, 0, 0);
+}
+.Subscribe {
+    position: relative;
+    border-radius: 5px;
+    height: 40px;
+    width: 175px;
+    float: right;
+    right: 50px;
+    background-color: rgba(255, 0, 0, 0.81);
+    outline: none;
+    color: white;
+    border: 0;
+    top: 15px;
+    font-size: medium;
+}
+
+.Content {
+    position: relative;
+    width: 85vw;
+    display: inline-block;
+    min-width: 1200px;
+    padding: 15px;
+    height: 800px;
+}
+
+.head_of_course {
+    position: relative;
+    font-weight: bold;
+    font-size: 20px;
+    left: 5px;
+    float: left;
+}
+
+.ImageOfCourse {
+    float: left;
+    margin-right: 15px;
+    margin-bottom: 5px;
+}
+
+.InformationAboutCourse {
+    position: absolute;
+    background-color: white;
+    margin-top: 5px;
+    padding: 15px;
+    width: 775px;
+    height: auto;
+}
+
+.InformationMainBody {
+    position: relative;
+    margin-top: 30px;
+    padding: 5px;
+}
+
+.TextInMainBody {
+    text-align: justify;
+    display: table-cell;
+}
+
+.CourseContent {
+    width: 300px;
+}

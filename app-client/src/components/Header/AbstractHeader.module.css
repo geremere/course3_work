@@ -1,0 +1,204 @@
+.AbstractHeader {
+    grid-area: header;
+    background-color: white;
+    height: 60px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    min-width: 1200px;
+    font-family: inherit;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.HeaderComponents {
+    position: relative;
+    margin: 10px;
+    height: 40px;
+}
+
+.HeaderText {
+    position: relative;
+    text-align: center;
+    color: #42444C;
+    width: 160px;
+    height: 20px;
+}
+
+.Reg {
+    position: relative;
+    right: 15px;
+    top: 7px;
+    padding: 5px;
+    background: #FF1A2E;
+    border-radius: 7px;
+    color: white;
+    float: right;
+    border: black 3px;
+    font-family: inherit;
+}
+
+.Enter {
+    position: relative;
+    padding: 5px;
+    top: 7px;
+    right: 25px;
+    background-color: white;
+    border-radius: 7px;
+    outline: none;
+    border: black 1px;
+    float: right;
+    color: black;
+    font-family: inherit;
+}
+
+
+.ArrowWrapper {
+    position: relative;
+    display: inline-block;
+    float: right;
+    left: 40px;
+    bottom: 2px;
+    width: 15px;
+    height: 24px;
+}
+
+.ico {
+    position: relative;
+    border-radius: 15px;
+    float: right;
+    height: 30px;
+    right: 5px;
+    width: 30px;
+}
+
+.u_name {
+    font-size: 17px;
+    top: 11px;
+    max-width: 120px;
+    left: 8px;
+    position: absolute;
+}
+
+a {
+    display: block;
+    padding: 10px 10px 10px 5px;
+    text-decoration: none;
+    outline: none;
+    font-family: 'Lora', serif;
+    transition: .5s linear;
+}
+
+.InputForm {
+    position: relative;
+    width: 460px;
+    margin: 0 auto 0 220px;
+    height: 0;
+}
+
+.SearchInput {
+    position: relative;
+    background: #FFFFFF;
+    border: 0;
+    width: 400px;
+    height: 33px;
+    padding-left: 5px;
+}
+
+.SearchIcon {
+    height: 27px;
+}
+
+.SearchLink {
+    position: relative;
+    order: 1;
+    margin: 0 0;
+    top: -7px;
+}
+
+.Search {
+    display: inline-flex;
+    padding: 3px 3px 3px 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 9px;
+    height: 33px;
+}
+
+.SearchInput:focus {
+    outline: none;
+}
+
+.dropbtn {
+    background-color: white;
+    color: black;
+    min-width: 140px;
+    height: 39px;
+    font-size: 16px;
+    border: 0 gray solid;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 3px;
+    outline: none;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: rgba(211, 211, 211, 0.25);
+}
+
+.dropdown {
+    position: relative;
+    width: auto;
+    min-width: 140px;
+    height: 39px;
+    float: right;
+    right: 20px;
+}
+
+.dropdownContent {
+    display: none;
+    position: absolute;
+    right: 0;
+    margin-top: 11px;
+    background-color: white;
+    min-width: 175px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 3px;
+}
+
+
+.itemLink:hover {
+    transition: none;
+}
+
+.itemLink {
+    width: 100%;
+    height: 25px;
+    color: black;
+    text-decoration: none;
+    text-align: center;
+    vertical-align: center;
+}
+
+.linkText {
+    position: absolute;
+    margin: 14px;
+    z-index: -1;
+}
+
+.item {
+    display: inline-list-item;
+}
+
+.item:hover div {
+    color: red;
+}
+
+.Separator {
+    height: 0;
+    border: none;
+    border-top: 1px gray solid;
+    margin-top: 0;
+    margin-bottom: 0;
+    width: 80%;
+}
