@@ -75,3 +75,10 @@ export function recoverThePassword(usernameOrEmail) {
     });
 }
 
+export function getAllUsers() {
+    return request({
+        url: API_BASE_URL + "/users/all",
+        method: 'GET'
+    });
+}
+

@@ -26,7 +26,10 @@ class AbstractHeader extends Component {
         if (this.props.isAuthenticated) {
             menuItems = [
                 <DDMenu path={path} username={this.props.user.username} name={this.props.user.name}
-                        LogOut={this.props.LogOut} key="3"/>
+                        LogOut={this.props.LogOut} key="3"/>,
+                <NavLink to = "/chat" className={style.chat}>
+                    <img className={style.chat} src="https://cdn.icon-icons.com/icons2/1097/PNG/512/1485477216-cloud-text_78566.png"/>
+                </NavLink>,
             ];
         } else {
             menuItems = [
@@ -39,7 +42,7 @@ class AbstractHeader extends Component {
                 <div className={style.HeaderComponents}>
                     {menuItems}
                     <SearchField/>
-                    <NavLink className={style.HeaderText} to="/mainpage">LEARN AND CREATE</NavLink>
+                    <NavLink className={style.HeaderText} to="/mainpage">Risk Manager</NavLink>
                 </div>
             </header>
         )
@@ -48,6 +51,7 @@ class AbstractHeader extends Component {
 
 window.onclick = function (event) {
     let ddm = document.getElementById("myDropdown");
+    debugger;
     if (ddm != null && event.target.className !== style.dropbtn && event.target.className !== style.ico && event.target.className !== style.u_name)
         document.getElementById("myDropdown").style.display = "none";
     if (event.target.id !== "search-icon" && event.target.id !== "search_field" && event.target.id !== "search_input" && window.location.href.indexOf("searchresults") === -1)

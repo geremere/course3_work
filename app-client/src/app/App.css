@@ -1,5 +1,5 @@
 .AbstractWrapper {
-    display: grid;
+    /*display: grid;*/
     height: 100%;
     width: 100%;
     grid-template-rows: 2fr;
@@ -7,3 +7,7 @@
     grid-template-columns: 100%;
     grid-gap: 2vh;
 }
+
+/**{*/
+/*    border: 1px red solid;*/
+/*}*/

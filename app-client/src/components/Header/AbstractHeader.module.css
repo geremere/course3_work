@@ -202,3 +202,14 @@ a {
     margin-bottom: 0;
     width: 80%;
 }
+
+.chat {
+    position: relative;
+    bottom: 5px;
+    height: 40px;
+    width: 40px;
+    border: black 3px;
+    right: 15px;
+    float: right;
+}
+

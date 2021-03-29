@@ -14,6 +14,7 @@ import CoursePage from "../components/CoursePage/CoursePage";
 import SearchPage from "../components/SearchPage/SearchPage";
 import VKAuth from "../components/Authorization/login/VKAuth.jsx";
 import {Loading} from "../components/common/Loading/Loading";
+import Chat from "../components/Chat/Chat";
 
 class App extends Component {
     constructor(props) {
@@ -34,6 +35,7 @@ class App extends Component {
 
     loadUser() {
         getCurrentUser().then(response => {
+            debugger;
             this.setState({
                 currentUser: response,
                 isAuthenticated: true,
@@ -44,6 +46,8 @@ class App extends Component {
                 isLoaded: true
             });
         });
+        const z =this.state;
+        debugger;
     }
 
     logOut(redirectTo="/") {
@@ -82,6 +86,7 @@ class App extends Component {
                         <Route path='/course/:courseId' component={CoursePage}/>
                         <Route path='/vkauth' render={(props) => <VKAuth/>}/>
                         <Route path='/searchresults/:subString?/:category?/:sort?' component={SearchPage}/>
+                        <Route path='/chat' render={() => <Chat currentUser={this.state.currentUser}/>}/>
                     </Switch>
                 </div>
             );

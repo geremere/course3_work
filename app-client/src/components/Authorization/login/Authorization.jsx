@@ -39,7 +39,8 @@ class Login extends Component {
 
     render() {
         const redirect=window.location.protocol + "//" + window.location.host + "/vkauth";
-        const path = "https://oauth.vk.com/authorize?client_id=7457976&display=popup&redirect_uri=" + redirect + "&scope=photos,email&response_type=code&v=5.103";
+        debugger;
+        const path = "https://oauth.vk.com/authorize?client_id=7457976&display=popup&redirect_uri=" + redirect + "&scope= email&response_type=code&v=5.103";
         return (
             <div className={style.Main}>
                 <TextAlert text={this.state.message}/>

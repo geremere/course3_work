@@ -27,7 +27,7 @@ body {
     margin: 12px 25px;
     padding-left: 5px;
     outline: none;
-    border: 1px solid rgba(255, 111, 112, 0.64);
+    border: 1px solid rgba(37, 45, 255, 0.64);
 }
 
 
@@ -51,14 +51,14 @@ body {
     height: 35px;
     width: 390px;
     margin: 12px 25px;
-    background-color: #ff0000;
+    background-color: #252dff;
     outline: none;
     color: white;
     border: 0;
 }
 
 button:hover {
-    background-color: #d10009;
+    background-color: #252dff;
 }
 
 .Password {
@@ -71,7 +71,7 @@ button:hover {
     padding-left: 5px;
     text-blink: password;
     outline: none;
-    border: 1px solid rgba(255, 111, 112, 0.64);
+    border: 1px solid rgba(37, 45, 255, 0.64);
 }
 
 .vk_auth {
@@ -97,7 +97,7 @@ button:hover {
 .ForgetPassword {
     position: absolute;
     margin-right: 200px;
-    color: red;
+    color: #252dff;
     left: 0;
     font-family: inherit;
 }
