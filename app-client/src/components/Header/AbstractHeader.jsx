@@ -27,7 +27,7 @@ class AbstractHeader extends Component {
             menuItems = [
                 <DDMenu path={path} username={this.props.user.username} name={this.props.user.name}
                         LogOut={this.props.LogOut} key="3"/>,
-                <NavLink to = "/chat" className={style.chat}>
+                <NavLink to = "/chat" className={style.chat} key='4'>
                     <img className={style.chat} src="https://cdn.icon-icons.com/icons2/1097/PNG/512/1485477216-cloud-text_78566.png"/>
                 </NavLink>,
             ];

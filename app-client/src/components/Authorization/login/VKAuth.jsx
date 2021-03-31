@@ -13,8 +13,6 @@ class VKAuth extends Component {
     }
 
     loadVkUser() {
-        debugger;
-        const pr =this.state
         toVk(this.state).then(response => {
             localStorage.setItem('accessToken', response.accessToken);
             window.location.assign("/mainpage");

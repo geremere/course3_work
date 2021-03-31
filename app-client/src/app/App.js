@@ -35,7 +35,6 @@ class App extends Component {
 
     loadUser() {
         getCurrentUser().then(response => {
-            debugger;
             this.setState({
                 currentUser: response,
                 isAuthenticated: true,
@@ -46,8 +45,6 @@ class App extends Component {
                 isLoaded: true
             });
         });
-        const z =this.state;
-        debugger;
     }
 
     logOut(redirectTo="/") {

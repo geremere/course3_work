@@ -15,7 +15,6 @@ export const request = (options) => {
     return fetch(options.url, options)
         .then(response =>
             response.json().then(json => {
-                debugger;
                 if(!response.ok) {
                     return Promise.reject(json);
                 }
