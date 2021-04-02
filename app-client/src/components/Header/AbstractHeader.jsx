@@ -49,14 +49,13 @@ class AbstractHeader extends Component {
     };
 }
 
-window.onclick = function (event) {
-    let ddm = document.getElementById("myDropdown");
-    debugger;
-    if (ddm != null && event.target.className !== style.dropbtn && event.target.className !== style.ico && event.target.className !== style.u_name)
-        document.getElementById("myDropdown").style.display = "none";
-    if (event.target.id !== "search-icon" && event.target.id !== "search_field" && event.target.id !== "search_input" && window.location.href.indexOf("searchresults") === -1)
-        document.getElementById("search_input").value = "";
-};
+// window.onclick = function (event) {
+//     let ddm = document.getElementById("myDropdown");
+//     if (ddm != null && event.target.className !== style.dropbtn && event.target.className !== style.ico && event.target.className !== style.u_name)
+//         document.getElementById("myDropdown").style.display = "none";
+//     if (event.target.id !== "search-icon" && event.target.id !== "search_field" && event.target.id !== "search_input" && window.location.href.indexOf("searchresults") === -1)
+//         document.getElementById("search_input").value = "";
+// };
 
 class DDMenu extends Component {
     constructor(props) {

@@ -16,14 +16,30 @@ class Chat extends Component {
             isLoaded: false,
             stompClient: null,
             activeContact: null,
-            messages: null
+            messages: null,
+            msg:""
         };
         this.loadAllUsers = this.loadAllUsers.bind(this);
         this.connect = this.connect.bind(this);
         this.onError = this.onError.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
         this.onMessageReceived = this.onMessageReceived.bind(this);
+        this.handleInputChange=this.handleInputChange.bind(this);
+        // this.scrollToBottom=this.scrollToBottom.bind(this);
     }
+
+
+    // scrollToBottom = ()=>{
+    //     this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+    // }
+
+    handleInputChange=(event)=>{
+            this.setState({msg:event.target.value})
+    };
+
+    changeChat=(user)=>{
+        this.setState({activeContact:user})
+    };
 
     loadAllUsers = () => {
         getAllUsers().then(response => {
@@ -35,21 +51,23 @@ class Chat extends Component {
         }).catch(error => window.alert(error));
     };
 
-    sendMessage = (msg) => {
-        if (msg.trim() !== "") {
+    sendMessage = () => {
+        if (this.state.msg.trim() !== "") {
             const message = {
                 senderId: this.state.currentUser.id,
                 recipientId: this.state.activeContact.id,
                 senderName: this.state.currentUser.name,
                 recipientName: this.state.activeContact.name,
-                content: msg,
-                timestamp: new Date(),
+                content: this.state.msg,
+                // timestamp: new Date(),
             };
             this.state.stompClient.send("/app/chat", {}, JSON.stringify(message));
 
             const newMessages = [...this.state.messages];
+            debugger;
             newMessages.push(message);
             this.setState({messages: newMessages});
+            console.log(this.state.messages)
         }
     };
 
@@ -102,53 +120,36 @@ class Chat extends Component {
     componentDidMount() {
         this.connect();
         this.loadAllUsers();
+        this.setState({messages:[]})
+        // this.scrollToBottom();
+
     }
 
 
     render() {
-        // console.log(this.state);
-        const messages = [{"id": "0", "message": "i v rot tebya ebal"}, {
-            "id": "1",
-            "message": "i v rot tebya ebal"
-        }, {"id": "0", "message": "i v rot tebya ebal"}, {"id": "1", "message": "i v rot tebya ebal"}, {
-            "id": "0",
-            "message": "i v rot tebya ebal"
-        }, {"id": "0", "message": "i v rot tebya ebal"}, {"id": "1", "message": "i v rot tebya ebal"}, {
-            "id": "1",
-            "message": "i v rot tebya ebal"
-        }, {"id": "0", "message": "i v rot tebya ebal"}, {"id": "0", "message": "i v rot tebya ebal"}, {
-            "id": "0",
-            "message": "i v rot tebya ebal"
-        }, {"id": "0", "message": "i v rot tebya ebal"}, {"id": "0", "message": "i v rot tebya ebal"}, {
-            "id": "0",
-            "message": "i v rot tebya ebal"
-        }, {"id": "0", "message": "i v rot tebya ebal"}, {"id": "0", "message": "i v rot tebya ebal"}, {
-            "id": "0",
-            "message": "i v rot tebya ebal"
-        },];
+        console.log(this.state);
         const ownerId = "0";
         var i = 0;
-        const messanges_list = messages.map((message) => {
-            if (ownerId === message.id) {
-                return (
-                    <div className={style.message_div} key={i++}>
-                        <div className={style.owner_message}>
-                            {message.message}
-                        </div>
-                    </div>
-                )
-            } else
-                return (
-                    <div className={style.message_div} key={i++}>
-                        <div className={style.recepient_message}>
-                            {message.message}
-                        </div>
-                    </div>
-                )
-        });
-        var i = 0;
         if (this.state.isLoaded) {
-            const chats = this.state.allUsers.map(user => <Chat_info name={user.name} key={i++}/>)
+            const messanges_list = this.state.messages.map((message) => {
+                if (ownerId === message.id) {
+                    return (
+                        <div className={style.message_div} key={i++}>
+                            <div className={style.owner_message}>
+                                {message.content}
+                            </div>
+                        </div>
+                    )
+                } else
+                    return (
+                        <div className={style.message_div} key={i++}>
+                            <div className={style.recepient_message}>
+                                {message.content}
+                            </div>
+                        </div>
+                    )
+            });
+            const chats = this.state.allUsers.map(user => <Chat_info user={user}  changeChat={this.changeChat} />)
             return (
                 <div className={style.main_wrapper}>
                     <div className={style.chat_wrapper}>
@@ -166,7 +167,10 @@ class Chat extends Component {
                                 {messanges_list}
                             </div>
                             <div className={style.message_content}>
-                                тут будем писать текст
+                                <button onClick={this.sendMessage}>
+                                    Send
+                                </button>
+                                <input onChange={this.handleInputChange}/>
                             </div>
                         </div>
                     </div>
@@ -180,14 +184,13 @@ class Chat extends Component {
 }
 
 function Chat_info(props) {
-    var i = 0;
     return (
-        <div className={style.chat_info} key={i++}>
+        <div className={style.chat_info} key={props.user.id} onClick={()=>props.changeChat(props.user)}>
             <div className={style.chat_ico}>
                 ico
             </div>
             <div className={style.chat_username}>
-                {props.name}
+                {props.user.name}
             </div>
             <div>
                 last message
