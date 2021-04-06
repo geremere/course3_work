@@ -57,6 +57,7 @@ class App extends Component {
     }
 
     componentDidMount() {
+        debugger;
         this.loadUser();
     }
 
