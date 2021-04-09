@@ -24,7 +24,8 @@ class Test extends Component {
 
     render() {
         return (
-            <div>
+            <div className="test">
+                {"hey"}
             </div>
         )
     }

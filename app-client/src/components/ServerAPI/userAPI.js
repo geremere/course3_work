@@ -82,3 +82,26 @@ export function getAllUsers() {
     });
 }
 
+export function uploadAvatar(file) {
+    let options = {
+        url: API_BASE_URL + "/user/me/image",
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)
+        },
+        body: file
+    };
+
+    return fetch(options.url, options)
+        .then(response =>
+            response.json().then(json => {
+                if (!response.ok) {
+                    return Promise.reject(json);
+                } else {
+                    return Promise.resolve(json);
+                }
+            })
+        );
+}
+
+

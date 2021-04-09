@@ -15,6 +15,7 @@ import SearchPage from "../components/SearchPage/SearchPage";
 import VKAuth from "../components/Authorization/login/VKAuth.jsx";
 import {Loading} from "../components/common/Loading/Loading";
 import Chat from "../components/Chat/Chat";
+import Test from "../components/Test";
 
 class App extends Component {
     constructor(props) {
@@ -65,6 +66,7 @@ class App extends Component {
         if (this.state.isLoaded) {
             return (
                 <div className="AbstractWrapper">
+
                     <AbstractHeader LogOut={this.logOut} user={this.state.currentUser}
                                     isAuthenticated={this.state.isAuthenticated}/>
                     <Switch>
@@ -77,8 +79,8 @@ class App extends Component {
                                render={(props) => <MainPage isAuthenticated={this.state.isAuthenticated}/>}/>
                         <Route exact path='/'
                                render={(props) => <MainPage isAuthenticated={this.state.isAuthenticated}/>}/>
-                        <Route path='/settings'
-                               render={(props) => <Settings user={this.state.currentUser}/>}/>
+                        <Route path='/test'
+                               render={(props) => <Test />}/>
                         <Route path='/user/:username'
                                render={(props) => <UserAccount user={this.state.currentUser} loadUser={this.loadUser}/>}/>
                         <Route path='/course/:courseId' component={CoursePage}/>

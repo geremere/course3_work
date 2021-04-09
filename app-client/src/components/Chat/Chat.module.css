@@ -1,8 +1,6 @@
 .main_wrapper {
     text-align: center;
     min-width: 1200px;
-    min-height: 650px;
-    height: 630px;
     font-family: inherit;
     margin: 15px;
     background-color: rgba(103, 255, 126, 0.35);
@@ -47,7 +45,6 @@
     position: sticky;
     width: 100%;
     background-color: green;
-    z-index: 10;
 }
 
 .chat_ico{
@@ -95,7 +92,6 @@
     width: 100%;
     position: sticky;
     background-color: #c70001;
-    z-index: 10;
 }
 .message_wrapper{
     height: 465px;

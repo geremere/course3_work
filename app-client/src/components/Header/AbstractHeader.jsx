@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import style from './AbstractHeader.module.css'
 import {NavLink} from "react-router-dom";
 import {TextAlert} from "../ModalWindow/ModalWindow";
+import {Toaster} from "react-hot-toast";
 
 class AbstractHeader extends Component {
     constructor(props) {
@@ -17,11 +18,11 @@ class AbstractHeader extends Component {
 
     render() {
         let path = "https://img.favpng.com/20/21/15/computer-icons-symbol-user-png-favpng-7gAkK6jxCgYYpxfGPuC5yBaWr.jpg";
-        // if (this.props.user.imageUrl != null) {
-        //     path = this.props.user.imageUrl
-        // } else {
-        //     path = "https://img.favpng.com/20/21/15/computer-icons-symbol-user-png-favpng-7gAkK6jxCgYYpxfGPuC5yBaWr.jpg"
-        // }
+        if (this.props.user.imageUrl != null) {
+            path = this.props.user.imageUrl
+        } else {
+            path = "https://img.favpng.com/20/21/15/computer-icons-symbol-user-png-favpng-7gAkK6jxCgYYpxfGPuC5yBaWr.jpg"
+        }
         let menuItems;
         if (this.props.isAuthenticated) {
             menuItems = [
@@ -39,23 +40,26 @@ class AbstractHeader extends Component {
         }
         return (
             <header className={style.AbstractHeader}>
+                <Toaster
+                    position="bottom-right"
+                    reverseOrder={false}/>
                 <div className={style.HeaderComponents}>
                     {menuItems}
                     <SearchField/>
-                    <NavLink className={style.HeaderText} to="/mainpage">Risk Manager</NavLink>
+                    <NavLink className={style.HeaderText} to="/test">Risk Manager</NavLink>
                 </div>
             </header>
         )
     };
 }
 
-// window.onclick = function (event) {
-//     let ddm = document.getElementById("myDropdown");
-//     if (ddm != null && event.target.className !== style.dropbtn && event.target.className !== style.ico && event.target.className !== style.u_name)
-//         document.getElementById("myDropdown").style.display = "none";
-//     if (event.target.id !== "search-icon" && event.target.id !== "search_field" && event.target.id !== "search_input" && window.location.href.indexOf("searchresults") === -1)
-//         document.getElementById("search_input").value = "";
-// };
+window.onclick = function (event) {
+    let ddm = document.getElementById("myDropdown");
+    if (ddm != null && event.target.className !== style.dropbtn && event.target.className !== style.ico && event.target.className !== style.u_name)
+        document.getElementById("myDropdown").style.display = "none";
+    if (event.target.id !== "search-icon" && event.target.id !== "search_field" && event.target.id !== "search_input" && window.location.href.indexOf("searchresults") === -1)
+        document.getElementById("search_input").value = "";
+};
 
 class DDMenu extends Component {
     constructor(props) {

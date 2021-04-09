@@ -1,11 +1,12 @@
 .AbstractWrapper {
     /*display: grid;*/
-    height: 100%;
-    width: 100%;
-    grid-template-rows: 2fr;
-    grid-template-areas: "header" "content";
-    grid-template-columns: 100%;
-    grid-gap: 2vh;
+    max-height: 99%;
+    /*grid-template-areas: "header" "content";*/
+    /*grid-template-columns: 100%;*/
+}
+
+.test{
+    /*height: calc(100% - 300px);*/
 }
 
 /**{*/

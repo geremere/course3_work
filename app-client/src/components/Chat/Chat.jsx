@@ -6,6 +6,8 @@ import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 import {ACCESS_TOKEN, API_BASE_URL, API_SOCKET_URL} from "../ServerAPI/utils";
 import {findChatMessage, findChatMessages, test} from "../ServerAPI/chatAPI";
+import Messaging_Block from "./Messaging_Block";
+import toast, {Toaster} from 'react-hot-toast';
 
 class Chat extends Component {
     constructor(props) {
@@ -17,7 +19,8 @@ class Chat extends Component {
             stompClient: null,
             activeContact: null,
             messages: null,
-            msg: ""
+            msg: "",
+            notReadMsg: null
         };
 
         this.loadAllUsers = this.loadAllUsers.bind(this);
@@ -30,10 +33,6 @@ class Chat extends Component {
         // this.scrollToBottom = this.scrollToBottom.bind(this);
     }
 
-
-    // scrollToBottom = () => {
-    //
-    // };
 
     sendMessage = () => {
         if (this.state.msg.trim() !== "") {
@@ -49,7 +48,10 @@ class Chat extends Component {
 
             const newMessages = [...this.state.messages];
             newMessages.push(message);
-            this.setState({messages: newMessages});
+            this.setState({
+                messages: newMessages,
+                msg: ""
+            });
         }
     };
 
@@ -75,21 +77,18 @@ class Chat extends Component {
 
 
     onMessageReceived = (msg) => {
-        // console.log(this.state)
         const notification = JSON.parse(msg.body);
-        // if (this.state.activeContact.id === notification.senderId) {
-        findChatMessage(notification.id).then((message) => {
-            const newMessages = [...this.state.messages];
-            newMessages.push(message);
-            this.setState({messages: newMessages});
-            this.setState({
-                message: newMessages
-            })
-        });
-        // } else {
-        //     this.state.message.info("Received a new message from " + notification.senderName);
-        // }
-        this.loadAllUsers();
+        if (this.state.activeContact !== null && this.state.activeContact.id === notification.senderId) {
+            findChatMessage(notification.id).then((message) => {
+                const newMessages = [...this.state.messages];
+                newMessages.push(message);
+                this.setState({messages: newMessages});
+                this.setState({message: newMessages})
+            });
+        } else {
+            toast("Received a new message from " + notification.senderName);
+        }
+        // this.loadAllUsers();
     };
 
     onError = (err) => {
@@ -97,16 +96,11 @@ class Chat extends Component {
     };
 
     connect = () => {
-        const socket = new SockJS(API_SOCKET_URL + "/ws",
-            null,
-            {
-                transports: ['xhr-streaming'],
-                headers: {'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
-            });
+        const socket = new SockJS(API_SOCKET_URL + "/ws");
         // console.log(socket);
         // console.log(Stomp.over(socket));
         this.state.stompClient = Stomp.over(socket);
-        this.state.stompClient.connect({'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}, this.onConnected, this.onError);
+        this.state.stompClient.connect({}, this.onConnected, this.onError);
     };
 
     onConnected = () => {
@@ -146,7 +140,8 @@ class Chat extends Component {
                             {chats}
                         </div>
                         <div>
-                            <Messaging_Block messages={this.state.messages} currentUser={this.state.currentUser}
+                            <Messaging_Block msg={this.state.msg} messages={this.state.messages}
+                                             currentUser={this.state.currentUser}
                                              activeContact={this.state.activeContact}
                                              handleInputChange={this.handleInputChange} sendMessage={this.sendMessage}/>
                         </div>
@@ -175,80 +170,6 @@ function Chat_info(props) {
             </div>
         </div>
     )
-}
-
-class Messaging_Block extends Component {
-    constructor(props) {
-        super(props)
-        this.AlwaysScrollToBottom = this.AlwaysScrollToBottom.bind(this);
-    }
-
-    componentDidUpdate() {
-        this.AlwaysScrollToBottom();
-    }
-
-    componentDidMount() {
-        this.AlwaysScrollToBottom();
-    }
-    messagesEndRef = React.createRef();
-
-
-    AlwaysScrollToBottom = () => {
-        debugger;
-        if (this.messagesEndRef.current !== null) {
-            this.messagesEndRef.current.scrollIntoView({behavior: "smooth"});
-        }
-    };
-
-    render() {
-        if (this.props.activeContact === null) {
-            return (
-                <div className={style.messenger}>
-                    {"select chat to start messaging"}
-                </div>
-            )
-        } else {
-            let i = 0;
-            const messages_list = this.props.messages.map((message) => {
-                if (this.props.activeContact.id === message.id) {
-                    return (
-                        <div className={style.message_div} key={i++}>
-                            <div className={style.owner_message}>
-                                {message.content}
-                            </div>
-                        </div>
-                    )
-                } else
-                    return (
-                        <div className={style.message_div} key={i++}>
-                            <div className={style.recepient_message}>
-                                {message.content}
-                            </div>
-                        </div>
-                    )
-            });
-            return (
-                <div className={style.messenger}>
-                    <div className={style.messanger_info}>
-                        {"тут типо хедер мессенджера"}
-                    </div>
-                    <div className={style.message_wrapper}>
-                        {messages_list}
-                        <div ref={this.messagesEndRef}/>
-                    </div>
-                    <div className={style.message_content}>
-                        <button onClick={this.props.sendMessage}>
-                            Send
-                        </button>
-                        <input onChange={this.props.handleInputChange}/>
-                    </div>
-                </div>
-            )
-
-        }
-    }
-
-
 }
 
 
