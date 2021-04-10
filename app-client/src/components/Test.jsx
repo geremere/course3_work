@@ -20,12 +20,14 @@ class Test extends Component {
 
     componentDidMount() {
         this.handleUpdate();
+        console.log(this.props.user.image.imageUrl)
     }
 
     render() {
         return (
             <div className="test">
-                {"hey"}
+                <img className="test_img" src="https://s2.best-wallpaper.net/wallpaper/2560x1600/1212/Beautiful-nature-landscape-lake-mountains-trees-village-blue-sky-white-clouds_2560x1600.jpg">
+                </img>
             </div>
         )
     }

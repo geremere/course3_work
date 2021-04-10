@@ -25,7 +25,8 @@ class App extends Component {
                 name: null,
                 username: null,
                 email: null,
-                password: null
+                password: null,
+                image:null
             },
             isAuthenticated: false,
             isLoaded: false
@@ -41,6 +42,7 @@ class App extends Component {
                 isAuthenticated: true,
                 isLoaded: true
             });
+            console.log(this.state.currentUser);
         }).catch(response => {
             this.setState({
                 isLoaded: true
@@ -70,7 +72,7 @@ class App extends Component {
                     <AbstractHeader LogOut={this.logOut} user={this.state.currentUser}
                                     isAuthenticated={this.state.isAuthenticated}/>
                     <Switch>
-                        <Route path="/forgotpassword" component={RefactorAccount}/>
+                        {/*<Route path="/forgotpassword" component={RefactorAccount}/>*/}
                         <Route path="/login"
                                render={(props) => <Login onLogin={this.loadUser}/>}/>
                         <Route path='/registration'
@@ -80,12 +82,12 @@ class App extends Component {
                         <Route exact path='/'
                                render={(props) => <MainPage isAuthenticated={this.state.isAuthenticated}/>}/>
                         <Route path='/test'
-                               render={(props) => <Test />}/>
+                               render={(props) => <Test user = {this.state.currentUser}/>}/>
                         <Route path='/user/:username'
                                render={(props) => <UserAccount user={this.state.currentUser} loadUser={this.loadUser}/>}/>
                         <Route path='/course/:courseId' component={CoursePage}/>
                         <Route path='/vkauth' render={(props) => <VKAuth/>}/>
-                        <Route path='/searchresults/:subString?/:category?/:sort?' component={SearchPage}/>
+                        {/*<Route path='/searchresults/:subString?/:category?/:sort?' component={SearchPage}/>*/}
                         <Route path='/chat' render={() => <Chat currentUser={this.state.currentUser}/>}/>
                     </Switch>
                 </div>

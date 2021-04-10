@@ -8,6 +8,10 @@
 .test{
     /*height: calc(100% - 300px);*/
 }
+.test_img{
+    height: 100px;
+    width: 100px;
+}
 
 /**{*/
 /*    border: 1px red solid;*/

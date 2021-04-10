@@ -17,9 +17,10 @@ class AbstractHeader extends Component {
     };
 
     render() {
+        console.log(this.props.user)
         let path = "https://img.favpng.com/20/21/15/computer-icons-symbol-user-png-favpng-7gAkK6jxCgYYpxfGPuC5yBaWr.jpg";
-        if (this.props.user.imageUrl != null) {
-            path = this.props.user.imageUrl
+        if (this.props.user.image != null) {
+            path = this.props.user.image.url
         } else {
             path = "https://img.favpng.com/20/21/15/computer-icons-symbol-user-png-favpng-7gAkK6jxCgYYpxfGPuC5yBaWr.jpg"
         }
@@ -29,7 +30,7 @@ class AbstractHeader extends Component {
                 <DDMenu path={path} username={this.props.user.username} name={this.props.user.name}
                         LogOut={this.props.LogOut} key="3"/>,
                 <NavLink to = "/chat" className={style.chat} key='4'>
-                    <img className={style.chat} src="https://cdn.icon-icons.com/icons2/1097/PNG/512/1485477216-cloud-text_78566.png"/>
+                    <img className={style.chat} src="https://riskmanagerbucket.s3.eu-north-1.amazonaws.com/const_resouses/chat.svg"/>
                 </NavLink>,
             ];
         } else {

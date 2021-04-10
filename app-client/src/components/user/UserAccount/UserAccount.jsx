@@ -6,35 +6,34 @@ import {Loading} from "../../common/Loading/Loading";
 import {Switch, NavLink, Route} from "react-router-dom";
 import Settings from "../Settings/Settings";
 import {TextAlert} from "../../ModalWindow/ModalWindow";
+import {uploadAvatar} from "../../ServerAPI/userAPI";
 
 class UserAccount extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            coursesInProcess: [],
-            coursesCompleted: [],
             isLoaded: false,
             message:""
         };
         this.UploadAvatar = this.UploadAvatar.bind(this);
-        this.getCourses = this.getCourses.bind(this);
+        // this.getCourses = this.getCourses.bind(this);
     }
 
 
     UploadAvatar = (event) => {
         let formData = new FormData();
         formData.append('file', event.target.files[0]);
-        // uploadAvatar(formData).then(response => {
-        //     document.getElementById("avatar").src = response.fileName;
-        //     this.setState({
-        //         message:response.message
-        //     });
-        // }).catch(response => {
-        //     this.setState({
-        //         message:response.message
-        //     });
-        // });
-        document.getElementById('alert').style.display = 'block';
+        uploadAvatar(formData).then(response => {
+            document.getElementById("avatar").src = response.fileName;
+            this.setState({
+                message:response.message
+            });
+        }).catch(response => {
+            this.setState({
+                message:response.message
+            });
+        });
+        // document.getElementById('alert').style.display = 'block';
     };
 
     UploadClick = () => {
@@ -43,27 +42,8 @@ class UserAccount extends Component {
         file.click();
     };
 
-    getCourses() {
-        getCoursesOfUser().then(response => {
-            let inprocess = [];
-            let completed = [];
-            response.forEach((item) => {
-                if (item.completed)
-                    completed.push(item);
-                else
-                    inprocess.push(item);
-            });
-            this.setState({
-                coursesInProcess: inprocess,
-                coursesCompleted: completed,
-                isLoaded: true
-            });
-        });
-    }
-
     componentDidMount() {
         this.props.loadUser();
-        this.getCourses();
     }
 
     render() {
@@ -78,8 +58,8 @@ class UserAccount extends Component {
                     <Switch>
                         <Route path={"/user/" + this.props.user.username}
                                render={(props) => <UserCourses courses={this.state.coursesInProcess}/>}/>
-                        <Route exact path={"/user/completed"}
-                               render={(props) => <UserCourses courses={this.state.coursesCompleted}/>}/>
+                        {/*<Route exact path={"/user/completed"}*/}
+                        {/*       render={(props) => <UserCourses courses={this.state.coursesCompleted}/>}/>*/}
                         <Route path={"/user/settings/"}
                                render={(props) => <Settings user={this.props.user}/>}/>
                     </Switch>
@@ -107,7 +87,7 @@ function UserInformation(props) {
             <input id="file" type="file" className={style.upload} onChange={props.UploadAvatar}/>
             <div className={style.avatar_wrapper} onClick={props.UploadClick}>
                 <img id='avatar' className={style.avatar}
-                     src={props.user.imageUrl === null ? "https://www.stickpng.com/assets/images/585e4bcdcb11b227491c3396.png" : props.user.imageUrl}
+                     src={props.user.image === null ? "https://www.stickpng.com/assets/images/585e4bcdcb11b227491c3396.png" : props.user.image.url}
                      alt=''/>
                 <div className={style.hover_wrapper}>
                     <img className={style.avatar_hover}
@@ -116,11 +96,11 @@ function UserInformation(props) {
             </div>
             <div className={style.user_personal}>
                 <label className={style.user_name}>{props.user.surname} {props.user.name}</label>
-                <label className={style.user_description}>Количество просмотенных
-                    курсов: {props.user.completedCourses}</label>
-                <label className={style.user_description}>Количество курсов в
-                    процессе: {props.user.coursesInProgress}</label>
-                <label className={style.user_description}>Количество просмотренных минут: {props.user.minutes}</label>
+                {/*<label className={style.user_description}>Количество просмотенных*/}
+                {/*    курсов: {props.user.completedCourses}</label>*/}
+                {/*<label className={style.user_description}>Количество курсов в*/}
+                {/*    процессе: {props.user.coursesInProgress}</label>*/}
+                {/*<label className={style.user_description}>Количество просмотренных минут: {props.user.minutes}</label>*/}
             </div>
         </div>
     )
@@ -133,12 +113,12 @@ function UserNavBar(props) {
             <ul className={style.NavBar}>
                 <li className={style.SettingsItem}>
                     <NavLink to={"/user/" + props.username} className={style.SettingsLink}
-                             exact activeClassName={style.selected_link}>Курсы в процессе</NavLink>
+                             exact activeClassName={style.selected_link}>Активные проекты</NavLink>
                 </li>
                 <li className={style.SettingsItem}>
                     <NavLink to={"/user/completed"}
                              className={style.SettingsLink}
-                             activeClassName={style.selected_link}>Завершенные курсы</NavLink>
+                             activeClassName={style.selected_link}>Завершенные проекты</NavLink>
                 </li>
                 <li className={style.SettingsItem}>
                     <NavLink to={"/user/settings/editname"}

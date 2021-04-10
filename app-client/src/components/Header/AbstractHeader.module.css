@@ -206,8 +206,8 @@ a {
 .chat {
     position: relative;
     bottom: 5px;
-    height: 40px;
-    width: 40px;
+    height: 35px;
+    width: 35px;
     border: black 3px;
     right: 15px;
     float: right;
