@@ -12,12 +12,12 @@ export function countNewMessages(senderId, recipientId) {
     });
 }
 
-export function findChatMessages(senderId, recipientId) {
+export function findChatMessages(chatId) {
     if (!localStorage.getItem("accessToken")) {
         return Promise.reject("No access token set.");
     }
     return request({
-        url: API_SOCKET_URL + "/messages/" + senderId + "/" + recipientId,
+        url: API_SOCKET_URL + "/messages/" + chatId,
         method: "GET",
     });
 }
@@ -28,7 +28,18 @@ export function findChatMessage(id) {
     }
 
     return request({
-        url: API_SOCKET_URL + "/messages/" + id,
+        url: API_SOCKET_URL + "/message/" + id,
+        method: "GET",
+    });
+}
+
+export function getChats() {
+    if (!localStorage.getItem("accessToken")) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/user/chats",
         method: "GET",
     });
 }

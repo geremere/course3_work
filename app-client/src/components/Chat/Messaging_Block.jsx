@@ -4,7 +4,7 @@ import style from "./Chat.module.css";
 
 class Messaging_Block extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.AlwaysScrollToBottom = this.AlwaysScrollToBottom.bind(this);
     }
 
@@ -15,6 +15,7 @@ class Messaging_Block extends Component {
     componentDidMount() {
         this.AlwaysScrollToBottom();
     }
+
     messagesEndRef = React.createRef();
 
 
@@ -25,18 +26,17 @@ class Messaging_Block extends Component {
     };
 
     render() {
-        if (this.props.activeContact === null) {
+        if (this.props.chat === null) {
             return (
                 <div className={style.messenger}>
                     {"select chat to start messaging"}
                 </div>
             )
         } else {
-            let i = 0;
             const messages_list = this.props.messages.map((message) => {
-                if (this.props.activeContact.id === message.senderId) {
+                if (this.props.currentUser.id === message.senderId) {
                     return (
-                        <div className={style.message_div} key={i++}>
+                        <div className={style.message_div} key={message.id}>
                             <div className={style.owner_message}>
                                 {message.content}
                             </div>
@@ -44,7 +44,7 @@ class Messaging_Block extends Component {
                     )
                 } else
                     return (
-                        <div className={style.message_div} key={i++}>
+                        <div className={style.message_div} key={message.id}>
                             <div className={style.recepient_message}>
                                 {message.content}
                             </div>
@@ -54,18 +54,17 @@ class Messaging_Block extends Component {
             return (
                 <div className={style.messenger}>
                     <div className={style.messanger_info}>
-                        {this.props.activeContact.name}
+                        {this.props.chat.title}
                     </div>
                     <div className={style.message_wrapper}>
                         {messages_list}
                         <div ref={this.messagesEndRef}/>
                     </div>
                     <div className={style.message_content}>
-                        <button onClick={this.props.sendMessage} >
+                        <button onClick={this.props.sendMessage}>
                             Send
                         </button>
-                        <input value = {this.props.msg} onChange={this.props.handleInputChange} onKeyPress={(event)=>{
-                            debugger;
+                        <input name="msg" value={this.props.msg} onChange={this.props.handleInputChange} onKeyPress={(event) => {
                             if (event.key === "Enter") {
                                 this.props.sendMessage(this.props.msg);
                             }

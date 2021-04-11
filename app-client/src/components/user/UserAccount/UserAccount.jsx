@@ -37,7 +37,6 @@ class UserAccount extends Component {
     };
 
     UploadClick = () => {
-        debugger;
         const file = document.getElementById('file');
         file.click();
     };

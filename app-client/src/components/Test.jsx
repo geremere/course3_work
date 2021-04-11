@@ -20,7 +20,6 @@ class Test extends Component {
 
     componentDidMount() {
         this.handleUpdate();
-        console.log(this.props.user.image.imageUrl)
     }
 
     render() {

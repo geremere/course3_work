@@ -129,3 +129,20 @@
     position: relative;
     float: bottom;
 }
+
+.modal_list_user{
+    width: 100%;
+    height: 250px;
+    background-color: yellow;
+    display: none;
+    z-index: 8;
+    position: absolute;
+}
+
+.user_info {
+    position: relative;
+    width: 100%;
+    /*border: 1px solid;*/
+    height: 75px;
+    z-index: 9;
+}

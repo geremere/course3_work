@@ -34,7 +34,6 @@ class VideoWindow extends Component {
 
     closeWindow = (event) => {
         const target = event.target;
-        debugger;
         if (target.id === this.props.id + "video_alert" || target.localName === "span") {
             document.getElementById(this.props.id + 'video_alert').style.display = 'none'
             const alert_video = document.getElementById(this.props.id + "alert");

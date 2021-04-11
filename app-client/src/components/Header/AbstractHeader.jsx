@@ -11,11 +11,6 @@ class AbstractHeader extends Component {
     }
 
 
-    handleClickOut = event => {
-        this.props.LogOut();
-        window.location.assign('/mainpage');
-    };
-
     render() {
         console.log(this.props.user)
         let path = "https://img.favpng.com/20/21/15/computer-icons-symbol-user-png-favpng-7gAkK6jxCgYYpxfGPuC5yBaWr.jpg";
@@ -54,18 +49,9 @@ class AbstractHeader extends Component {
     };
 }
 
-window.onclick = function (event) {
-    let ddm = document.getElementById("myDropdown");
-    if (ddm != null && event.target.className !== style.dropbtn && event.target.className !== style.ico && event.target.className !== style.u_name)
-        document.getElementById("myDropdown").style.display = "none";
-    if (event.target.id !== "search-icon" && event.target.id !== "search_field" && event.target.id !== "search_input" && window.location.href.indexOf("searchresults") === -1)
-        document.getElementById("search_input").value = "";
-};
-
 class DDMenu extends Component {
     constructor(props) {
         super(props);
-        this.showDDMenu = this.showDDMenu.bind(this);
         this.handleClickOut = this.handleClickOut.bind(this);
     }
 
@@ -74,16 +60,13 @@ class DDMenu extends Component {
         window.location.assign('/mainpage');
     };
 
-    showDDMenu = event => {
-        const dd = document.getElementById("myDropdown");
-        dd.style.display = "block";
-    };
-
 
     render() {
         return (
             <div className={style.dropdown}>
-                <button onClick={this.showDDMenu} className={style.dropbtn}>
+                <button onFocus={()=>document.getElementById("myDropdown").style.display = "block"}
+                        className={style.dropbtn}
+                        onBlur={()=>document.getElementById("myDropdown").style.display = "none"}>
                     <img className={style.ico} src={this.props.path} alt=""/>
                     <div className={style.u_name}>
                         {this.props.name}
@@ -118,7 +101,7 @@ class SearchField extends Component {
     }
 
     changeHandler = event => {
-        const s = document.getElementById("search_input").value;
+        const s = event.target.value;
         if (s.length === 0) {
             this.setState(
                 {
@@ -142,7 +125,7 @@ class SearchField extends Component {
         return (
             <form className={style.InputForm} onSubmit={this.submitHandler}>
                 <div className={style.Search} id="search_field">
-                    <NavLink id="search-icon" className={style.SearchLink} to={this.state.path}>
+                    <NavLink id="search-icon" className={style.SearchLink} to={this.state.path} onClick={()=>document.getElementById("search_input").value = ""}>
                         <img src="https://image.flaticon.com/icons/svg/109/109859.svg" alt=""
                              className={style.SearchIcon}/>
                     </NavLink>

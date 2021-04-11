@@ -29,7 +29,6 @@ export function editPassword(Password) {
     });
 }
 export function editEmail(email) {
-    debugger;
     return request({
         url: API_BASE_URL + "/user/me/edit/email?email="+email,
         method: 'PUT',
@@ -82,6 +81,13 @@ export function getAllUsers() {
     });
 }
 
+export function searchUser(path) {
+    return request({
+        url: API_BASE_URL + "/search/" + path,
+        method: 'GET'
+    });
+}
+
 export function uploadAvatar(file) {
     let options = {
         url: API_BASE_URL + "/user/me/image",
@@ -103,5 +109,6 @@ export function uploadAvatar(file) {
             })
         );
 }
+
 
 

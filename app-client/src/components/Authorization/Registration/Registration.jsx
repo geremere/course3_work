@@ -52,8 +52,6 @@ class SignUp extends Component {
     }
 
     handleSubmit = event => {
-        console.log("handleSubmit")
-        debugger;
         event.preventDefault();
         let signupuser = {
             name: document.getElementById('firstname').value,
@@ -254,7 +252,6 @@ class SignUp extends Component {
 
         checkUsernameAvailability(usernameValue)
             .then(response => {
-                debugger;
                 if (response.available) {
                     this.setState({
                         username: {
@@ -263,7 +260,6 @@ class SignUp extends Component {
                             errorMsg: null
                         }
                     });
-                    debugger;
                 } else {
                     this.setState({
                         username: {
