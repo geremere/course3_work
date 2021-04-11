@@ -16,8 +16,6 @@ class AbstractHeader extends Component {
         let path = "https://img.favpng.com/20/21/15/computer-icons-symbol-user-png-favpng-7gAkK6jxCgYYpxfGPuC5yBaWr.jpg";
         if (this.props.user.image != null) {
             path = this.props.user.image.url
-        } else {
-            path = "https://img.favpng.com/20/21/15/computer-icons-symbol-user-png-favpng-7gAkK6jxCgYYpxfGPuC5yBaWr.jpg"
         }
         let menuItems;
         if (this.props.isAuthenticated) {
@@ -66,7 +64,7 @@ class DDMenu extends Component {
             <div className={style.dropdown}>
                 <button onFocus={()=>document.getElementById("myDropdown").style.display = "block"}
                         className={style.dropbtn}
-                        onBlur={()=>document.getElementById("myDropdown").style.display = "none"}>
+                        onBlur={()=>setTimeout(()=>document.getElementById("myDropdown").style.display = "none",100)}>
                     <img className={style.ico} src={this.props.path} alt=""/>
                     <div className={style.u_name}>
                         {this.props.name}

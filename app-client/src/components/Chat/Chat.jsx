@@ -22,7 +22,8 @@ class Chat extends Component {
             msg: "",
             notReadMsg: null,
             chats: null,
-            finded: []
+            finded: [],
+            path: ""
         };
 
         this.loadAllUsers = this.loadAllUsers.bind(this);
@@ -87,8 +88,7 @@ class Chat extends Component {
 
     onMessageReceived = (msg) => {
         const notification = JSON.parse(msg.body);
-        console.log(this.state.activeChat.usersId.indexOf(notification.senderId) != -1);
-        if (this.state.activeChat !== null && this.state.activeChat.usersId.indexOf(notification.senderId) != -1) {
+        if (this.state.activeChat.usersId===null ||this.state.activeChat !== null && this.state.activeChat.usersId.indexOf(notification.senderId) != -1) {
             findChatMessage(notification.id).then((message) => {
                 const newMessages = [...this.state.messages];
                 debugger;
@@ -127,6 +127,7 @@ class Chat extends Component {
 
     getChatByUser() {
         getChats().then(response => {
+            console.log(response)
             this.setState({
                 chats: response,
                 isLoaded: true
@@ -139,31 +140,43 @@ class Chat extends Component {
     };
 
     searchUsers = (event) => {
+        this.handleInputChange(event)
         if (event.target.value !== "")
             searchUser(event.target.value).then(response => {
                 console.log(response)
-                this.setState({finded: response})
+                this.setState({
+                    finded: response})
             });
     };
 
     newChat = (user) => {
-        const chat = {id: null, title: user.name, image: user.image};
+        const chat = {id: null, title: user.name, image: user.image, usersId:[user.id]};
         let chats = [...this.state.chats];
-        chats.push(chat);
-        this.setState({
-            activeChat: chat,
-            chats: chats,
-            messages:[]
+        let flag = true;
+        chats.forEach((item, i, chats) => {
+            console.log(item);
+            if (item.title === user.name) {
+                flag = false;
+                this.changeChat(item);
+            }
         });
-        document.getElementById("modal_list_user").style.display = "none";
+        if (flag) {
+            chats.push(chat);
+            this.setState({
+                activeChat: chat,
+                chats: chats,
+                messages: []
+            });
+        }
+        this.setState({
+            path: ""
+        })
     };
-    document.onCl
-
 
 
     render() {
         if (this.state.isLoaded) {
-            const users = this.state.finded.map(user => <UserSummary user={user} newChat = {this.newChat}/>);
+            const users = this.state.finded.map(user => <UserSummary user={user} newChat={this.newChat}/>);
 
             const chats = this.state.chats.map(chat => <ChatInfo finded={users}
                                                                  key={"chat_key" + chat.id}
@@ -176,13 +189,14 @@ class Chat extends Component {
                         <div className={style.chats}>
                             <div className={style.chats_search}>
 
-                                <input name="finded" id="search_input" name="s" placeholder="Поиск" type="search"
+                                <input name="path" id="search_input" value={this.state.path} placeholder="Поиск"
+                                       type="search"
                                        onChange={this.searchUsers}
                                        autoComplete="off"
                                        onFocus={() => document.getElementById("modal_list_user").style.display = "block"}
                                        onBlur={() => {
-                            
-                                           document.getElementById("modal_list_user").style.display = "none"
+
+                                           setTimeout(() => document.getElementById("modal_list_user").style.display = "none", 500)
                                        }}/>
                             </div>
                             <div className={style.modal_list_user} id="modal_list_user">
@@ -209,9 +223,9 @@ class Chat extends Component {
 
 function UserSummary(props) {
     return (
-        <div className={style.user_info} onClick={()=>props.newChat(props.user)}>
+        <div className={style.user_info} onClick={() => props.newChat(props.user)}>
             <div className={style.chat_ico}>
-                <img src={props.user.image !== null ? props.user.image.url : ""}/>
+                <img className={style.ico} src={props.user.image !== null ? props.user.image.url : ""}/>
             </div>
             <div className={style.chat_username}>
                 {props.user.name}
@@ -225,7 +239,7 @@ function ChatInfo(props) {
     return (
         <div className={style.chat_info} key={props.chat.id + "key"} onClick={() => props.changeChat(props.chat)}>
             <div className={style.chat_ico}>
-                <img src={props.chat.image !== null ? props.chat.image.url : ""}/>
+                <img className={style.ico} src={props.chat.image !== null ? props.chat.image.url : "https://img.favpng.com/20/21/15/computer-icons-symbol-user-png-favpng-7gAkK6jxCgYYpxfGPuC5yBaWr.jpg"}/>
             </div>
             <div className={style.chat_username}>
                 {props.chat.title}
