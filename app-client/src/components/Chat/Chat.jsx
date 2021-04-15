@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import style from "./Chat.module.css"
-import {getAllUsers, searchUser} from "../ServerAPI/userAPI";
+import {createChatRoom, getAllUsers, getUserById, searchUser} from "../ServerAPI/userAPI";
 import LoadingIndicator from "../common/LoadingIndicator";
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
@@ -8,6 +8,7 @@ import {BASE_URL} from "../ServerAPI/utils";
 import {findChatMessage, findChatMessages, getChats, sendMessage, test} from "../ServerAPI/chatAPI";
 import Messaging_Block from "./Messaging_Block";
 import toast from 'react-hot-toast';
+import Select from "react-select";
 
 class Chat extends Component {
     constructor(props) {
@@ -23,7 +24,9 @@ class Chat extends Component {
             notReadMsg: null,
             chats: null,
             finded: [],
-            path: ""
+            path: "",
+            chatName: "",
+            chatUsers: []
         };
 
         this.connect = this.connect.bind(this);
@@ -35,6 +38,8 @@ class Chat extends Component {
         this.changeChat = this.changeChat.bind(this);
         this.searchUsers = this.searchUsers.bind(this);
         this.newChat = this.newChat.bind(this);
+        this.handleSelectChange = this.handleSelectChange.bind(this);
+        this.createChat = this.createChat.bind(this);
     }
 
 
@@ -73,7 +78,7 @@ class Chat extends Component {
             this.setState({
                 activeChat: chat,
                 messages: response
-            })
+            });
         }).catch(error => {
             console.log(error)
         });
@@ -91,14 +96,15 @@ class Chat extends Component {
                 }
             }).catch(error => console.log(error));
         else {
-            debugger;
-            const chat = this.state.activeChat;
-            chat.id = notification.chatId;
-            this.setState({activeChat: chat})
+            if (this.state.activeChat.id == null) {
+                const chat = this.state.activeChat;
+                chat.id = notification.chatId;
+                this.setState({activeChat: chat})
+            }
         }
         if (notification.senderName !== null)
             toast("Received a new message from " + notification.senderName);
-        this.getChatByUser();
+
     };
 
     onError = (err) => {
@@ -112,17 +118,23 @@ class Chat extends Component {
     };
 
     onConnected = () => {
-        // console.log("connected");
-        // console.log(this.state.currentUser);
         this.state.stompClient.subscribe(
             "/user/" + this.state.currentUser.id + "/queue/messages", this.onMessageReceived
         );
     };
 
+    getAllUsers() {
+        getAllUsers().then(response =>
+            this.setState({
+                finded: response
+            }))
+    }
+
     componentDidMount() {
         this.connect();
         // this.setState({messages: []});
         this.getChatByUser();
+        this.getAllUsers();
     }
 
     getChatByUser() {
@@ -135,12 +147,20 @@ class Chat extends Component {
     }
 
     handleInputChange = (event) => {
-        this.setState({[event.target.name]: event.target.value})
+        const msg = event.target.value.length > 50 ? event.target.value + "\n" : event.target.value
+
+        this.setState({[event.target.name]: msg.length > 150 ? this.state[event.target.name] : msg})
+    };
+
+    handleSelectChange = (event) => {
+        document.getElementById("chat_diver").style.display = "block"
+        this.setState({
+            chatUsers: event.map(ev => parseInt(ev.value))
+        })
     };
 
     searchUsers = (event) => {
-        this.handleInputChange(event)
-        if (event.target.value !== "")
+        if (event.value !== "")
             searchUser(event.target.value).then(response => {
                 console.log(response)
                 this.setState({
@@ -149,7 +169,10 @@ class Chat extends Component {
             });
     };
 
-    newChat = (user) => {
+    async newChat(event) {
+        document.getElementById("chat_diver").style.display = "block"
+        const user = await getUserById(event.value).then(response => response);
+        console.log(user)
         const chat = {id: null, title: user.name, image: user.image, usersId: [user.id]};
         let chats = [...this.state.chats];
         let flag = true;
@@ -173,10 +196,35 @@ class Chat extends Component {
         })
     };
 
+    createChat() {
+        if (this.state.chatUsers.length != 0 && this.state.chatName.length != 0) {
+            const chatRoomRequest = {
+                recipientsId: this.state.chatUsers,
+                senderId: this.state.currentUser.id,
+                chatName: this.state.chatName
+            };
+            createChatRoom(chatRoomRequest).then(response => {
+                this.setState({
+                    activeChat: response
+                });
+                this.getChatByUser();
+            });
+        }
+        document.getElementById("simple_chat").style.display = "block";
+        document.getElementById("multi_chat").style.display = "none";
+        document.getElementById("chat_diver").style.display = "block"
+    }
+
+    newGoupChat() {
+        document.getElementById("simple_chat").style.display = "none";
+        document.getElementById("multi_chat").style.display = "block";
+        document.getElementById("chat_diver").style.display = "none"
+    }
+
 
     render() {
         if (this.state.isLoaded) {
-            const users = this.state.finded.map(user => <UserSummary user={user} newChat={this.newChat}/>);
+            const users = this.state.finded.map(user => new Option(user.name, user.id));
 
             const chats = this.state.chats.map(chat => <ChatInfo finded={users}
                                                                  key={"chat_key" + chat.id}
@@ -186,22 +234,39 @@ class Chat extends Component {
                 <div className={style.main_wrapper}>
                     <div className={style.chat_wrapper}>
                         <div className={style.chats}>
-                            <div className={style.chats_search}>
-
-                                <input name="path" id="search_input" value={this.state.path} placeholder="Поиск"
-                                       type="search"
-                                       onChange={this.searchUsers}
-                                       autoComplete="off"
-                                       onFocus={() => document.getElementById("modal_list_user").style.display = "block"}
-                                       onBlur={() => {
-
-                                           setTimeout(() => document.getElementById("modal_list_user").style.display = "none", 500)
-                                       }}/>
+                            <div id="simple_chat" className={style.chats_search}>
+                                <div className={style.selector}>
+                                    <Select onFocus={() => document.getElementById("chat_diver").style.display = "none"}
+                                            onBlur={() => document.getElementById("chat_diver").style.display = "block"}
+                                            options={users}
+                                            onInputChange
+                                            onChange={(event) => this.newChat(event)}/>
+                                </div>
+                                <button  className={style.btn} onClick={this.newGoupChat}>{"Новый груповой чат"}</button>
                             </div>
-                            <div className={style.modal_list_user} id="modal_list_user">
-                                {users}
+                            <div id="multi_chat" className={style.chat_create}>
+
+                                <div className={style.selector}>
+                                    <Select
+                                            onFocus={() => document.getElementById("chat_diver").style.display = "none"}
+                                            onBlur={() => document.getElementById("chat_diver").style.display = "block"}
+                                            isMulti
+                                            options={users}
+                                            onInputChange
+                                            onChange={(event) => this.handleSelectChange(event)}/>
+                                </div>
+                                <button className={style.btn}
+                                        onClick={this.createChat}>{"Создать  чат"}</button>
+
+                                <div className={style.input_wrap}>
+                                    <input type="text" className={style.chatName} placeholder="Название чата"
+                                           name="chatName"
+                                           onChange={(event) => this.handleInputChange(event)}/>
+                                </div>
                             </div>
-                            {chats}
+                            <div id="chat_diver">
+                                {chats}
+                            </div>
                         </div>
                         <Messaging_Block msg={this.state.msg} messages={this.state.messages}
                                          currentUser={this.state.currentUser}

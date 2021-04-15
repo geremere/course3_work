@@ -5,19 +5,39 @@ import {Loading} from "../../common/Loading/Loading";
 import {Switch, NavLink, Route} from "react-router-dom";
 import Settings from "../Settings/Settings";
 import {TextAlert} from "../../ModalWindow/ModalWindow";
-import {uploadAvatar} from "../../ServerAPI/userAPI";
+import {getUserTypes, setRiskTypes, uploadAvatar} from "../../ServerAPI/userAPI";
+import Select from "react-select";
+import {getAllTypes} from "../../ServerAPI/riskAPI";
 
 class UserAccount extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isLoaded: false,
-            message:""
+            message:"",
+            user_types:[],
+            allTypes:[]
         };
         this.UploadAvatar = this.UploadAvatar.bind(this);
+        this.loadTypes = this.loadTypes.bind(this);
         // this.getCourses = this.getCourses.bind(this);
     }
 
+     loadTypes(){
+        getAllTypes().then(response=>{
+            this.setState({
+                allTypes:response,
+                isLoaded:this.state.user_types.length!==0
+            })
+        });
+         getUserTypes().then(response=>{
+             this.setState({
+                 user_types:response,
+                 isLoaded:this.state.allTypes.length!==0
+             })
+         })
+
+    }
 
     UploadAvatar = (event) => {
         let formData = new FormData();
@@ -40,16 +60,29 @@ class UserAccount extends Component {
         file.click();
     };
 
+    setTypes(event){
+        console.log(event)
+        const req = event.map(ev => parseInt(ev.value));
+        setRiskTypes(req).then(res=>console.log(res));
+    }
+
     componentDidMount() {
         this.props.loadUser();
+        this.loadTypes();
     }
 
     render() {
         if (this.state.isLoaded) {
+            const options = this.state.allTypes.map(type=>new Option(type.type,type.id));
+            const deft = this.state.user_types.map(type=>new Option(type.type,type.id));
             return (
                 <div className={style.Wrapper}>
                     <TextAlert text={this.state.message}/>
-                    <UserInformation user={this.props.user} UploadAvatar={this.UploadAvatar}
+                    <UserInformation user={this.props.user}
+                                     options = {options}
+                                     deft = {deft}
+                                     UploadAvatar={this.UploadAvatar}
+                                     setTypes = {this.setTypes}
                                      UploadClick={this.UploadClick}/>
                     <UserNavBar username={this.props.user.username}/>
                     <hr className={style.separator}/>
@@ -80,6 +113,9 @@ class UserAccount extends Component {
 }
 
 function UserInformation(props) {
+    console.log(props.deft)
+    console.log(props.options)
+
     return (
         <div className={style.user_info}>
             <input id="file" type="file" className={style.upload} onChange={props.UploadAvatar}/>
@@ -93,7 +129,15 @@ function UserInformation(props) {
                 </div>
             </div>
             <div className={style.user_personal}>
-                <label className={style.user_name}>{props.user.surname} {props.user.name}</label>
+                <label className={style.user_name}> {props.user.name}</label>
+                {"Выберете типы рисков с которыми вы сможете работать"}
+                <Select
+                    isMulti
+                    onChange={(event)=>props.setTypes(event)}
+                    options={props.options}
+                    defaultValue={props.deft}/>
+                {/*<label className={style.user_name}> {props.user.username}</label>*/}
+
                 {/*<label className={style.user_description}>Количество просмотенных*/}
                 {/*    курсов: {props.user.completedCourses}</label>*/}
                 {/*<label className={style.user_description}>Количество курсов в*/}

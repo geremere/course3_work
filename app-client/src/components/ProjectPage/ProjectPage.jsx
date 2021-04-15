@@ -52,11 +52,11 @@ class ProjectPage extends Component {
                                          className={style.SettingsLink}
                                          activeClassName={style.selected_link}>Риски</NavLink>
                             </li>
-                            <li className={style.SettingsItem}>
-                                <NavLink to={"/project/" + this.state.project.id + "/feed"}
-                                         className={style.SettingsLink}
-                                         activeClassName={style.selected_link}>Обсуждения</NavLink>
-                            </li>
+                            {/*<li className={style.SettingsItem}>*/}
+                            {/*    <NavLink to={"/project/" + this.state.project.id + "/feed"}*/}
+                            {/*             className={style.SettingsLink}*/}
+                            {/*             activeClassName={style.selected_link}>Обсуждения</NavLink>*/}
+                            {/*</li>*/}
                         </ul>
                     </div>
                     <br/>

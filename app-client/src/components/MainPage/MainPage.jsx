@@ -44,10 +44,13 @@ class MainPage extends Component {
             return (
                 <div className={style.Main}>
                     {/*<Menu handler={this.changeCourses} changeLoaded={this.changeLoaded}/>*/}
-                    <button onClick={() => document.getElementById("new_project").style.display = "block"}>
+                    <button className={style.btn} onClick={() => document.getElementById("new_project").style.display = "block"}>
                         {"Add new project"}
                     </button>
                     <NewProject/>
+                <br/>
+                <br/>
+
                     {projects}
                 </div>);
         } else {

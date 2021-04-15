@@ -3,7 +3,7 @@ import {request} from "./request.js"
 
 
 export function getCurrentUser() {
-    if(!localStorage.getItem(ACCESS_TOKEN)) {
+    if (!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject("No access token set.");
     }
 
@@ -12,7 +12,6 @@ export function getCurrentUser() {
         method: 'GET'
     });
 }
-
 
 
 export function getUserProfile(username) {
@@ -30,9 +29,10 @@ export function editPassword(Password) {
         body: JSON.stringify(Password)
     });
 }
+
 export function editEmail(email) {
     return request({
-        url: API_BASE_URL + "/user/me/edit/email?email="+email,
+        url: API_BASE_URL + "/user/me/edit/email?email=" + email,
         method: 'PUT',
         body: JSON.stringify(email)
     });
@@ -90,6 +90,37 @@ export function searchUser(path) {
     });
 }
 
+export function getUserById(id) {
+    return request({
+        url: API_BASE_URL + "/user/" + id,
+        method: 'GET'
+    });
+}
+
+export function createChatRoom(chatRequest) {
+    return request({
+        url: API_BASE_URL + "/chatroom/create",
+        method: 'POST',
+        body: JSON.stringify(chatRequest)
+    });
+}
+
+export function getUserTypes() {
+    return request({
+        url: API_BASE_URL + "/user/me/get/types",
+        method: 'GET',
+    });
+}
+
+export function setRiskTypes(riskTypes) {
+    return request({
+        url: API_BASE_URL + "/user/set/types",
+        method: 'POST',
+        body: JSON.stringify(riskTypes)
+    });
+}
+
+
 export function uploadAvatar(file) {
     let options = {
         url: API_BASE_URL + "/user/me/image",
@@ -111,6 +142,8 @@ export function uploadAvatar(file) {
             })
         );
 }
+
+
 
 
 

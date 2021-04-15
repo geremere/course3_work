@@ -38,6 +38,8 @@ class Messaging_Block extends Component {
                     return (
                         <div className={style.message_div} key={message.id}>
                             <div className={style.owner_message}>
+                                <label>your message</label>
+                                <br/>
                                 {message.content}
                             </div>
                         </div>
@@ -46,6 +48,8 @@ class Messaging_Block extends Component {
                     return (
                         <div className={style.message_div} key={message.id}>
                             <div className={style.recepient_message}>
+                                <label>{"from "+message.senderName}</label>
+                                <br/>
                                 {message.content}
                             </div>
                         </div>
@@ -61,10 +65,10 @@ class Messaging_Block extends Component {
                         <div ref={this.messagesEndRef}/>
                     </div>
                     <div className={style.message_content}>
-                        <button onClick={this.props.sendMessage}>
-                            Send
+                        <button className={style.sendMes} onClick={this.props.sendMessage}>
+                            Отправить
                         </button>
-                        <input name="msg" value={this.props.msg} onChange={this.props.handleInputChange} onKeyPress={(event) => {
+                        <textarea name="msg" value={this.props.msg} onChange={this.props.handleInputChange} className={style.input_msg} onKeyPress={(event) => {
                             if (event.key === "Enter") {
                                 this.props.sendMessage(this.props.msg);
                             }

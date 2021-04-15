@@ -40,7 +40,7 @@ class AbstractHeader extends Component {
                     reverseOrder={false}/>
                 <div className={style.HeaderComponents}>
                     {menuItems}
-                    <SearchField/>
+                    {/*<SearchField/>*/}
                     <NavLink className={style.HeaderText} to="/mainpage">Risk Manager</NavLink>
                 </div>
             </header>
@@ -65,7 +65,7 @@ class DDMenu extends Component {
             <div className={style.dropdown}>
                 <button onFocus={()=>document.getElementById("myDropdown").style.display = "block"}
                         className={style.dropbtn}
-                        onBlur={()=>setTimeout(()=>document.getElementById("myDropdown").style.display = "none",100)}>
+                        onBlur={()=>setTimeout(()=>document.getElementById("myDropdown").style.display = "none",200)}>
                     <img className={style.ico} src={this.props.path} alt=""/>
                     <div className={style.u_name}>
                         {this.props.name}
