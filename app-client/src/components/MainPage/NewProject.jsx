@@ -98,28 +98,7 @@ class NewProject extends Component {
     };
 
     createProject = () => {
-        debugger;
-
-        if (!this.state.title.correct) {
-            this.setState({
-                message: "поле название проекта пусто"
-            });
-            document.getElementById('alert').style.display = 'block'
-        }
-        if (!this.state.description.correct) {
-            this.setState({
-                message: "поле опсиание проекта проекта пусто"
-            });
-            document.getElementById('alert').style.display = 'block'
-        }
-        if (this.state.users.length === 0) {
-            this.setState({
-                message: "Добавьте хотя бы одного пользователя"
-            });
-            document.getElementById('alert').style.display = 'block'
-        }
-        console.log(this.state);
-        if (this.state.users.length !== 0 && this.state.description.correct && this.state.title.correct){
+        if (this.state.users.length !== 0 && this.state.description.correct && this.state.title.correct) {
             const pr = {
                 users: this.state.users,
                 title: this.state.title.value,
@@ -127,15 +106,19 @@ class NewProject extends Component {
             };
             createProject(pr)
                 .then(response => {
-                    this.setState({
-                        message: response
-                    });
-                    document.getElementById('alert').style.display = 'block'
+                    window.location.assign("/project/" + response.id)
                 }).catch(error => {
-
                 console.log("error")
             })
+        } else {
+            {
+                this.setState({
+                    message: "Не все поля заполнены"
+                });
+                document.getElementById('alert').style.display = 'block'
+            }
         }
+
 
     };
 

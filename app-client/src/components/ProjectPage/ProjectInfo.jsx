@@ -1,6 +1,7 @@
 import React from "react";
 import style from "./ProjectInfo.module.css";
 import {NavLink} from "react-router-dom";
+// import {Select} from "react-select";
 
 function ProjectInfo(props) {
     console.log("PROJECTINFO")
@@ -17,6 +18,7 @@ function ProjectInfo(props) {
 }
 
 function DescriptionBlock(props) {
+
     return (
         <div className={style.Description}>
             <div className={style.DescriptionHeader}>
@@ -26,6 +28,7 @@ function DescriptionBlock(props) {
             </div>
             <hr className={style.Separator}/>
             <DescriptionItem head={"Количесиво участников"} text={props.project.users.length}/>
+            <button onClick={props.AddUsers}/>
         </div>
     );
 }

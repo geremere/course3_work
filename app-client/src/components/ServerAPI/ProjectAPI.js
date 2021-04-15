@@ -1,4 +1,4 @@
-import {API_BASE_URL} from "./utils";
+import {ACCESS_TOKEN, API_BASE_URL, BASE_URL} from "./utils";
 import {request} from "./request";
 
 const project_url = API_BASE_URL + "/project";
@@ -42,7 +42,19 @@ export function getProjectById(id) {
         return Promise.reject("No access token set.");
     }
     return request({
-        url: project_url + "/"+id,
+        url: project_url + "/" + id,
         method: "GET"
+    });
+}
+
+
+export function getRisksByProject(prId) {
+    if (!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: project_url + "/" + prId + "/get/risks",
+        method: 'GET'
     });
 }
