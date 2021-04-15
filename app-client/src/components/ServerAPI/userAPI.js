@@ -13,6 +13,8 @@ export function getCurrentUser() {
     });
 }
 
+
+
 export function getUserProfile(username) {
     return request({
         url: API_BASE_URL + "/users/" + username,

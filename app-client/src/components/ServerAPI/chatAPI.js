@@ -1,5 +1,5 @@
 import {request} from "./request.js"
-import {ACCESS_TOKEN, API_BASE_URL, API_SOCKET_URL} from "./utils";
+import {ACCESS_TOKEN, API_BASE_URL, BASE_URL} from "./utils";
 
 export function countNewMessages(senderId, recipientId) {
     if (!localStorage.getItem("accessToken")) {
@@ -7,7 +7,7 @@ export function countNewMessages(senderId, recipientId) {
     }
 
     return request({
-        url: API_SOCKET_URL + "/messages/" + senderId + "/" + recipientId + "/count",
+        url: BASE_URL + "/messages/" + senderId + "/" + recipientId + "/count",
         method: "GET",
     });
 }
@@ -17,7 +17,7 @@ export function findChatMessages(chatId) {
         return Promise.reject("No access token set.");
     }
     return request({
-        url: API_SOCKET_URL + "/messages/" + chatId,
+        url: BASE_URL + "/messages/" + chatId,
         method: "GET",
     });
 }
@@ -28,7 +28,7 @@ export function findChatMessage(id) {
     }
 
     return request({
-        url: API_SOCKET_URL + "/message/" + id,
+        url: BASE_URL + "/message/" + id,
         method: "GET",
     });
 }
@@ -44,13 +44,14 @@ export function getChats() {
     });
 }
 
-export function test() {
+export function sendMessage(message) {
     if (!localStorage.getItem("accessToken")) {
         return Promise.reject("No access token set.");
     }
 
     return request({
-        url: API_SOCKET_URL + "/messages/test",
-        method: "GET",
+        url: BASE_URL + "/create/chat",
+        method: "POST",
+        body:message
     });
 }

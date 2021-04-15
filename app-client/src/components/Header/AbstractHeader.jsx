@@ -3,6 +3,7 @@ import style from './AbstractHeader.module.css'
 import {NavLink} from "react-router-dom";
 import {TextAlert} from "../ModalWindow/ModalWindow";
 import {Toaster} from "react-hot-toast";
+import {CHAT_ICO, USER_ICO} from "../ServerAPI/utils";
 
 class AbstractHeader extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ class AbstractHeader extends Component {
 
     render() {
         console.log(this.props.user)
-        let path = "https://img.favpng.com/20/21/15/computer-icons-symbol-user-png-favpng-7gAkK6jxCgYYpxfGPuC5yBaWr.jpg";
+        let path = USER_ICO;
         if (this.props.user.image != null) {
             path = this.props.user.image.url
         }
@@ -23,7 +24,7 @@ class AbstractHeader extends Component {
                 <DDMenu path={path} username={this.props.user.username} name={this.props.user.name}
                         LogOut={this.props.LogOut} key="3"/>,
                 <NavLink to = "/chat" className={style.chat} key='4'>
-                    <img className={style.chat} src="https://riskmanagerbucket.s3.eu-north-1.amazonaws.com/const_resouses/chat.svg"/>
+                    <img className={style.chat} src={CHAT_ICO}/>
                 </NavLink>,
             ];
         } else {
@@ -40,7 +41,7 @@ class AbstractHeader extends Component {
                 <div className={style.HeaderComponents}>
                     {menuItems}
                     <SearchField/>
-                    <NavLink className={style.HeaderText} to="/test">Risk Manager</NavLink>
+                    <NavLink className={style.HeaderText} to="/mainpage">Risk Manager</NavLink>
                 </div>
             </header>
         )

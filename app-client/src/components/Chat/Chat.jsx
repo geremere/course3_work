@@ -4,10 +4,10 @@ import {getAllUsers, searchUser} from "../ServerAPI/userAPI";
 import LoadingIndicator from "../common/LoadingIndicator";
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
-import {API_SOCKET_URL} from "../ServerAPI/utils";
-import {findChatMessage, findChatMessages, getChats, test} from "../ServerAPI/chatAPI";
+import {BASE_URL} from "../ServerAPI/utils";
+import {findChatMessage, findChatMessages, getChats, sendMessage, test} from "../ServerAPI/chatAPI";
 import Messaging_Block from "./Messaging_Block";
-import toast, {Toaster} from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 class Chat extends Component {
     constructor(props) {
@@ -26,7 +26,6 @@ class Chat extends Component {
             path: ""
         };
 
-        this.loadAllUsers = this.loadAllUsers.bind(this);
         this.connect = this.connect.bind(this);
         this.onError = this.onError.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
@@ -39,9 +38,9 @@ class Chat extends Component {
     }
 
 
-    sendMessage = () => {
-
+    sendMessage() {
         if (this.state.msg.trim() !== "") {
+            debugger;
             const message = {
                 senderId: this.state.currentUser.id,
                 senderName: this.state.currentUser.name,
@@ -54,8 +53,9 @@ class Chat extends Component {
                 type: "TEXT"
                 // timestamp: new Date(),
             };
+
             this.state.stompClient.send("/app/chat", {}, JSON.stringify(message));
-            debugger
+
 
             const newMessages = [...this.state.messages];
             newMessages.push(message);
@@ -63,10 +63,12 @@ class Chat extends Component {
                 messages: newMessages,
                 msg: ""
             });
+
         }
     };
 
     changeChat = (chat) => {
+        debugger;
         findChatMessages(chat.id).then(response => {
             this.setState({
                 activeChat: chat,
@@ -77,27 +79,25 @@ class Chat extends Component {
         });
     };
 
-    loadAllUsers = () => {
-        getAllUsers().then(response => {
-            this.setState({
-                allUsers: response,
-                isLoaded: true
-            });
-        }).catch(error => window.alert(error));
-    };
-
     onMessageReceived = (msg) => {
         const notification = JSON.parse(msg.body);
-        if (this.state.activeChat.usersId===null ||this.state.activeChat !== null && this.state.activeChat.usersId.indexOf(notification.senderId) != -1) {
+        console.log(notification);
+        if (notification.chatId === null)
             findChatMessage(notification.id).then((message) => {
                 const newMessages = [...this.state.messages];
-                debugger;
-                newMessages.push(message);
-                this.setState({messages: newMessages});
+                if (this.state.currentUser.id !== message.senderId) {
+                    newMessages.push(message);
+                    this.setState({messages: newMessages});
+                }
             }).catch(error => console.log(error));
-        } else {
-            toast("Received a new message from " + notification.senderName);
+        else {
+            debugger;
+            const chat = this.state.activeChat;
+            chat.id = notification.chatId;
+            this.setState({activeChat: chat})
         }
+        if (notification.senderName !== null)
+            toast("Received a new message from " + notification.senderName);
         this.getChatByUser();
     };
 
@@ -106,7 +106,7 @@ class Chat extends Component {
     };
 
     connect = () => {
-        const socket = new SockJS(API_SOCKET_URL + "/ws");
+        const socket = new SockJS(BASE_URL + "/ws");
         this.state.stompClient = Stomp.over(socket);
         this.state.stompClient.connect({}, this.onConnected, this.onError);
     };
@@ -127,7 +127,6 @@ class Chat extends Component {
 
     getChatByUser() {
         getChats().then(response => {
-            console.log(response)
             this.setState({
                 chats: response,
                 isLoaded: true
@@ -145,12 +144,13 @@ class Chat extends Component {
             searchUser(event.target.value).then(response => {
                 console.log(response)
                 this.setState({
-                    finded: response})
+                    finded: response
+                })
             });
     };
 
     newChat = (user) => {
-        const chat = {id: null, title: user.name, image: user.image, usersId:[user.id]};
+        const chat = {id: null, title: user.name, image: user.image, usersId: [user.id]};
         let chats = [...this.state.chats];
         let flag = true;
         chats.forEach((item, i, chats) => {
@@ -184,7 +184,6 @@ class Chat extends Component {
                                                                  changeChat={this.changeChat}/>);
             return (
                 <div className={style.main_wrapper}>
-                    <button onClick={this.sendMessage}/>
                     <div className={style.chat_wrapper}>
                         <div className={style.chats}>
                             <div className={style.chats_search}>
@@ -204,12 +203,10 @@ class Chat extends Component {
                             </div>
                             {chats}
                         </div>
-                        <div>
-                            <Messaging_Block msg={this.state.msg} messages={this.state.messages}
-                                             currentUser={this.state.currentUser}
-                                             chat={this.state.activeChat}
-                                             handleInputChange={this.handleInputChange} sendMessage={this.sendMessage}/>
-                        </div>
+                        <Messaging_Block msg={this.state.msg} messages={this.state.messages}
+                                         currentUser={this.state.currentUser}
+                                         chat={this.state.activeChat}
+                                         handleInputChange={this.handleInputChange} sendMessage={this.sendMessage}/>
 
                     </div>
                 </div>
@@ -239,7 +236,8 @@ function ChatInfo(props) {
     return (
         <div className={style.chat_info} key={props.chat.id + "key"} onClick={() => props.changeChat(props.chat)}>
             <div className={style.chat_ico}>
-                <img className={style.ico} src={props.chat.image !== null ? props.chat.image.url : "https://img.favpng.com/20/21/15/computer-icons-symbol-user-png-favpng-7gAkK6jxCgYYpxfGPuC5yBaWr.jpg"}/>
+                <img className={style.ico}
+                     src={props.chat.image !== null ? props.chat.image.url : "https://img.favpng.com/20/21/15/computer-icons-symbol-user-png-favpng-7gAkK6jxCgYYpxfGPuC5yBaWr.jpg"}/>
             </div>
             <div className={style.chat_username}>
                 {props.chat.title}

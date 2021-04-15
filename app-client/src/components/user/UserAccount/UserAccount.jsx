@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import style from "./UserAccount.module.css";
-import {getCoursesOfUser} from "../../ServerAPI/courseAPI";
 // import {uploadAvatar} from "../../ServerAPI/userAPI";
 import {Loading} from "../../common/Loading/Loading";
 import {Switch, NavLink, Route} from "react-router-dom";
