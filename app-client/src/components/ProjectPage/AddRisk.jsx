@@ -19,9 +19,10 @@ class AddRisk extends Component {
             selected_risk: null,
             title: "",
             description: "",
-            state: "BEGIN",
+            state: "Begin",
             isLoaded: false,
             priority: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            selected_priority:1
         };
         this.loadTypes = this.loadTypes.bind(this);
         this.selectRisk = this.selectRisk.bind(this);
@@ -101,6 +102,8 @@ class AddRisk extends Component {
             changerId: this.props.userId
         };
         this.props.addRisk(riskRequest)
+        document.getElementById("add_risk").style.display = "none"
+
     };
 
     componentDidMount() {

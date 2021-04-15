@@ -9,6 +9,9 @@ import {BASE_URL, PROJECT_ICO} from "../ServerAPI/utils";
 import {getCurrentUser} from "../ServerAPI/userAPI";
 import {getRisksByProject} from "../ServerAPI/ProjectAPI";
 import style from "./RiskPage.module.css";
+import ChangeRisk from "./ChangeRisk";
+import {Select} from "antd";
+import {getRisk} from "../ServerAPI/riskAPI";
 
 class RisksPage extends Component {
     constructor(props) {
@@ -19,46 +22,39 @@ class RisksPage extends Component {
             risks: [],
             currentUser: null,
             stompClient: null,
-            selected_risk:{
-                owners:[],
-                state:{
-                    priority:1,
-                    description:"",
-                    title:""
-                },
-                risk:{
-                    id:null,
-                    name:"",
-                    description:"",
-                    types:[1]
-                },
-            }
+            selected_risk: null
         };
         this.changeRisk = this.changeRisk.bind(this);
         this.getUser = this.getUser.bind(this);
+        this.loadRisks = this.loadRisks.bind(this);
+        this.riskClick = this.riskClick.bind(this);
+        this.loadRiskById = this.loadRiskById.bind(this);
     }
 
     async getUser() {
         await getCurrentUser().then(response => {
             this.setState({
-                currentUser: response
+                currentUser: response,
+                isLoaded: true
             })
         })
     }
 
+    loadRiskById() {
+        return getRisk(this.state.selected_risk.id).then(response => response)
+    }
+
+
     loadRisks() {
         getRisksByProject(this.props.project.id).then(response => {
             this.setState({
-                risks: response,
-                isLoaded: true
-            })
-            console.log(response)
+                risks: response
+            });
         })
 
     }
 
     onMessageReceived = (msg) => {
-        console.log("GEt==========================")
         const notification = JSON.parse(msg.body);
         if (notification.changerName !== null)
             toast("Risk " + notification.riskName + "changed by " + notification.changerName);
@@ -83,15 +79,21 @@ class RisksPage extends Component {
         const newRisks = [...this.state.risks];
         newRisks.push(riskRequest);
         this.setState({
-            messages: newRisks
+            messages: newRisks,
+            selected_risk: null
         });
     };
 
-    riskClick=(risk)=>{
+    riskClick(risk) {
         this.setState({
-            selected_risk:risk
+            selected_risk: risk
         });
-        document.getElementById("add_risk").style.display = "block"
+    };
+
+    close = () => {
+        this.setState({
+            selected_risk: null
+        });
     };
 
 
@@ -103,12 +105,29 @@ class RisksPage extends Component {
 
     render() {
         if (this.state.isLoaded) {
-            console.log(this.state.risks)
             const risk_list = this.state.risks.map(risk => <RiskSummary risk={risk} onClick={this.riskClick}/>)
+            if (this.state.selected_risk === null) {
+                return (
+                    <div>
+                        <AddRisk projectId={this.props.project.id} addRisk={this.changeRisk}
+                                 userId={this.state.currentUser.id}/>
+                        <button onClick={() => {
+                            document.getElementById("add_risk").style.display = "block"
+                        }}>
+                            {"Add risk"}
+                        </button>
+                        <div>
+                            {risk_list}
+                        </div>
+                    </div>
+                )
+            }
             return (
                 <div>
                     <AddRisk projectId={this.props.project.id} addRisk={this.changeRisk}
                              userId={this.state.currentUser.id}/>
+                    <ChangeRisk projectId={this.props.project.id} addRisk={this.changeRisk}
+                                userId={this.state.currentUser.id} risk={this.state.selected_risk} close={this.close}/>
                     <button onClick={() => {
                         document.getElementById("add_risk").style.display = "block"
                     }}>
@@ -128,11 +147,16 @@ class RisksPage extends Component {
 }
 
 function RiskSummary(props) {
+
     return (
-        <div className={style.RiskBlock} onClick={() => props.onClick(props.risk)}>
-            <p className={style.RiskName}>{props.risk.state.title}</p>
+        <div className={props.risk.state.priority > 5 ? style.RiskBlock_10 : style.RiskBlock_5}
+             onClick={() => props.onClick(props.risk)}>
+            <label>{"Название риска: " + props.risk.state.title}</label>
             <br/>
-            <p className={style.RiskDescription}>{props.risk.state.description}</p>
+            <p>Описание риска:</p>
+            <label>{props.risk.state.description}</label>
+            <br/>
+            <label>{"Состояние: " + props.risk.state.state}</label>
         </div>
     )
 }

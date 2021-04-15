@@ -33,3 +33,14 @@ export function getAvileableUsers(prId,riskId) {
         method: 'GET'
     });
 }
+
+export function getRisk(riskId) {
+    if(!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: BASE_URL + "/risk/"+riskId,
+        method: 'GET'
+    });
+}
