@@ -104,6 +104,7 @@ class Chat extends Component {
         }
         if (notification.senderName !== null)
             toast("Received a new message from " + notification.senderName);
+        this.getChatByUser();
 
     };
 

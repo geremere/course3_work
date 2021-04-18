@@ -65,7 +65,7 @@ class DDMenu extends Component {
             <div className={style.dropdown}>
                 <button onFocus={()=>document.getElementById("myDropdown").style.display = "block"}
                         className={style.dropbtn}
-                        onBlur={()=>setTimeout(()=>document.getElementById("myDropdown").style.display = "none",200)}>
+                        onBlur={()=>setTimeout(()=>document.getElementById("myDropdown").style.display = "none",250)}>
                     <img className={style.ico} src={this.props.path} alt=""/>
                     <div className={style.u_name}>
                         {this.props.name}

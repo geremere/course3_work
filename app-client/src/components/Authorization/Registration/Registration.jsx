@@ -54,8 +54,7 @@ class SignUp extends Component {
     handleSubmit = event => {
         event.preventDefault();
         let signupuser = {
-            name: document.getElementById('firstname').value,
-            surname: document.getElementById('secondname').value,
+            name: document.getElementById('secondname').value + " " + document.getElementById('firstname').value,
             email: document.getElementById('mail').value,
             username: document.getElementById('username').value,
             password: document.getElementById('password').value
@@ -152,7 +151,7 @@ class SignUp extends Component {
                     </Form.Item>
                     <Form.Item>
                         <button className={style.Register} onClick={this.handleSubmit}
-                                disabled={this.isFormInvalid() }>
+                                disabled={this.isFormInvalid()}>
                             Зарегистрироваться
                         </button>
                     </Form.Item>

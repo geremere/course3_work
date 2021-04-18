@@ -101,12 +101,12 @@ class ChangeRisk extends Component {
                         </div>
                         <label>Приоритет</label>
                         <br/>
-                        <Select options={options_priority} defaultValue={this.state.selected_priority}
+                        <Select options={options_priority} defaultValue={new Option(this.state.selected_priority)}
                                 onChange={(event) => this.selectPriority(event)}/>
                         <br/>
                         <label>Состояние</label>
                         <br/>
-                        <Select options={options_state} defaultValue={this.state.selected_state}
+                        <Select options={options_state} defaultValue={new Option(this.state.selected_state)}
                                 onChange={(event) => this.selectState(event)}/>
                         <br/>
                         <button onClick={this.addRisk}>

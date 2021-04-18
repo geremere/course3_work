@@ -29,12 +29,15 @@ class UserAccount extends Component {
                 allTypes:response,
                 isLoaded:this.state.user_types.length!==0
             })
+            console.log(response)
         });
          getUserTypes().then(response=>{
              this.setState({
                  user_types:response,
                  isLoaded:this.state.allTypes.length!==0
              })
+             console.log(response)
+
          })
 
     }
@@ -86,14 +89,14 @@ class UserAccount extends Component {
                                      UploadClick={this.UploadClick}/>
                     <UserNavBar username={this.props.user.username}/>
                     <hr className={style.separator}/>
-                    <Switch>
-                        <Route path={"/user/" + this.props.user.username}
-                               render={(props) => <UserCourses courses={this.state.coursesInProcess}/>}/>
-                        {/*<Route exact path={"/user/completed"}*/}
-                        {/*       render={(props) => <UserCourses courses={this.state.coursesCompleted}/>}/>*/}
-                        <Route path={"/user/settings/"}
-                               render={(props) => <Settings user={this.props.user}/>}/>
-                    </Switch>
+                    {/*<Switch>*/}
+                    {/*    /!*<Route path={"/user/" + this.props.user.username}*!/*/}
+                    {/*    /!*       render={(props) => <UserCourses courses={this.state.coursesInProcess}/>}/>*!/*/}
+                    {/*    /!*<Route exact path={"/user/completed"}*!/*/}
+                    {/*    /!*       render={(props) => <UserCourses courses={this.state.coursesCompleted}/>}/>*!/*/}
+                    {/*    <Route path={"/user/settings/"}*/}
+                    {/*           render={(props) => <Settings user={this.props.user}/>}/>*/}
+                    {/*</Switch>*/}
                 </div>
             );
         } else {

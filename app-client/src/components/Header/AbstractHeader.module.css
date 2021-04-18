@@ -75,9 +75,9 @@
 .u_name {
     font-size: 17px;
     top: 11px;
-    max-width: 120px;
+    max-width: 200px;
     left: 8px;
-    position: absolute;
+    position: relative;
 }
 
 a {
@@ -131,7 +131,7 @@ a {
 .dropbtn {
     background-color: white;
     color: black;
-    min-width: 140px;
+    min-width: 220px;
     height: 39px;
     font-size: 16px;
     border: 0 gray solid;
