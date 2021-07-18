@@ -11,7 +11,7 @@ import {ACCESS_TOKEN} from "../components/ServerAPI/utils.js";
 import VKAuth from "../components/Authorization/login/VKAuth.jsx";
 import {Loading} from "../components/common/Loading/Loading";
 import Chat from "../components/Chat/Chat";
-import Test from "../components/Test";
+import Test from "../components/Test/Test";
 import ProjectPage from "../components/ProjectPage/ProjectPage";
 
 class App extends Component {
@@ -77,14 +77,13 @@ class App extends Component {
                                render={(props) => <MainPage isAuthenticated={this.state.isAuthenticated}/>}/>
                         <Route exact path='/'
                                render={(props) => <MainPage isAuthenticated={this.state.isAuthenticated}/>}/>
-                        <Route path='/test'
-                               render={(props) => <Test user = {this.state.currentUser}/>}/>
                         <Route path='/user/:username'
                                render={(props) => <UserAccount user={this.state.currentUser} loadUser={this.loadUser}/>}/>
                         <Route path='/project/:prId' component={ProjectPage}/>
                         <Route path='/vkauth' render={(props) => <VKAuth/>}/>
                         {/*<Route path='/searchresults/:subString?/:category?/:sort?' component={SearchPage}/>*/}
                         <Route path='/chat' render={() => <Chat currentUser={this.state.currentUser}/>}/>
+                        <Route path={'/test'} render={(props)=><Test currentUser={this.state.currentUser} isAuthenticated={this.state.isAuthenticated}/>}/>
                     </Switch>
                 </div>
             );

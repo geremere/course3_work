@@ -9,6 +9,7 @@ import {findChatMessage, findChatMessages, getChats, sendMessage, test} from "..
 import Messaging_Block from "./Messaging_Block";
 import toast from 'react-hot-toast';
 import Select from "react-select";
+import {TextAlert} from "../ModalWindow/ModalWindow";
 
 class Chat extends Component {
     constructor(props) {
@@ -26,7 +27,8 @@ class Chat extends Component {
             finded: [],
             path: "",
             chatName: "",
-            chatUsers: []
+            chatUsers: [],
+            alert: ""
         };
 
         this.connect = this.connect.bind(this);
@@ -198,7 +200,7 @@ class Chat extends Component {
     };
 
     createChat() {
-        if (this.state.chatUsers.length != 0 && this.state.chatName.length != 0) {
+        if (this.state.chatUsers.length > 1 && this.state.chatName.length !== 0) {
             const chatRoomRequest = {
                 recipientsId: this.state.chatUsers,
                 senderId: this.state.currentUser.id,
@@ -210,6 +212,11 @@ class Chat extends Component {
                 });
                 this.getChatByUser();
             });
+        } else {
+            this.setState({
+                alert: "Нельзя создать чат мнее чем из 3 участников и без названия"
+            })
+            document.getElementById('alert').style.display = 'block';
         }
         document.getElementById("simple_chat").style.display = "block";
         document.getElementById("multi_chat").style.display = "none";
@@ -233,6 +240,7 @@ class Chat extends Component {
                                                                  changeChat={this.changeChat}/>);
             return (
                 <div className={style.main_wrapper}>
+                    <TextAlert text={this.state.alert}/>
                     <div className={style.chat_wrapper}>
                         <div className={style.chats}>
                             <div id="simple_chat" className={style.chats_search}>
@@ -243,18 +251,18 @@ class Chat extends Component {
                                             onInputChange
                                             onChange={(event) => this.newChat(event)}/>
                                 </div>
-                                <button  className={style.btn} onClick={this.newGoupChat}>{"Новый груповой чат"}</button>
+                                <button className={style.btn} onClick={this.newGoupChat}>{"Новый груповой чат"}</button>
                             </div>
                             <div id="multi_chat" className={style.chat_create}>
 
                                 <div className={style.selector}>
                                     <Select
-                                            onFocus={() => document.getElementById("chat_diver").style.display = "none"}
-                                            onBlur={() => document.getElementById("chat_diver").style.display = "block"}
-                                            isMulti
-                                            options={users}
-                                            onInputChange
-                                            onChange={(event) => this.handleSelectChange(event)}/>
+                                        onFocus={() => document.getElementById("chat_diver").style.display = "none"}
+                                        onBlur={() => document.getElementById("chat_diver").style.display = "block"}
+                                        isMulti
+                                        options={users}
+                                        onInputChange
+                                        onChange={(event) => this.handleSelectChange(event)}/>
                                 </div>
                                 <button className={style.btn}
                                         onClick={this.createChat}>{"Создать  чат"}</button>

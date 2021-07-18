@@ -1,0 +1,37 @@
+.user_info {
+    position: relative;
+    background-color: white;
+    border: 1px;
+    height: 8%;
+    width: calc(100% - 2px);
+    border-radius: 5px;
+    margin: 0.5%;
+}
+
+.user_ico {
+    display: inline-block;
+    position: relative;
+    float: left;
+    height: 90%;
+    margin: 2px;
+    border-radius: 100%;
+}
+
+.username {
+    display: inline-block;
+    position: relative;
+    width: 75%;
+    height: 25px;
+    /*line-height: normal;*/
+    /*align: center;*/
+    /*margin-left: ;*/
+    /*float: inherit;*/
+    /*align-self: initial;*/
+    margin-top: calc(8% - 23px);
+    text-align: left;
+}
+
+.is_selected::-ms-check{
+    height: 50%;
+    width: 20%;
+}
