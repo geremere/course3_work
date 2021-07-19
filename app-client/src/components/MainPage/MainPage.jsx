@@ -19,7 +19,6 @@ class MainPage extends Component {
 
     loadProjects = () => {
         getAllProjects().then(response => {
-            debugger;
             this.setState({
                 projects: response,
                 isLoaded: true

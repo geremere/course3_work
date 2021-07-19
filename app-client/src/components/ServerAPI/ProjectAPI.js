@@ -14,18 +14,6 @@ export function createProject(project) {
     });
 }
 
-export function uploadImageProject(file) {
-    if (!localStorage.getItem("accessToken")) {
-        return Promise.reject("No access token set.");
-    }
-
-    return request({
-        url: project_url + "/setimage",
-        method: "POST",
-        body: file
-    });
-}
-
 export function getAllProjects() {
     if (!localStorage.getItem("accessToken")) {
         return Promise.reject("No access token set.");

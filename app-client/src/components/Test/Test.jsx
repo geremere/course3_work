@@ -44,12 +44,13 @@ class Test extends Component {
             return (
                 <div className={style.wrapper}>
                     <div className={style.search_wrapper}>
-                    <InputGroup className={style.search}>
-                        <FormControl
-                            className={style.search}
-                            placeholder="Введите имя или фамилию"
-                        />
-                    </InputGroup>
+                        <InputGroup className={style.search}>
+                            <FormControl name="search"
+                                         onChange={this.props.searchUsers}
+                                         className={style.search}
+                                         placeholder="Введите имя или фамилию"
+                            />
+                        </InputGroup>
                     </div>
                     {usersSum}
                 </div>

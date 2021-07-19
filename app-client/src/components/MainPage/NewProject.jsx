@@ -3,10 +3,10 @@ import style from './NewProject.module.css';
 import {getAllUsers, searchUser, uploadAvatar} from "../ServerAPI/userAPI";
 import {PROJECT_ICO, USER_ICO} from "../ServerAPI/utils";
 import {TextAlert} from "../ModalWindow/ModalWindow";
-import {createProject, uploadImageProject} from "../ServerAPI/ProjectAPI";
-import {forEach} from "react-bootstrap/ElementChildren";
+import {createProject} from "../ServerAPI/ProjectAPI";
 import {Alert, Spinner} from "react-bootstrap";
 import SelectListUsers from "../util/SelectListUsers";
+import {uploadImage} from "../ServerAPI/simpleRequests";
 
 class NewProject extends Component {
     constructor(props) {
@@ -26,7 +26,7 @@ class NewProject extends Component {
                 correct: false
             },
             users: [],
-            selectUsers: [],
+            selectUsers: null,
             message: "",
             image: null
         };
@@ -58,10 +58,11 @@ class NewProject extends Component {
     UploadAvatar = (event) => {
         let formData = new FormData();
         formData.append('file_project', event.target.files[0]);
-        uploadImageProject(formData).then(response => {
+        uploadImage(formData).then(response => {
             document.getElementById("project_ico").src = response.fileName;
             this.setState({
-                message: response.message
+                message: response.message,
+                image: response
             });
         }).catch(response => {
             this.setState({
@@ -86,19 +87,17 @@ class NewProject extends Component {
     };
 
     searchUsers = (event) => {
-        this.handleInputChange(event);
-        if (event.target.value !== "")
-            searchUser(event.target.value).then(response => {
-                const users = this.state.users.map(user => {
-                    for (const it in this.state.selectUsers)
-                        if (user.id === it.id)
-                            user.isSelected = true
-                    return user
-                })
-                this.setState({
-                    users: users
-                })
-            });
+        searchUser(event.target.value).then(response => {
+            const users = response.map(user => {
+                for (var it in this.state.selectUsers)
+                    if (user.id === this.state.selectUsers[it].id)
+                        return {...user, isSelected: true}
+                return {...user, isSelected: false}
+            }).sort((a, b) => (a.isSelected === b.isSelected) ? 0 : a.isSelected ? -1 : 1)
+            this.setState({
+                users: users.sort()
+            })
+        });
     };
 
     createProject = () => {
@@ -132,6 +131,7 @@ class NewProject extends Component {
                 isLoaded: true
             });
         })
+
     }
 
     render() {
@@ -164,8 +164,9 @@ class NewProject extends Component {
                                           placeholder='Описание' onChange={(event) => this.handleInputChange(event)}/>
                             </div>
                             <div className={style.wrapper_user}>
-                                <SelectListUsers users={this.state.users} selectUser={this.selectUser} searc
-                                                 hUsers={this.searchUsers}/>
+                                <SelectListUsers users={this.state.users}
+                                                 selectUser={this.selectUser}
+                                                 searchUsers={this.searchUsers}/>
                             </div>
                             <button onClick={this.createProject}>
                                 {"Создать новый проект"}

@@ -1,18 +1,18 @@
 .user_info {
     position: relative;
     background-color: white;
-    border: 1px;
-    height: 8%;
+    /*border: 1px;*/
+    height: 50px;
     width: calc(100% - 2px);
     border-radius: 5px;
     margin: 0.5%;
 }
 
 .user_ico {
-    display: inline-block;
     position: relative;
+    display: inline-block;
     float: left;
-    height: 90%;
+    height: 45px;
     margin: 2px;
     border-radius: 100%;
 }
@@ -20,18 +20,24 @@
 .username {
     display: inline-block;
     position: relative;
-    width: 75%;
-    height: 25px;
+    width: 70%;
+    height: 50%;
+    left: -50px;
     /*line-height: normal;*/
-    /*align: center;*/
     /*margin-left: ;*/
     /*float: inherit;*/
     /*align-self: initial;*/
-    margin-top: calc(8% - 23px);
     text-align: left;
 }
 
-.is_selected::-ms-check{
-    height: 50%;
-    width: 20%;
+.is_selected_wrap {
+    display: inline-block;
+    height: 90%;
+    top: 20%;
+    padding-top: 15px;
+}
+
+.is_selected::-ms-check {
+    top: 50%;
+    /*position: absolute;*/
 }

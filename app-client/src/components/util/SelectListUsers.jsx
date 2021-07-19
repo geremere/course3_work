@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {FormControl, InputGroup, Spinner} from "react-bootstrap";
+import {FormControl, InputGroup} from "react-bootstrap";
 import UserSummary from "./UserSummary";
-import style from "../Test/Test.module.css";
+import style from "./SelectListUsers.module.css";
 
 class SelectListUsers extends Component {
     constructor(props) {
@@ -24,7 +24,8 @@ class SelectListUsers extends Component {
             <div className={style.wrapper}>
                 <div className={style.search_wrapper}>
                     <InputGroup className={style.search}>
-                        <FormControl onChange={this.props.searchUsers}
+                        <FormControl name="search"
+                                     onChange={this.props.searchUsers}
                                      className={style.search}
                                      placeholder="Введите имя или фамилию"
                         />
