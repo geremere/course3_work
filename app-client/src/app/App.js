@@ -23,7 +23,7 @@ class App extends Component {
                 username: null,
                 email: null,
                 password: null,
-                image:null
+                image: null
             },
             isAuthenticated: false,
             isLoaded: false
@@ -39,7 +39,6 @@ class App extends Component {
                 isAuthenticated: true,
                 isLoaded: true
             });
-            console.log(this.state.currentUser);
         }).catch(error => {
             this.setState({
                 isLoaded: true
@@ -47,7 +46,7 @@ class App extends Component {
         });
     }
 
-    logOut(redirectTo="/") {
+    logOut(redirectTo = "/") {
         localStorage.removeItem(ACCESS_TOKEN);
         this.props.history.push(redirectTo);
         this.setState({
@@ -74,16 +73,19 @@ class App extends Component {
                         <Route path='/registration'
                                render={(props) => <Registration/>}/>
                         <Route path='/mainpage'
-                               render={(props) => <MainPage isAuthenticated={this.state.isAuthenticated}/>}/>
+                               render={(props) => <MainPage currentUser={this.state.currentUser}
+                                                            isAuthenticated={this.state.isAuthenticated}/>}/>
                         <Route exact path='/'
                                render={(props) => <MainPage isAuthenticated={this.state.isAuthenticated}/>}/>
                         <Route path='/user/:username'
-                               render={(props) => <UserAccount user={this.state.currentUser} loadUser={this.loadUser}/>}/>
+                               render={(props) => <UserAccount user={this.state.currentUser}
+                                                               loadUser={this.loadUser}/>}/>
                         <Route path='/project/:prId' component={ProjectPage}/>
                         <Route path='/vkauth' render={(props) => <VKAuth/>}/>
                         {/*<Route path='/searchresults/:subString?/:category?/:sort?' component={SearchPage}/>*/}
                         <Route path='/chat' render={() => <Chat currentUser={this.state.currentUser}/>}/>
-                        <Route path={'/test'} render={(props)=><Test currentUser={this.state.currentUser} isAuthenticated={this.state.isAuthenticated}/>}/>
+                        <Route path={'/test'} render={(props) => <Test currentUser={this.state.currentUser}
+                                                                       isAuthenticated={this.state.isAuthenticated}/>}/>
                     </Switch>
                 </div>
             );

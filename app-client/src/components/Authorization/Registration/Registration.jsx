@@ -53,6 +53,7 @@ class SignUp extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
+        console.log("sss")
         let signupuser = {
             name: document.getElementById('secondname').value + " " + document.getElementById('firstname').value,
             email: document.getElementById('mail').value,

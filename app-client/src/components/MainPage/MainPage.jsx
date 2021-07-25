@@ -40,16 +40,17 @@ class MainPage extends Component {
         if (projects.length === 0) {
             projects.push(<div>Пока таких курсов нет</div>);
         }
-        if (this.state.isLoaded) {
+        if (this.state.isLoaded && this.props.isAuthenticated) {
             return (
                 <div className={style.Main}>
                     {/*<Menu handler={this.changeCourses} changeLoaded={this.changeLoaded}/>*/}
-                    <button className={style.btn} onClick={() => document.getElementById("new_project").style.display = "block"}>
+                    <button className={style.btn}
+                            onClick={() => document.getElementById("new_project").style.display = "block"}>
                         {"Add new project"}
                     </button>
-                    <NewProject/>
-                <br/>
-                <br/>
+                    <NewProject currentUser={this.props.currentUser}/>
+                    <br/>
+                    <br/>
 
                     {projects}
                 </div>);

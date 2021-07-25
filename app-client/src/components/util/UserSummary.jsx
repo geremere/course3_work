@@ -11,9 +11,10 @@ function UserSummary(props) {
                 {props.user.name}
             </div>
             <div className={style.is_selected_wrap}>
-            <ToggleButton type="checkbox"
+            <input type="checkbox"
                           checked={props.user.isSelected}
-                          className={style.is_selected}/>
+                          class="form-check-input"
+                          />
             </div>
         </div>
     )

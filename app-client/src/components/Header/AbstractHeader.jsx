@@ -13,7 +13,6 @@ class AbstractHeader extends Component {
 
 
     render() {
-        console.log(this.props.user)
         let path = USER_ICO;
         if (this.props.user.image != null) {
             path = this.props.user.image.url

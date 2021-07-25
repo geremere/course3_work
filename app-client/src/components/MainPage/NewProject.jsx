@@ -4,9 +4,10 @@ import {getAllUsers, searchUser, uploadAvatar} from "../ServerAPI/userAPI";
 import {PROJECT_ICO, USER_ICO} from "../ServerAPI/utils";
 import {TextAlert} from "../ModalWindow/ModalWindow";
 import {createProject} from "../ServerAPI/ProjectAPI";
-import {Alert, Spinner} from "react-bootstrap";
+import {Alert, Button, Spinner} from "react-bootstrap";
 import SelectListUsers from "../util/SelectListUsers";
-import {uploadImage} from "../ServerAPI/simpleRequests";
+import {saveImage, uploadImage} from "../ServerAPI/simpleRequests";
+import {AlertInfo} from "../ModalWindow/Alert";
 
 class NewProject extends Component {
     constructor(props) {
@@ -27,7 +28,11 @@ class NewProject extends Component {
             },
             users: [],
             selectUsers: null,
-            message: "",
+            message: {
+                head: "",
+                content: "",
+                show: false
+            },
             image: null
         };
         this.UploadClick = this.UploadClick.bind(this);
@@ -35,7 +40,8 @@ class NewProject extends Component {
         this.searchUsers = this.searchUsers.bind(this);
         this.createProject = this.createProject.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.selectUser = this.selectUser.bind(this)
+        this.selectUser = this.selectUser.bind(this);
+        this.closeAlert = this.closeAlert.bind(this);
     }
 
     selectUser = (userId) => {
@@ -44,6 +50,7 @@ class NewProject extends Component {
                 user.isSelected = !user.isSelected
             return user
         })
+        console.log(users)
         this.setState({
             users: users,
             selectUsers: users.filter(user => user.isSelected)
@@ -57,8 +64,8 @@ class NewProject extends Component {
 
     UploadAvatar = (event) => {
         let formData = new FormData();
-        formData.append('file_project', event.target.files[0]);
-        uploadImage(formData).then(response => {
+        formData.append('image', event.target.files[0]);
+        saveImage(formData).then(response => {
             document.getElementById("project_ico").src = response.fileName;
             this.setState({
                 message: response.message,
@@ -101,28 +108,41 @@ class NewProject extends Component {
     };
 
     createProject = () => {
-        if (this.state.selectUsers.length > 1 && this.state.description.correct && this.state.title.correct) {
+        if (this.state.selectUsers != null && this.state.selectUsers.length > 1 && this.state.description.correct && this.state.title.correct) {
             const pr = {
                 users: this.state.users,
                 title: this.state.title.value,
                 description: this.state.description.value,
+                image_id: this.state.image.id,
+                owner_id: this.props.currentUser.id
             };
             createProject(pr)
                 .then(response => {
                     window.location.assign("/project/" + response.id)
                 }).catch(error => {
-                console.log("error")
+                this.setState({
+                    message: {
+                        head: "Error",
+                        content: error
+                    }
+                })
             })
         } else {
-            return (
-                <Alert>
-                    lksjflksjlkdsjflk
-                </Alert>
-            )
+            this.setState({
+                message: {
+                    head: "Error",
+                    content: "Количество пользователей должно быть больше 1 и описание с название должны быть заполнены",
+                    show: true
+                }
+            })
         }
-
-
     };
+
+    closeAlert = (event) => this.setState({
+        message: {
+            show: false
+        }
+    })
 
     componentDidMount() {
         getAllUsers().then(response => {
@@ -135,11 +155,16 @@ class NewProject extends Component {
     }
 
     render() {
+
         if (this.state.isLoaded)
             return (
                 <div>
+                    <AlertInfo head={this.state.message.head}
+                               content={this.state.message.content}
+                               show = {this.state.message.show}
+                               close = {this.closeAlert}
+                    />
                     <div id={"new_project"} className={style.alert}>
-                        <TextAlert text={this.state.message}/>
                         <div id={"window_new_project"} className={style.window}>
                             <input id="file_project" type="file" className={style.upload} onChange={this.UploadAvatar}/>
                             <span className={style.close}
@@ -168,9 +193,9 @@ class NewProject extends Component {
                                                  selectUser={this.selectUser}
                                                  searchUsers={this.searchUsers}/>
                             </div>
-                            <button onClick={this.createProject}>
+                            <Button onClick={this.createProject}>
                                 {"Создать новый проект"}
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>

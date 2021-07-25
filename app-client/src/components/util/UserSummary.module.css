@@ -1,7 +1,7 @@
 .user_info {
     position: relative;
     background-color: white;
-    /*border: 1px;*/
+    border: 1px solid violet;
     height: 50px;
     width: calc(100% - 2px);
     border-radius: 5px;
@@ -22,8 +22,10 @@
     position: relative;
     width: 70%;
     height: 50%;
+    border: 1px solid red;
     left: -50px;
     /*line-height: normal;*/
+    bottom: 25%;
     /*margin-left: ;*/
     /*float: inherit;*/
     /*align-self: initial;*/
@@ -33,7 +35,7 @@
 .is_selected_wrap {
     display: inline-block;
     height: 90%;
-    top: 20%;
+    bottom: 25%;
     padding-top: 15px;
 }
 

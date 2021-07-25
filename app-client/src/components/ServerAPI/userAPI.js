@@ -13,14 +13,12 @@ export function getCurrentUser() {
     });
 }
 
-
 export function getUserProfile(username) {
     return request({
         url: API_BASE_URL + "/users/" + username,
         method: 'GET'
     });
 }
-
 
 export function editPassword(Password) {
     return request({
@@ -132,14 +130,15 @@ export function uploadAvatar(file) {
     };
 
     return fetch(options.url, options)
-        .then(response =>
+        .then(response =>{
+            debugger;
             response.json().then(json => {
                 if (!response.ok) {
                     return Promise.reject(json);
                 } else {
                     return Promise.resolve(json);
                 }
-            })
+            })}
         );
 }
 

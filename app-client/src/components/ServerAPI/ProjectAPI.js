@@ -20,7 +20,7 @@ export function getAllProjects() {
     }
 
     return request({
-        url: project_url + "/all",
+        url: project_url,
         method: "GET",
     });
 }
