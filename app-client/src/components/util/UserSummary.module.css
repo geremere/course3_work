@@ -1,11 +1,13 @@
 .user_info {
     position: relative;
     background-color: white;
-    border: 1px solid violet;
     height: 50px;
     width: calc(100% - 2px);
     border-radius: 5px;
     margin: 0.5%;
+}
+.user_info:hover{
+    background-color: rgba(128, 128, 128, 0.25);
 }
 
 .user_ico {
@@ -22,7 +24,6 @@
     position: relative;
     width: 70%;
     height: 50%;
-    border: 1px solid red;
     left: -50px;
     /*line-height: normal;*/
     bottom: 25%;
