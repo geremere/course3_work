@@ -23,6 +23,7 @@
 
 .chats {
     position: relative;
+    padding: 5px;
     min-width: 30%;
     height: 600px;
     float: left;
@@ -216,4 +217,18 @@
     padding: 8px 16px;
     font-size: 16px;
     float: left;
+}
+
+
+.search{
+    width: 79%;
+    display: inline-block;
+    margin: 0.5%;
+}
+
+.new_group{
+    width: 19%;
+    display: inline-block;
+    margin: 0.5%;
+
 }

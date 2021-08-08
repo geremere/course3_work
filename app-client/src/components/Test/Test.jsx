@@ -1,69 +1,81 @@
-import React, {Component} from "react";
-import {Dropdown, DropdownButton, FormControl, InputGroup, ListGroup, ListGroupItem, Spinner} from "react-bootstrap";
-import UserSummary from "../util/UserSummary";
-import {getAllUsers} from "../ServerAPI/userAPI";
-import style from "./Test.module.css";
+import React, {Component} from 'react';
+import {Chart} from "react-google-charts";
 
 class Test extends Component {
+
     constructor(props) {
         super(props);
-        this.state = {
-            users: [],
-            isLoaded: false,
-            selected: []
-        }
-        this.selectUser = this.selectUser.bind(this)
     }
 
-    selectUser = (userId) => {
-        let users = this.state.users.map(user=>{
-            if (user.id === userId)
-                user.isSelected = !user.isSelected
-            return user
-        })
-        this.setState({
-            users:users
-        })
-    };
-
     componentDidMount() {
-        getAllUsers().then(response => {
-                this.setState({
-                    users: response.map(user => ({...user, isSelected: false})),
-                    isLoaded: true
-                });
-            })
+
     }
 
     render() {
-        debugger;
-        if (this.props.isAuthenticated && this.state.users !== null) {
-            const usersSum = this.state.users.map(user =>
-                <UserSummary user={user} selectUser={this.selectUser}/>
-            )
-            return (
-                <div className={style.wrapper}>
-                    <div className={style.search_wrapper}>
-                        <InputGroup className={style.search}>
-                            <FormControl name="search"
-                                         onChange={this.props.searchUsers}
-                                         className={style.search}
-                                         placeholder="Введите имя или фамилию"
-                            />
-                        </InputGroup>
-                    </div>
-                    {usersSum}
-                </div>
-            )
+        const data = [
+            ['X', 'Y',{ role: "tooltip", type: "string"}],
+            [0.785882, 0.355928,"sfasd"],
+            [0.785882, 0.346507,"sfasd"],
+            [0.785882, 0.355928,"sfasd"],
+            [0.785882, 0.703251,"sfasd"],
+            [0.785028, 0.599739,"sfasd"],
+            [0.785028, 0.512527,"sfasd"],
+            [0.785882, 0.346507,"sfasd"],
+            [0.785882, 0.346507,"sfasd"],
+            [0.785882, 0.355928,"sfasd"],
+            [0.785882, 0.355928,"sfasd"],
+            [0.785882, 0.355928,"sfasd"],
+            [0.785882, 0.355928,"sfasd"],
+            [0.890500, 0.556761,"sfasd"],
+            [0.785882, 0.613288,"sfasd"],
+            [0.785028, 0.599739,"sfasd"],
+            [0.890500, 0.598812,"sfasd"],
+            [0.785028, 0.643674,"sfasd"],
+        ];
 
-        } else
-            return (
-                <div>
-                    <Spinner animation="border" variant="success" />
-                </div>
-            )
+        data.forEach(function (row, index) {
+            if (index === 0) {
+                // add column heading
+                row.push({
+                    role: 'style',
+                    type: 'string'
+                });
+            } else {
+                // add color for row
+                if ((row[1] >= .1) && (row[1] <= .5)) {
+                    row.push('green');
+                } else if ((row[1] > .5) && (row[1] <= .6)) {
+                    row.push('yellow');
+                } else {
+                    row.push('red');
+                }
+            }
+        });
 
+        const options = {
+            title: "Company Performance",
+            curveType: "function",
+            colors: ['#f44253'],
+            hAxis: { title: 'Age'  },
+            vAxis: { title: 'Weight'},
+            legend:'none',
+        };
+
+        return (
+            <div className="donut">
+                <Chart
+                    chartType="ScatterChart"
+                    width="80%"
+                    height="400px"
+                    data={data}
+                    options={options}
+                    legendToggle
+                />
+            </div>
+        );
     }
 }
 
 export default Test;
+// const domContainer = document.querySelector('#app');
+// ReactDOM.render(React.createElement(Test), domContainer);

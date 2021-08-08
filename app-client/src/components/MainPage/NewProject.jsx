@@ -113,7 +113,7 @@ class NewProject extends Component {
                 users: this.state.users,
                 title: this.state.title.value,
                 description: this.state.description.value,
-                image_id: this.state.image.id,
+                image_id: this.state.image !== null ? this.state.image.id : null,
                 owner_id: this.props.currentUser.id
             };
             createProject(pr)
@@ -161,8 +161,8 @@ class NewProject extends Component {
                 <div>
                     <AlertInfo head={this.state.message.head}
                                content={this.state.message.content}
-                               show = {this.state.message.show}
-                               close = {this.closeAlert}
+                               show={this.state.message.show}
+                               close={this.closeAlert}
                     />
                     <div id={"new_project"} className={style.alert}>
                         <div id={"window_new_project"} className={style.window}>

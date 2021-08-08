@@ -5,6 +5,7 @@ import {Loading} from "../common/Loading/Loading";
 import NewProject from "./NewProject";
 import {getAllProjects} from "../ServerAPI/ProjectAPI";
 import {PROJECT_ICO} from "../ServerAPI/utils";
+import {Card} from "react-bootstrap";
 
 class MainPage extends Component {
     constructor(props) {
@@ -51,7 +52,6 @@ class MainPage extends Component {
                     <NewProject currentUser={this.props.currentUser}/>
                     <br/>
                     <br/>
-
                     {projects}
                 </div>);
         } else {
@@ -70,11 +70,16 @@ export function ProjectSummary(props) {
         : props.project.image_url;
     let pathtocourse = "../project/" + props.project.id;
     return (
-        <NavLink className={style.CourseBlock} to={pathtocourse}>
-            <img className={style.ImgCourse} src={path} alt=""/>
-            <p className={style.CourseName}>{props.project.title}</p>
-            <br/>
-            <p className={style.CourseDescription}>{props.project.description}</p>
+        <NavLink to={pathtocourse}>
+            <Card className={style.CourseBlock}>
+                <Card.Img variant="top" src={path}/>
+                <Card.Body>
+                    <Card.Title>{props.project.title}</Card.Title>
+                    <Card.Text>
+                        {props.project.description}
+                    </Card.Text>
+                </Card.Body>
+            </Card>
         </NavLink>
     )
 }

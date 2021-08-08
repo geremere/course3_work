@@ -5,7 +5,7 @@ export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localh
 export const BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
 
 export const USER_ICO ="http://cdn.onlinewebfonts.com/svg/download_415634.png";
-export const PROJECT_ICO = "https://i.pinimg.com/originals/2b/7b/cc/2b7bccecb7eb8a7767b6edfb8d9aeb47.jpg";
+export const PROJECT_ICO = "https://s3.dtln.ru/unti-prod-step/file/collection/original/4/3/43e2a690-fcae-4ba8-8b0d-fd8af4a20484.jpg";
 export const CHAT_ICO = "https://avatars.mds.yandex.net/get-dialogs/1027858/c31f2a8342f50e86f152/orig";
 
 export const ACCESS_TOKEN = 'accessToken';

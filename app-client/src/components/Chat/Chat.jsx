@@ -10,6 +10,7 @@ import Messaging_Block from "./Messaging_Block";
 import toast from 'react-hot-toast';
 import Select from "react-select";
 import {TextAlert} from "../ModalWindow/ModalWindow";
+import {Button, FormControl, ListGroup} from "react-bootstrap";
 
 class Chat extends Component {
     constructor(props) {
@@ -243,39 +244,16 @@ class Chat extends Component {
                     <TextAlert text={this.state.alert}/>
                     <div className={style.chat_wrapper}>
                         <div className={style.chats}>
-                            <div id="simple_chat" className={style.chats_search}>
-                                <div className={style.selector}>
-                                    <Select onFocus={() => document.getElementById("chat_diver").style.display = "none"}
-                                            onBlur={() => document.getElementById("chat_diver").style.display = "block"}
-                                            options={users}
-                                            onInputChange
-                                            onChange={(event) => this.newChat(event)}/>
-                                </div>
-                                <button className={style.btn} onClick={this.newGoupChat}>{"Новый груповой чат"}</button>
-                            </div>
-                            <div id="multi_chat" className={style.chat_create}>
+                            <FormControl name="search"
+                                         onChange={this.props.searchUsers}
+                                         className={style.search}
+                                         placeholder="Введите имя или фамилию"/>
+                            <Button className={style.new_group}>
+                                new
+                            </Button>
+                            <ListGroup>
 
-                                <div className={style.selector}>
-                                    <Select
-                                        onFocus={() => document.getElementById("chat_diver").style.display = "none"}
-                                        onBlur={() => document.getElementById("chat_diver").style.display = "block"}
-                                        isMulti
-                                        options={users}
-                                        onInputChange
-                                        onChange={(event) => this.handleSelectChange(event)}/>
-                                </div>
-                                <button className={style.btn}
-                                        onClick={this.createChat}>{"Создать  чат"}</button>
-
-                                <div className={style.input_wrap}>
-                                    <input type="text" className={style.chatName} placeholder="Название чата"
-                                           name="chatName"
-                                           onChange={(event) => this.handleInputChange(event)}/>
-                                </div>
-                            </div>
-                            <div id="chat_diver">
-                                {chats}
-                            </div>
+                            </ListGroup>
                         </div>
                         <Messaging_Block msg={this.state.msg} messages={this.state.messages}
                                          currentUser={this.state.currentUser}

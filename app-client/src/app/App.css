@@ -1,8 +1,9 @@
 .AbstractWrapper {
     /*display: grid;*/
-    max-height: 99%;
+    max-height: 90%;
     /*grid-template-areas: "header" "content";*/
     /*grid-template-columns: 100%;*/
+    min-width: 1200px;
 }
 
 .test{

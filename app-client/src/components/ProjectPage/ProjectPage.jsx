@@ -6,6 +6,7 @@ import {getProjectById} from "../ServerAPI/ProjectAPI";
 import ProjectInfo from "./ProjectInfo";
 import RisksPage from "./RisksPage";
 import style from "./ProjectPage.module.css";
+import {Nav} from "react-bootstrap";
 
 class ProjectPage extends Component {
     constructor(props) {
@@ -40,32 +41,25 @@ class ProjectPage extends Component {
         if (this.state.isLoaded) {
             return (
                 <div className={style.CoursePage}>
-                    <TextAlert text={this.state.message}/>
-                    <div className={style.secondHead}>
-                        <ul className={style.NavBar}>
-                            <li className={style.SettingsItem}>
-                                <NavLink to={"/project/" + this.state.project.id} className={style.SettingsLink}
-                                         exact activeClassName={style.selected_link}>О проекте</NavLink>
-                            </li>
-                            <li className={style.SettingsItem}>
-                                <NavLink to={"/project/" + this.state.project.id + "/risks"}
-                                         className={style.SettingsLink}
-                                         activeClassName={style.selected_link}>Риски</NavLink>
-                            </li>
-                            {/*<li className={style.SettingsItem}>*/}
-                            {/*    <NavLink to={"/project/" + this.state.project.id + "/feed"}*/}
-                            {/*             className={style.SettingsLink}*/}
-                            {/*             activeClassName={style.selected_link}>Обсуждения</NavLink>*/}
-                            {/*</li>*/}
-                        </ul>
-                    </div>
+                    <p className={style.title}>{this.state.project.title}</p>
+                    <Nav variant="tabs" defaultActiveKey={"/project/" + this.state.project.id}>
+                        <Nav.Item>
+                            <Nav.Link href={"/project/" + this.state.project.id}>Analytics</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link href={"/project/" + this.state.project.id + "/statistics"}>Statistic</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link href={"/project/" + this.state.project.id + "/risks"}>Risks</Nav.Link>
+                        </Nav.Item>
+                    </Nav>
                     <br/>
                     <br/>
                     <Switch>
                         <Route exact path={"/project/" + this.state.project.id}
                                render={(props) => <ProjectInfo project={this.state.project}/>}/>
-                        <Route exact path={"/project/" + this.state.project.id + "/risks"}
-                               render={(props) => <RisksPage project={this.state.project}/>}/>
+                        {/*<Route exact path={"/project/" + this.state.project.id + "/statistics"}*/}
+                        {/*       render={(props) => <RisksPage project={this.state.project}/>}/>*/}
                         {/*<Route exact path={"/project/" + this.state.project.id + "/risks"}*/}
                         {/*       render={(props) => <CourseReport project={this.state.project}/>}/>*/}
                     </Switch>
@@ -74,12 +68,7 @@ class ProjectPage extends Component {
             );
         } else {
             return (
-                <div>
-                    <TextAlert text={this.state.message}/>
-                    <div className={style.loading_wrapper}>
-                        <Loading/>
-                    </div>
-                </div>
+                <Loading/>
             );
         }
     }
