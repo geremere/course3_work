@@ -1,26 +1,35 @@
-import React, {Component, useState} from "react";
+import React, {Component, useEffect, useRef, useState} from "react";
 import {Button, Modal, Pagination, Table} from "react-bootstrap";
 import style from "./RiskPage.module.css"
 import {AddRisk} from "./AddRisk";
+import useForceUpdate from "antd/es/_util/hooks/useForceUpdate";
+import {updateProject} from "../ServerAPI/ProjectAPI";
 
 
 export function RiskTable(props) {
     const [show, setShow] = useState(false);
-    const [selectRisk, setSelectRisk] = useState(-1);
+    const [selectRisk, setSelectRisk] = useState(null);
     const [header, setHeader] = useState("Create")
-
-    const handleClose = (show) => {
-        setShow(false)
-    }
 
     const handleUpdate = (risk) => {
         setSelectRisk(risk)
-        setHeader("Update Risk")
         setShow(true)
+        setHeader("Update Risk")
     }
 
-    const handleDelete = (id) => {
-        //ToDo: implement request delete
+    const handleDelete = (risk) => {
+        let ind = -1;
+        const project = props.project;
+        project.risks.forEach((item, index) => {
+            if (item.id === risk.id) {
+                ind = index
+                return
+            }
+        })
+        project.risks.splice(ind, 1)
+        console.log(project)
+        updateProject(project).then(response => props.updateProject(response))
+
     }
 
     const handleSolved = (id) => {
@@ -32,16 +41,15 @@ export function RiskTable(props) {
         setShow(true)
     }
 
-
     return (
-        <>
+        <div>
             <AddRisk updateProject={props.updateProject}
-                     selectedRisk={null}
+                     selectedRisk={selectRisk}
                      project={props.project}
                      show={show}
                      header={header}
                      close={() => setShow(false)}/>
-            <Table cellPadding={true}>
+            <Table>
                 <thead>
                 <tr>
                     <th>
@@ -65,7 +73,7 @@ export function RiskTable(props) {
                 {props.project.risks.map((risk) => <tr key={risk.id}>
                     <td>{risk.id}</td>
                     <td>{risk.risk.name}</td>
-                    <td>{risk.is_outer?"Outer":"Internal"}</td>
+                    <td>{risk.is_outer ? "Outer" : "Internal"}</td>
                     <td>{risk.risk.description}</td>
                     <td>{risk.cost}</td>
                     <td>{risk.probability}</td>
@@ -91,6 +99,6 @@ export function RiskTable(props) {
                 </tr>)}
                 </tbody>
             </Table>
-        </>
+        </div>
     )
 }

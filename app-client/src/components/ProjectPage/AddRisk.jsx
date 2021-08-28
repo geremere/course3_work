@@ -4,36 +4,38 @@ import {getRisks, updateProject} from "../ServerAPI/ProjectAPI";
 
 
 export function AddRisk(props) {
-    const [risk, setRisk] = useState(props.selectedRisk!=null?props.selectedRisk.risk:null);
-    const [origin, setOrigin] = useState(props.selectedRisk!=null?props.selectedRisk.origin:null)
-    const [description, setDescription] = useState(props.selectedRisk!=null?props.selectedRisk.description:"")
-    const [percentage, setPercentage] = useState(props.selectedRisk!=null?props.selectedRisk.probability*100:0)
+    const [risk, setRisk] = useState(null);
+    const [origin, setOrigin] = useState(null)
+    const [description, setDescription] = useState("")
+    const [percentage, setPercentage] = useState(0)
     const [isNewRisk, setIsNewRisk] = useState(false)
-    const [cost, setCost] = useState(props.selectedRisk!=null?props.selectedRisk.cost:0);
+    const [cost, setCost] = useState(0);
     const [costError, setCostError] = useState(false)
     const [percentageError, setPercentageError] = useState(false)
     const [risks, setRisks] = useState([])
     const [newRiskName, setNewRiskName] = useState("")
 
     useEffect(() => {
-        getRisks().then(response => setRisks(response))
+        getRisks().then(response => {
+            setRisks(response)
+        })
             .catch(error => console.log(error));
     }, []);
 
-    const createOrUpdateRisk = ()=>{
-        if(props.selectedRisk==null){
+    const createOrUpdateRisk = () => {
+        if (props.selectedRisk == null) {
             const project = props.project
             props.project.risks.push({
-                is_outer:origin,
-                cost:cost,
-                probability:percentage/100,
-                risk:{
-                    id:isNewRisk?null:risk.id,
-                    name: isNewRisk?newRiskName:risk.name,
-                    description:description
+                is_outer: origin,
+                cost: cost,
+                probability: percentage / 100,
+                risk: {
+                    id: isNewRisk ? null : risk.id,
+                    name: isNewRisk ? newRiskName : risk.name,
+                    description: description
                 }
             })
-            updateProject(project).then(response=>props.updateProject(response))
+            updateProject(project).then(response => props.updateProject(response))
             props.close()
         }
     }
@@ -67,14 +69,15 @@ export function AddRisk(props) {
                         </Form.Group>
                         <Form.Group hidden={origin === null} className="mb-3">
                             <Form.Label hidden={isNewRisk}>Select risk</Form.Label>
-                            <Form.Select hidden={isNewRisk} onChange={(event) => {
-                                risks.forEach((risk) => {
-                                    if (risk.id == event.target.value) {
-                                        setRisk(risk)
-                                        setDescription(risk.description)
-                                    }
-                                })
-                            }} defaultValue={risk!=null?risk.id:null}>
+                            <Form.Select hidden={isNewRisk}
+                                         onChange={(event) => {
+                                             risks.forEach((risk) => {
+                                                 if (risk.id == event.target.value) {
+                                                     setRisk(risk)
+                                                     setDescription(risk.description)
+                                                 }
+                                             })
+                                         }}>
                                 <option>Select risk</option>
                                 {risks.map((risk => <option value={risk.id}>
                                     {risk.name}
@@ -94,6 +97,7 @@ export function AddRisk(props) {
                                 as="textarea"
                                 placeholder="You can change description for your situation"
                                 style={{height: '75px'}}
+                                defaultValue={props.selectedRisk!=null?props.selectedRisk.risk.description:null}
                                 value={description}
                                 onChange={(event) => setDescription(event.target.value)}
                             />
@@ -107,8 +111,7 @@ export function AddRisk(props) {
                                     if (isNaN(parseFloat(event.target.value))) {
                                         setCostError(true)
                                         setCost(event.target.value)
-                                    }
-                                    else {
+                                    } else {
                                         setCostError(false)
                                         setCost(parseFloat(event.target.value))
                                     }
@@ -140,7 +143,10 @@ export function AddRisk(props) {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={props.close}>
+                    <Button variant="secondary" onClick={() => {
+                        props.close()
+                        console.log(props.selectedRisk)
+                    }}>
                         Close
                     </Button>
                     <Button variant="primary" onClick={createOrUpdateRisk}>

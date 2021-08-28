@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import {Switch, Route, NavLink} from "react-router-dom";
-import {TextAlert} from "../ModalWindow/ModalWindow";
 import {Loading} from "../common/Loading/Loading";
 import {getProjectById} from "../ServerAPI/ProjectAPI";
 import ProjectInfo from "./ProjectInfo";
@@ -35,7 +33,6 @@ class ProjectPage extends Component {
         });
     }
     updateProject(project){
-        debugger;
         this.setState({
             project:project
         })

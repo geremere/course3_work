@@ -21,7 +21,6 @@ function ProjectInfo(props) {
     useEffect(() => {
         const dt = [['X', 'Y', {role: "tooltip", type: "string"}]]
         props.project.risks.forEach(risk=>{
-            debugger;
             dt.push([risk.probability,risk.cost,risk.risk.name])
         })
         dt.forEach(function (row, index) {
