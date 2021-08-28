@@ -29,14 +29,12 @@ class UserAccount extends Component {
                 allTypes:response,
                 isLoaded:this.state.user_types.length!==0
             })
-            console.log(response)
         });
          getUserTypes().then(response=>{
              this.setState({
                  user_types:response,
                  isLoaded:this.state.allTypes.length!==0
              })
-             console.log(response)
 
          })
 
@@ -64,7 +62,6 @@ class UserAccount extends Component {
     };
 
     setTypes(event){
-        console.log(event)
         const req = event.map(ev => parseInt(ev.value));
         setRiskTypes(req).then(res=>console.log(res));
     }
@@ -116,9 +113,6 @@ class UserAccount extends Component {
 }
 
 function UserInformation(props) {
-    console.log(props.deft)
-    console.log(props.options)
-
     return (
         <div className={style.user_info}>
             <input id="file" type="file" className={style.upload} onChange={props.UploadAvatar}/>

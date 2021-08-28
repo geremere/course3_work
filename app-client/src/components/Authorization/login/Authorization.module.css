@@ -57,9 +57,9 @@ body {
     border: 0;
 }
 
-button:hover {
-    background-color: #252dff;
-}
+/*button:hover {*/
+/*    background-color: #252dff;*/
+/*}*/
 
 .Password {
     font-kerning: normal;

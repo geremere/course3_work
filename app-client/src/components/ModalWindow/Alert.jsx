@@ -1,11 +1,6 @@
-import {Alert, Button, Modal} from "react-bootstrap";
-import {useState} from "react";
+import {Button, Modal} from "react-bootstrap";
 
 export function AlertInfo(props) {
-    // const [show, setShow] = useState(true);
-    //
-    // const handleClose = () => setShow(false);
-    debugger;
     return (
         <>
             <Modal show={props.show} onHide={props.close}>

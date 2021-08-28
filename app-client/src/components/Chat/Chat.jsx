@@ -8,7 +8,6 @@ import {BASE_URL} from "../ServerAPI/utils";
 import {findChatMessage, findChatMessages, getChats, sendMessage, test} from "../ServerAPI/chatAPI";
 import Messaging_Block from "./Messaging_Block";
 import toast from 'react-hot-toast';
-import Select from "react-select";
 import {TextAlert} from "../ModalWindow/ModalWindow";
 import {Button, FormControl, ListGroup} from "react-bootstrap";
 
@@ -166,7 +165,6 @@ class Chat extends Component {
     searchUsers = (event) => {
         if (event.value !== "")
             searchUser(event.target.value).then(response => {
-                console.log(response)
                 this.setState({
                     finded: response
                 })
@@ -176,12 +174,10 @@ class Chat extends Component {
     async newChat(event) {
         document.getElementById("chat_diver").style.display = "block"
         const user = await getUserById(event.value).then(response => response);
-        console.log(user)
         const chat = {id: null, title: user.name, image: user.image, usersId: [user.id]};
         let chats = [...this.state.chats];
         let flag = true;
         chats.forEach((item, i, chats) => {
-            console.log(item);
             if (item.title === user.name) {
                 flag = false;
                 this.changeChat(item);

@@ -8,7 +8,7 @@ export function createProject(project) {
         return Promise.reject("No access token set.");
     }
     return request({
-        url: project_url + "/create",
+        url: project_url,
         method: "POST",
         body: JSON.stringify(project)
     });
@@ -35,14 +35,25 @@ export function getProjectById(id) {
     });
 }
 
+export function updateProject(project) {
+    if (!localStorage.getItem("accessToken")) {
+        return Promise.reject("No access token set.");
+    }
+    return request({
+        url: project_url + "/" + project.id,
+        method: "PUT",
+        body: JSON.stringify(project)
+    });
+}
 
-export function getRisksByProject(prId) {
+
+export function getRisks() {
     if (!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject("No access token set.");
     }
 
     return request({
-        url: project_url + "/" + prId + "/get/risks",
+        url: API_BASE_URL + "/risks",
         method: 'GET'
     });
 }

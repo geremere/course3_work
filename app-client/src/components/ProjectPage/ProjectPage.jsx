@@ -4,9 +4,9 @@ import {TextAlert} from "../ModalWindow/ModalWindow";
 import {Loading} from "../common/Loading/Loading";
 import {getProjectById} from "../ServerAPI/ProjectAPI";
 import ProjectInfo from "./ProjectInfo";
-import RisksPage from "./RisksPage";
 import style from "./ProjectPage.module.css";
 import {Nav} from "react-bootstrap";
+import {RiskTable} from "./RisksPage";
 
 class ProjectPage extends Component {
     constructor(props) {
@@ -14,9 +14,12 @@ class ProjectPage extends Component {
         this.state = {
             project: null,
             isLoaded: false,
-            message: ""
+            message: "",
+            eventKey: "/map"
         };
         this.loadProject = this.loadProject.bind(this);
+        this.handleSelected = this.handleSelected.bind(this);
+        this.updateProject =  this.updateProject.bind(this);
     }
 
     loadProject() {
@@ -29,12 +32,38 @@ class ProjectPage extends Component {
             this.setState({
                 message: response.message
             });
-            // document.getElementById('alert').style.display = 'block';
         });
+    }
+    updateProject(project){
+        debugger;
+        this.setState({
+            project:project
+        })
     }
 
     componentDidMount() {
         this.loadProject();
+    }
+
+    handleSelected = () => {
+        switch (this.state.eventKey) {
+            case "/statistics":
+                return (
+                    <RiskTable project={this.state.project}
+                               />
+                )
+            case "/risks":
+                return (
+                    <RiskTable project={this.state.project}
+                               updateProject ={this.updateProject}/>
+                )
+            case "/map":
+                return (
+                    <ProjectInfo project={this.state.project}/>
+                )
+
+        }
+
     }
 
     render() {
@@ -42,27 +71,25 @@ class ProjectPage extends Component {
             return (
                 <div className={style.CoursePage}>
                     <p className={style.title}>{this.state.project.title}</p>
-                    <Nav variant="tabs" defaultActiveKey={"/project/" + this.state.project.id}>
+                    <Nav variant="tabs" defaultActiveKey={"/map"}
+                         onSelect={(eventKey => {
+                             this.setState({
+                                 eventKey: eventKey
+                             })
+                         })}>
                         <Nav.Item>
-                            <Nav.Link href={"/project/" + this.state.project.id}>Analytics</Nav.Link>
+                            <Nav.Link eventKey="/map">Analytics</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link href={"/project/" + this.state.project.id + "/statistics"}>Statistic</Nav.Link>
+                            <Nav.Link eventKey={"/statistics"}>Statistic</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link href={"/project/" + this.state.project.id + "/risks"}>Risks</Nav.Link>
+                            <Nav.Link eventKey={"/risks"}>Risks</Nav.Link>
                         </Nav.Item>
                     </Nav>
                     <br/>
                     <br/>
-                    <Switch>
-                        <Route exact path={"/project/" + this.state.project.id}
-                               render={(props) => <ProjectInfo project={this.state.project}/>}/>
-                        {/*<Route exact path={"/project/" + this.state.project.id + "/statistics"}*/}
-                        {/*       render={(props) => <RisksPage project={this.state.project}/>}/>*/}
-                        {/*<Route exact path={"/project/" + this.state.project.id + "/risks"}*/}
-                        {/*       render={(props) => <CourseReport project={this.state.project}/>}/>*/}
-                    </Switch>
+                    {this.handleSelected()}
                     <br/>
                 </div>
             );

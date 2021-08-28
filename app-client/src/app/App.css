@@ -17,31 +17,3 @@
 /**{*/
 /*    border: 0.1px blue solid;*/
 /*}*/
-
-
-
-/* полоса прокрутки (скроллбар) */
-/*::-webkit-scrollbar {*/
-/*    width: 12px; !* ширина для вертикального скролла *!*/
-/*    !*height: 8px; !* высота для горизонтального скролла *!*!*/
-/*    background-color: rgba(255, 255, 255, 0);*/
-/*}*/
-
-/* ползунок скроллбара */
-/*::-webkit-scrollbar-thumb {*/
-/*    background-color: rgba(0, 0, 0, 0.25);*/
-/*    border-radius: 9em;*/
-/*    !*box-shadow: inset 1px 1px 10px #f3faf7;*!*/
-/*}*/
-
-/*::-webkit-scrollbar-thumb:hover {*/
-/*    background-color: rgba(0, 0, 0, 0.20);*/
-/*}*/
-
-/*!* Стрелки *!*/
-
-/*::-webkit-scrollbar-button:decrement,*/
-/*::-webkit-scrollbar-button:increment {*/
-/*    visibility: collapse !important; ;*/
-/*    background-color: rgba(0, 17, 0, 0);*/
-/*}*/

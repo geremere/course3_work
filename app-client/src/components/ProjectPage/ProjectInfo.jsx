@@ -4,42 +4,26 @@ import style from "./ProjectInfo.module.css"
 import {RiskMapScatterChart} from "../util/charts/RiskMapScatterChart";
 import {Chart} from "react-google-charts";
 
-function ProjectInfo() {
+function ProjectInfo(props) {
     const [isOuter, setIsOuter] = useState(false);
     const [data, setData] = useState(null);
     const [title, setTitle] = useState("Internal Risks");
 
     const handleSelect = (e) => {
         setIsOuter(e)
-        console.log(isOuter)
-        if (isOuter)
-            setTitle("Outer Risks")
+        debugger
+        if (e === "true")
+            setTitle("Outer Risk")
         else
             setTitle("Internal Risks")
     };
 
     useEffect(() => {
-        console.log(isOuter)
-        const dt = [
-            ['X', 'Y', {role: "tooltip", type: "string"}],
-            [0.785882, 0.355928, !isOuter ? "outer" : "internal"],
-            [0.785882, 0.346507, !isOuter ? "outer" : "internal"],
-            [0.785882, 0.355928, !isOuter ? "outer" : "internal"],
-            [0.785882, 0.703251, !isOuter ? "outer" : "internal"],
-            [0.785028, 0.599739, !isOuter ? "outer" : "internal"],
-            [0.785028, 0.512527, !isOuter ? "outer" : "internal"],
-            [0.785882, 0.346507, !isOuter ? "outer" : "internal"],
-            [0.785882, 0.346507, !isOuter ? "outer" : "internal"],
-            [0.785882, 0.355928, !isOuter ? "outer" : "internal"],
-            [0.785882, 0.355928, !isOuter ? "outer" : "internal"],
-            [0.785882, 0.355928, !isOuter ? "outer" : "internal"],
-            [0.785882, 0.355928, !isOuter ? "outer" : "internal"],
-            [0.890500, 0.556761, !isOuter ? "outer" : "internal"],
-            [0.785882, 0.613288, !isOuter ? "outer" : "internal"],
-            [0.785028, 0.599739, !isOuter ? "outer" : "internal"],
-            [0.890500, 0.598812, !isOuter ? "outer" : "internal"],
-            [0.785028, 0.643674, !isOuter ? "outer" : "internal"],
-        ]
+        const dt = [['X', 'Y', {role: "tooltip", type: "string"}]]
+        props.project.risks.forEach(risk=>{
+            debugger;
+            dt.push([risk.probability,risk.cost,risk.risk.name])
+        })
         dt.forEach(function (row, index) {
             if (index === 0) {
                 // add column heading
@@ -64,7 +48,6 @@ function ProjectInfo() {
         } else {
             setData(dt)
         }
-        console.log(data)
     }, [isOuter])
 
     const options = {

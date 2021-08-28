@@ -50,7 +50,6 @@ class NewProject extends Component {
                 user.isSelected = !user.isSelected
             return user
         })
-        console.log(users)
         this.setState({
             users: users,
             selectUsers: users.filter(user => user.isSelected)
@@ -156,13 +155,14 @@ class NewProject extends Component {
 
     render() {
 
-        if (this.state.isLoaded)
+        if (this.state.isLoaded) {
+            debugger;
             return (
                 <div>
-                    <AlertInfo head={this.state.message.head}
-                               content={this.state.message.content}
-                               show={this.state.message.show}
-                               close={this.closeAlert}
+                    <AlertInfo head={this.state.message!=null ?this.state.message.head:""}
+                               content={this.state.message!=null ?this.state.message.content:""}
+                               show={this.state.message!=null ?this.state.message.show:""}
+                               close={this.state.message!=null ?this.closeAlert:""}
                     />
                     <div id={"new_project"} className={style.alert}>
                         <div id={"window_new_project"} className={style.window}>
@@ -200,7 +200,7 @@ class NewProject extends Component {
                     </div>
                 </div>
             )
-        else
+        } else
             return <Spinner animation="border" variant="success"/>
     }
 }

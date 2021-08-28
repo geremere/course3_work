@@ -1,164 +1,96 @@
-import React, {Component} from "react";
-import AddRisk from "./AddRisk";
-import {Loading} from "../common/Loading/Loading";
-import toast from "react-hot-toast";
-import SockJS from 'sockjs-client';
-import Stomp from 'stompjs';
+import React, {Component, useState} from "react";
+import {Button, Modal, Pagination, Table} from "react-bootstrap";
+import style from "./RiskPage.module.css"
+import {AddRisk} from "./AddRisk";
 
-import {BASE_URL, PROJECT_ICO} from "../ServerAPI/utils";
-import {getCurrentUser} from "../ServerAPI/userAPI";
-import {getRisksByProject} from "../ServerAPI/ProjectAPI";
-import style from "./RiskPage.module.css";
-import ChangeRisk from "./ChangeRisk";
-import {Select} from "antd";
-import {getRisk} from "../ServerAPI/riskAPI";
 
-class RisksPage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            types: [],
-            isLoaded: false,
-            risks: [],
-            currentUser: null,
-            stompClient: null,
-            selected_risk: null
-        };
-        this.changeRisk = this.changeRisk.bind(this);
-        this.getUser = this.getUser.bind(this);
-        this.loadRisks = this.loadRisks.bind(this);
-        this.riskClick = this.riskClick.bind(this);
-        this.loadRiskById = this.loadRiskById.bind(this);
+export function RiskTable(props) {
+    const [show, setShow] = useState(false);
+    const [selectRisk, setSelectRisk] = useState(-1);
+    const [header, setHeader] = useState("Create")
+
+    const handleClose = (show) => {
+        setShow(false)
     }
 
-    async getUser() {
-        await getCurrentUser().then(response => {
-            this.setState({
-                currentUser: response,
-                isLoaded: true
-            })
-        })
+    const handleUpdate = (risk) => {
+        setSelectRisk(risk)
+        setHeader("Update Risk")
+        setShow(true)
     }
 
-    loadRiskById() {
-        return getRisk(this.state.selected_risk.id).then(response => response)
+    const handleDelete = (id) => {
+        //ToDo: implement request delete
     }
 
-
-    loadRisks() {
-        getRisksByProject(this.props.project.id).then(response => {
-            this.setState({
-                risks: response
-            });
-        })
-
+    const handleSolved = (id) => {
     }
 
-    onMessageReceived = (msg) => {
-        const notification = JSON.parse(msg.body);
-        if (notification.changerName !== null)
-            toast("Risk " + notification.riskName + "changed by " + notification.changerName);
-        else
-            toast("Changes was saved " + notification.riskName);
-        this.loadRisks();
-    };
-
-    onError = (err) => console.log(err);
-
-    connect = () => {
-        const socket = new SockJS(BASE_URL + "/ws");
-        this.state.stompClient = Stomp.over(socket);
-        this.state.stompClient.connect({}, this.onConnected, this.onError);
-    };
-
-    onConnected = () => this.state.stompClient.subscribe("/user/" + this.state.currentUser.id + "/queue/risks", this.onMessageReceived);
-
-
-    changeRisk = (riskRequest) => {
-        this.state.stompClient.send("/app/risk", {}, JSON.stringify(riskRequest));
-        const newRisks = [...this.state.risks];
-        newRisks.push(riskRequest);
-        this.setState({
-            messages: newRisks,
-            selected_risk: null
-        });
-    };
-
-    riskClick(risk) {
-        this.setState({
-            selected_risk: risk
-        });
-    };
-
-    close = () => {
-        this.setState({
-            selected_risk: null
-        });
-    };
-
-
-    componentDidMount() {
-        this.getUser();
-        this.connect();
-        this.loadRisks();
+    const handleCreate = () => {
+        setSelectRisk(null)
+        setHeader("Create Risk")
+        setShow(true)
     }
 
-    render() {
-        if (this.state.isLoaded) {
-            const risk_list = this.state.risks.map(risk => <RiskSummary risk={risk} onClick={this.riskClick}/>)
-            if (this.state.selected_risk === null) {
-                return (
-                    <div>
-                        <AddRisk projectId={this.props.project.id} addRisk={this.changeRisk}
-                                 userId={this.state.currentUser.id}/>
-                        <button onClick={() => {
-                            document.getElementById("add_risk").style.display = "block"
-                        }}>
-                            {"Add risk"}
-                        </button>
-                        <div>
-                            {risk_list}
-                        </div>
-                    </div>
-                )
-            }
-            return (
-                <div>
-                    <AddRisk projectId={this.props.project.id} addRisk={this.changeRisk}
-                             userId={this.state.currentUser.id}/>
-                    <ChangeRisk projectId={this.props.project.id} addRisk={this.changeRisk}
-                                userId={this.state.currentUser.id} risk={this.state.selected_risk} close={this.close}/>
-                    <button onClick={() => {
-                        document.getElementById("add_risk").style.display = "block"
-                    }}>
-                        {"Add risk"}
-                    </button>
-                    <div>
-                        {risk_list}
-                    </div>
-                </div>
-            )
-        } else
-            return (
-                <Loading/>
-            )
-    }
-
-}
-
-function RiskSummary(props) {
 
     return (
-        <div className={props.risk.state.priority > 5 ? style.RiskBlock_10 : style.RiskBlock_5}
-             onClick={() => props.onClick(props.risk)}>
-            <label>{"Название риска: " + props.risk.state.title}</label>
-            <br/>
-            <p>Описание риска:</p>
-            <label>{props.risk.state.description}</label>
-            <br/>
-            <label>{"Состояние: " + props.risk.state.state}</label>
-        </div>
+        <>
+            <AddRisk updateProject={props.updateProject}
+                     selectedRisk={null}
+                     project={props.project}
+                     show={show}
+                     header={header}
+                     close={() => setShow(false)}/>
+            <Table cellPadding={true}>
+                <thead>
+                <tr>
+                    <th>
+                        <button onClick={handleCreate} className={style.action_buttons}>
+                            <img
+                                src="https://avatars.mds.yandex.net/get-pdb/4893124/47849ce4-65f6-486e-8012-6e692d6570ef/s1200"
+                                width="20px"/>
+                        </button>
+                    </th>
+                    <th>Name of risk</th>
+                    <th>Origin</th>
+                    <th>Description</th>
+                    <th>Cost</th>
+                    <th>Probability</th>
+                    <th>Date Create</th>
+                    <th>Action</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {props.project.risks.map((risk) => <tr key={risk.id}>
+                    <td>{risk.id}</td>
+                    <td>{risk.risk.name}</td>
+                    <td>{risk.is_outer?"Outer":"Internal"}</td>
+                    <td>{risk.risk.description}</td>
+                    <td>{risk.cost}</td>
+                    <td>{risk.probability}</td>
+                    <td>{risk.create}</td>
+                    <td>
+                        <button onClick={() => handleDelete(risk)} className={style.action_buttons}>
+                            <img
+                                src="https://avatars.mds.yandex.net/get-pdb/3029455/e6643c71-0838-4efd-905f-9813f3f92461/s1200"
+                                width="20px"/>
+                        </button>
+                        <button onClick={() => handleUpdate(risk)} className={style.action_buttons}>
+                            <img
+
+                                src="https://avatars.mds.yandex.net/get-pdb/4562142/11071cd7-22b8-4aee-b1b4-e9f1e9036ed6/s1200"
+                                width="20px"/>
+                        </button>
+                        <button onClick={() => handleSolved()} className={style.action_buttons}>
+                            <img
+                                src="https://avatars.mds.yandex.net/get-pdb/4988356/0104c833-58de-4947-b731-4be10d2ae0c9/s1200"
+                                width="20px"/>
+                        </button>
+                    </td>
+                </tr>)}
+                </tbody>
+            </Table>
+        </>
     )
 }
-
-export default RisksPage
