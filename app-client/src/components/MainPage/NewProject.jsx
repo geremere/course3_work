@@ -5,7 +5,7 @@ import {PROJECT_ICO, USER_ICO} from "../ServerAPI/utils";
 import {TextAlert} from "../ModalWindow/ModalWindow";
 import {createProject} from "../ServerAPI/ProjectAPI";
 import {Alert, Button, Spinner} from "react-bootstrap";
-import SelectListUsers from "../util/SelectListUsers";
+import SelectListUsers from "../util/users/SelectListUsers";
 import {saveImage, uploadImage} from "../ServerAPI/simpleRequests";
 import {AlertInfo} from "../ModalWindow/Alert";
 

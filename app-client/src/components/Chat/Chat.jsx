@@ -1,15 +1,17 @@
 import React, {Component} from "react";
 import style from "./Chat.module.css"
-import {createChatRoom, getAllUsers, getUserById, searchUser} from "../ServerAPI/userAPI";
+import {getAllUsers, getUserById, searchUser} from "../ServerAPI/userAPI";
 import LoadingIndicator from "../common/LoadingIndicator";
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 import {BASE_URL} from "../ServerAPI/utils";
-import {findChatMessage, findChatMessages, getChats, sendMessage, test} from "../ServerAPI/chatAPI";
+import {getChats, getOrCreate} from "../ServerAPI/chatAPI";
 import Messaging_Block from "./Messaging_Block";
 import toast from 'react-hot-toast';
 import {TextAlert} from "../ModalWindow/ModalWindow";
 import {Button, FormControl, ListGroup} from "react-bootstrap";
+import UserSummary from "../util/users/UserSummary";
+import {ChatInfo} from "../util/chat/ChatInfo";
 
 class Chat extends Component {
     constructor(props) {
@@ -28,7 +30,9 @@ class Chat extends Component {
             path: "",
             chatName: "",
             chatUsers: [],
-            alert: ""
+            alert: "",
+            users: [],
+            showSearch: false,
         };
 
         this.connect = this.connect.bind(this);
@@ -41,24 +45,16 @@ class Chat extends Component {
         this.searchUsers = this.searchUsers.bind(this);
         this.newChat = this.newChat.bind(this);
         this.handleSelectChange = this.handleSelectChange.bind(this);
-        this.createChat = this.createChat.bind(this);
+        this.getChat = this.getChat.bind(this);
     }
-
 
     sendMessage() {
         if (this.state.msg.trim() !== "") {
             debugger;
             const message = {
-                senderId: this.state.currentUser.id,
-                senderName: this.state.currentUser.name,
                 content: this.state.msg,
                 chatId: this.state.activeChat.id,
-                recipientsId: this.state.activeChat.usersId,
-                // content: "sdf",
-                // // chatId: null,
-                // recipientsId: [4],
-                type: "TEXT"
-                // timestamp: new Date(),
+                senderId:this.state.currentUser.id
             };
 
             this.state.stompClient.send("/app/chat", {}, JSON.stringify(message));
@@ -74,36 +70,30 @@ class Chat extends Component {
         }
     };
 
-    changeChat = (chat) => {
-        debugger;
-        findChatMessages(chat.id).then(response => {
-            this.setState({
-                activeChat: chat,
-                messages: response
-            });
-        }).catch(error => {
-            console.log(error)
-        });
+    changeChat(chat) {
+        this.setState({
+            activeChat: chat
+        })
     };
 
     onMessageReceived = (msg) => {
         const notification = JSON.parse(msg.body);
         console.log(notification);
-        if (notification.chatId === null)
-            findChatMessage(notification.id).then((message) => {
-                const newMessages = [...this.state.messages];
-                if (this.state.currentUser.id !== message.senderId) {
-                    newMessages.push(message);
-                    this.setState({messages: newMessages});
-                }
-            }).catch(error => console.log(error));
-        else {
-            if (this.state.activeChat.id == null) {
-                const chat = this.state.activeChat;
-                chat.id = notification.chatId;
-                this.setState({activeChat: chat})
-            }
-        }
+        // if (notification.chatId === null)
+        //     findChatMessage(notification.id).then((message) => {
+        //         const newMessages = [...this.state.messages];
+        //         if (this.state.currentUser.id !== message.senderId) {
+        //             newMessages.push(message);
+        //             this.setState({messages: newMessages});
+        //         }
+        //     }).catch(error => console.log(error));
+        // else {
+        //     if (this.state.activeChat.id == null) {
+        //         const chat = this.state.activeChat;
+        //         chat.id = notification.chatId;
+        //         this.setState({activeChat: chat})
+        //     }
+        // }
         if (notification.senderName !== null)
             toast("Received a new message from " + notification.senderName);
         this.getChatByUser();
@@ -129,7 +119,7 @@ class Chat extends Component {
     getAllUsers() {
         getAllUsers().then(response =>
             this.setState({
-                finded: response
+                users: response
             }))
     }
 
@@ -140,10 +130,22 @@ class Chat extends Component {
         this.getAllUsers();
     }
 
+    buildChat(chat) {
+        debugger;
+        if (chat.users.length === 2) {
+            const sender = chat.users.filter(user => user.id !== this.state.currentUser.id)[0];
+            chat.title = sender.name
+            chat.image = sender.image
+        }
+        console.log(chat)
+        return chat;
+    }
+
     getChatByUser() {
         getChats().then(response => {
+            console.log(response)
             this.setState({
-                chats: response,
+                chats: response.map(chat => this.buildChat(chat)),
                 isLoaded: true
             });
         }).catch(error => console.log(error));
@@ -160,15 +162,6 @@ class Chat extends Component {
         this.setState({
             chatUsers: event.map(ev => parseInt(ev.value))
         })
-    };
-
-    searchUsers = (event) => {
-        if (event.value !== "")
-            searchUser(event.target.value).then(response => {
-                this.setState({
-                    finded: response
-                })
-            });
     };
 
     async newChat(event) {
@@ -196,66 +189,69 @@ class Chat extends Component {
         })
     };
 
-    createChat() {
-        if (this.state.chatUsers.length > 1 && this.state.chatName.length !== 0) {
-            const chatRoomRequest = {
-                recipientsId: this.state.chatUsers,
-                senderId: this.state.currentUser.id,
-                chatName: this.state.chatName
-            };
-            createChatRoom(chatRoomRequest).then(response => {
-                this.setState({
-                    activeChat: response
-                });
-                this.getChatByUser();
-            });
-        } else {
-            this.setState({
-                alert: "Нельзя создать чат мнее чем из 3 участников и без названия"
-            })
-            document.getElementById('alert').style.display = 'block';
-        }
-        document.getElementById("simple_chat").style.display = "block";
-        document.getElementById("multi_chat").style.display = "none";
-        document.getElementById("chat_diver").style.display = "block"
-    }
-
-    newGoupChat() {
+    newGroupChat() {
         document.getElementById("simple_chat").style.display = "none";
         document.getElementById("multi_chat").style.display = "block";
         document.getElementById("chat_diver").style.display = "none"
     }
 
+    searchUsers = (event) => {
+        searchUser(event.target.value).then(response => {
+            this.setState({
+                users: response.sort()
+            })
+        });
+    }
+
+    getChat(userId) {
+        getOrCreate(userId).then(response => {
+            this.setState({
+                activeChat: this.buildChat(response),
+                showSearch: false
+            })
+            this.getChatByUser();
+        })
+    }
 
     render() {
         if (this.state.isLoaded) {
-            const users = this.state.finded.map(user => new Option(user.name, user.id));
-
-            const chats = this.state.chats.map(chat => <ChatInfo finded={users}
-                                                                 key={"chat_key" + chat.id}
-                                                                 chat={chat}
-                                                                 changeChat={this.changeChat}/>);
             return (
                 <div className={style.main_wrapper}>
                     <TextAlert text={this.state.alert}/>
                     <div className={style.chat_wrapper}>
                         <div className={style.chats}>
-                            <FormControl name="search"
-                                         onChange={this.props.searchUsers}
-                                         className={style.search}
-                                         placeholder="Введите имя или фамилию"/>
-                            <Button className={style.new_group}>
-                                new
-                            </Button>
-                            <ListGroup>
-
+                            <div>
+                                <FormControl name="search"
+                                             onChange={this.searchUsers}
+                                             className={style.search}
+                                             placeholder="Введите имя или фамилию"
+                                             onFocus={() => this.setState({showSearch: true})}
+                                             autocomplete="off">
+                                </FormControl>
+                                <Button className={style.new_group}
+                                        onClick={() => this.setState({showSearch: true})}
+                                        hidden={this.state.showSearch}>
+                                    new
+                                </Button>
+                                <Button className={style.new_group}
+                                        hidden={!this.state.showSearch}
+                                        onClick={() => this.setState({showSearch: false})}>
+                                    close
+                                </Button>
+                            </div>
+                            <ListGroup hidden={!this.state.showSearch}>
+                                {this.state.users.map(user => <UserSummary user={user}
+                                                                           getChat={this.getChat}/>)}
+                            </ListGroup>
+                            <ListGroup hidden={this.state.showSearch}>
+                                {this.state.chats?.map(chat => <ChatInfo chat={chat}
+                                                                         changeChat={this.changeChat}/>)}
                             </ListGroup>
                         </div>
-                        <Messaging_Block msg={this.state.msg} messages={this.state.messages}
-                                         currentUser={this.state.currentUser}
+                        <Messaging_Block currentUser={this.state.currentUser}
                                          chat={this.state.activeChat}
-                                         handleInputChange={this.handleInputChange} sendMessage={this.sendMessage}/>
-
+                                         handleInputChange={this.handleInputChange}
+                                         sendMessage={this.sendMessage}/>
                     </div>
                 </div>
             )
@@ -265,37 +261,5 @@ class Chat extends Component {
             )
     }
 }
-
-function UserSummary(props) {
-    return (
-        <div className={style.user_info} onClick={() => props.newChat(props.user)}>
-            <div className={style.chat_ico}>
-                <img className={style.ico} src={props.user.image !== null ? props.user.image.url : ""}/>
-            </div>
-            <div className={style.chat_username}>
-                {props.user.name}
-            </div>
-        </div>
-    )
-
-}
-
-function ChatInfo(props) {
-    return (
-        <div className={style.chat_info} key={props.chat.id + "key"} onClick={() => props.changeChat(props.chat)}>
-            <div className={style.chat_ico}>
-                <img className={style.ico}
-                     src={props.chat.image !== null ? props.chat.image.url : "https://img.favpng.com/20/21/15/computer-icons-symbol-user-png-favpng-7gAkK6jxCgYYpxfGPuC5yBaWr.jpg"}/>
-            </div>
-            <div className={style.chat_username}>
-                {props.chat.title}
-            </div>
-            <div>
-                last message
-            </div>
-        </div>
-    )
-}
-
 
 export default Chat;

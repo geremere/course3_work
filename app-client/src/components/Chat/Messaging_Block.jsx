@@ -33,7 +33,7 @@ class Messaging_Block extends Component {
                 </div>
             )
         } else {
-            const messages_list = this.props.messages.map((message) => {
+            const messages_list = this.props.chat.messages.map((message) => {
                 if (this.props.currentUser.id === message.senderId) {
                     return (
                         <div className={style.message_div} key={message.id}>
@@ -65,14 +65,14 @@ class Messaging_Block extends Component {
                         <div ref={this.messagesEndRef}/>
                     </div>
                     <div className={style.message_content}>
-                        <button className={style.sendMes} onClick={this.props.sendMessage}>
-                            Отправить
-                        </button>
                         <textarea name="msg" value={this.props.msg} onChange={this.props.handleInputChange} className={style.input_msg} onKeyPress={(event) => {
                             if (event.key === "Enter") {
                                 this.props.sendMessage(this.props.msg);
                             }
                         }}/>
+                        <button className={style.sendMes} onClick={this.props.sendMessage}>
+                            Отправить
+                        </button>
                     </div>
                 </div>
             )

@@ -1,37 +1,5 @@
 import {request} from "./request.js"
-import {ACCESS_TOKEN, API_BASE_URL, BASE_URL} from "./utils";
-
-export function countNewMessages(senderId, recipientId) {
-    if (!localStorage.getItem("accessToken")) {
-        return Promise.reject("No access token set.");
-    }
-
-    return request({
-        url: BASE_URL + "/messages/" + senderId + "/" + recipientId + "/count",
-        method: "GET",
-    });
-}
-
-export function findChatMessages(chatId) {
-    if (!localStorage.getItem("accessToken")) {
-        return Promise.reject("No access token set.");
-    }
-    return request({
-        url: BASE_URL + "/messages/" + chatId,
-        method: "GET",
-    });
-}
-
-export function findChatMessage(id) {
-    if (!localStorage.getItem("accessToken")) {
-        return Promise.reject("No access token set.");
-    }
-
-    return request({
-        url: BASE_URL + "/message/" + id,
-        method: "GET",
-    });
-}
+import {API_BASE_URL, BASE_URL} from "./utils";
 
 export function getChats() {
     if (!localStorage.getItem("accessToken")) {
@@ -39,7 +7,7 @@ export function getChats() {
     }
 
     return request({
-        url: API_BASE_URL + "/user/chats",
+        url: API_BASE_URL + "/chat",
         method: "GET",
     });
 }
@@ -50,8 +18,19 @@ export function sendMessage(message) {
     }
 
     return request({
-        url: BASE_URL + "/create/chat",
+        url: BASE_URL + "/chat",
         method: "POST",
-        body:message
+        body: message
+    });
+}
+
+export function getOrCreate(userId) {
+    if (!localStorage.getItem("accessToken")) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/chat/" + userId,
+        method: "GET"
     });
 }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {FormControl, InputGroup} from "react-bootstrap";
-import UserSummary from "./UserSummary";
+import UserSummaryWithSelected from "./UserSummaryWithSelected";
 import style from "./SelectListUsers.module.css";
 
 class SelectListUsers extends Component {
@@ -18,7 +18,7 @@ class SelectListUsers extends Component {
 
     render() {
         const usersSum = this.props.users.map(user =>
-            <UserSummary user={user} selectUser={this.props.selectUser}/>
+            <UserSummaryWithSelected user={user} selectUser={this.props.selectUser}/>
         )
         return (
             <div className={style.wrapper}>

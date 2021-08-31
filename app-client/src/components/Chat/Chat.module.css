@@ -3,7 +3,6 @@
     min-width: 1200px;
     font-family: inherit;
     margin: 15px;
-    background-color: rgba(218, 218, 218, 0.1);
     padding: 25px;
 }
 
@@ -12,7 +11,8 @@
     min-height: 600px;
     height: 100%;
     min-width: 1100px;
-    background-color: rgba(185, 185, 185, 0.51);
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.08);
     /*background-color: red;*/
     /*display: inline-block;*/
 }
@@ -35,10 +35,11 @@
     width: 100%;
     /*border: 1px solid;*/
     height: 75px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
 }
 
 .chat_info:hover {
-    background-color: rgba(37, 45, 255, 0.11);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .chats_search {
@@ -60,7 +61,6 @@
     float: left;
     height: 75px;
     width: 75px;
-    background-color: yellow;
 }
 
 .chat_username {
@@ -86,7 +86,7 @@
 
 .messenger {
     position: relative;
-    background-color: rgba(185, 185, 185, 0.51);
+    border-left: 1px solid rgba(0, 0, 0, 0.4);
     min-width: 70%;
     width: 70%;
     height: 600px;
@@ -96,7 +96,7 @@
 .messanger_info {
     height: 60px;
     width: 100%;
-    background-color: rgba(66, 68, 76, 0.35);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
     position: sticky;
 }
 
@@ -140,10 +140,12 @@
 
 .message_content {
     width: 100%;
-    height: 50px;
+    height: 60px;
     position: relative;
+    border-top: 1px solid rgba(0,0,0,0.4);
     float: bottom;
-    bottom: -25px;
+    bottom: -15px;
+    padding: 7px;
     display: block;
 }
 
@@ -174,7 +176,7 @@
     z-index: 5;
 }
 
-.btn{
+.btn {
     appearance: none;
     border: 0;
     border-radius: 5px;
@@ -200,9 +202,9 @@
 .input_msg {
     position: relative;
     width: calc(100% - 126px);
-    float: right;
+    float: left;
     border-radius: 5px;
-    height: 90%;
+    height: 100%;
     resize: none;
 }
 
@@ -216,19 +218,19 @@
     color: #fff;
     padding: 8px 16px;
     font-size: 16px;
-    float: left;
+    float: right;
 }
 
 
-.search{
-    width: 79%;
-    display: inline-block;
+.search {
+    width: 77%;
     margin: 0.5%;
+    display: inline-block;
 }
 
-.new_group{
+.new_group {
     width: 19%;
     display: inline-block;
     margin: 0.5%;
-
 }
+
