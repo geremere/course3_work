@@ -70,9 +70,9 @@ export function RiskTable(props) {
                     <th>Name of risk</th>
                     <th>Origin</th>
                     <th>Description</th>
+                    <th>Type</th>
                     <th>Cost</th>
                     <th>Probability</th>
-                    <th>Date Create</th>
                     <th>Action</th>
 
                 </tr>
@@ -84,9 +84,9 @@ export function RiskTable(props) {
                     <td>{risk.risk.name}</td>
                     <td>{risk.is_outer ? "Outer" : "Internal"}</td>
                     <td>{risk.risk.description}</td>
+                    <td>{risk.risk.type}</td>
                     <td>{risk.cost}</td>
                     <td>{risk.probability}</td>
-                    <td>{risk.create}</td>
                     <td>
                         <button onClick={() => handleDelete(risk)}
                                 className={style.action_buttons}

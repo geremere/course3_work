@@ -3,7 +3,7 @@ import style from './ProjectSetting.module.css';
 import {getAllUsers, getCurrentUser, searchUser, uploadAvatar} from "../ServerAPI/userAPI";
 import {PROJECT_ICO, USER_ICO} from "../ServerAPI/utils";
 import {updateProject} from "../ServerAPI/ProjectAPI";
-import {Button, Form, FormControl, FormGroup, Spinner} from "react-bootstrap";
+import {Button, Form, FormControl, FormGroup, OverlayTrigger, Spinner, Tooltip} from "react-bootstrap";
 import SelectListUsers from "../util/users/SelectListUsers";
 import {saveImage, uploadImage} from "../ServerAPI/simpleRequests";
 import {AlertInfo} from "../ModalWindow/Alert";
@@ -90,6 +90,12 @@ class ProjectSettings extends Component {
         });
     };
 
+    renderTooltipTitle = (props) => (
+        <Tooltip hidden={this.state.isTeammate} id="button-tooltip" {...props}>
+            You can`t change risk title
+        </Tooltip>
+    );
+
     update = () => {
         if (this.state.selectUsers != null && this.state.selectUsers.length > 1 && this.state.description.correct && this.state.title.correct) {
             const pr = {
@@ -128,7 +134,7 @@ class ProjectSettings extends Component {
     })
 
     getIsTeammate(user) {
-            return this.props.project.users.map(user => user.id).indexOf(user.id) !== -1;
+        return this.props.project.users.map(user => user.id).indexOf(user.id) !== -1;
     }
 
     componentDidMount() {
@@ -164,11 +170,14 @@ class ProjectSettings extends Component {
                         </FormGroup>
                         <FormGroup className={style.text}>
                             <Form.Label>Project Title</Form.Label>
-                            <Form.Control
-                                style={{height: '25px'}}
-                                value={this.props.project.title}
-                                disabled={true}
-                            />
+                            <OverlayTrigger placement="left"
+                                            overlay={this.renderTooltipTitle}>
+                                <Form.Control
+                                    style={{height: '25px'}}
+                                    value={this.props.project.title}
+                                    disabled={true}
+                                />
+                            </OverlayTrigger>
                         </FormGroup>
                         <FormGroup className={style.text}>
                             <Form.Label>Project Description</Form.Label>
@@ -176,7 +185,7 @@ class ProjectSettings extends Component {
                                 as="textarea"
                                 style={{height: '50px'}}
                                 value={this.state.description}
-                                onChange={(event)=>this.setState({description:event.target.value})}
+                                onChange={(event) => this.setState({description: event.target.value})}
                             />
                         </FormGroup>
                         <FormGroup className={style.text}>

@@ -31,7 +31,6 @@ class ProjectPage extends Component {
                 project: response
             });
 
-            console.log(response)
             this.setIsTeammate();
         }).catch(response => {
             this.setState({
@@ -48,7 +47,6 @@ class ProjectPage extends Component {
 
     setIsTeammate() {
         getCurrentUser().then(response => {
-            console.log(response)
             let isTeammate = this.state.project.users.map(user => user.id).indexOf(response.id) !== -1
             this.setState({
                 isTeammate: isTeammate || response.id === this.state.project.owner_id,
@@ -92,7 +90,6 @@ class ProjectPage extends Component {
             You must be owner of project
         </Tooltip>
     );
-
     renderTooltipRisks = (props) => (
         <Tooltip hidden={this.state.isTeammate} id="button-tooltip" {...props}>
             You must be in the project
