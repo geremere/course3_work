@@ -83,6 +83,13 @@ export function AddRisk(props) {
                                     {risk.name}
                                 </option>))}
                             </Form.Select>
+                            {/*<Form.Label hidden={!isNewRisk}>Select Risk Type</Form.Label>*/}
+                            {/*<Form.Control*/}
+                            {/*    hidden={!isNewRisk}*/}
+                            {/*    placeholder="Input here name of new risk"*/}
+                            {/*    value={newRiskName}*/}
+                            {/*    onChange={(event) => setNewRiskName(event.target.value)}*/}
+                            {/*/>*/}
                             <Form.Label hidden={!isNewRisk}>Input Risk Name</Form.Label>
                             <Form.Control
                                 hidden={!isNewRisk}

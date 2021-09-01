@@ -27,12 +27,20 @@ export function RiskTable(props) {
             }
         })
         project.risks.splice(ind, 1)
-        console.log(project)
         updateProject(project).then(response => props.updateProject(response))
-
     }
 
-    const handleSolved = (id) => {
+    const handleSolved = (risk) => {
+        let ind = -1;
+        const project = props.project;
+        project.risks.forEach((item, index) => {
+            if (item.id === risk.id) {
+                ind = index
+                return
+            }
+        })
+        project.risks[ind].is_solved = true
+        updateProject(project).then(response => props.updateProject(response))
     }
 
     const handleCreate = () => {
@@ -70,7 +78,8 @@ export function RiskTable(props) {
                 </tr>
                 </thead>
                 <tbody>
-                {props.project.risks.map((risk) => <tr key={risk.id}>
+                {props.project.risks.map((risk) => <tr className={risk.is_solved ? style.solvedRisk : null}
+                                                       key={risk.id}>
                     <td>{risk.id}</td>
                     <td>{risk.risk.name}</td>
                     <td>{risk.is_outer ? "Outer" : "Internal"}</td>
@@ -79,18 +88,24 @@ export function RiskTable(props) {
                     <td>{risk.probability}</td>
                     <td>{risk.create}</td>
                     <td>
-                        <button onClick={() => handleDelete(risk)} className={style.action_buttons}>
+                        <button onClick={() => handleDelete(risk)}
+                                className={style.action_buttons}
+                                disabled={risk.is_solved}>
                             <img
                                 src="https://avatars.mds.yandex.net/get-pdb/3029455/e6643c71-0838-4efd-905f-9813f3f92461/s1200"
                                 width="20px"/>
                         </button>
-                        <button onClick={() => handleUpdate(risk)} className={style.action_buttons}>
+                        <button onClick={() => handleUpdate(risk)}
+                                disabled={risk.is_solved}
+                                className={style.action_buttons}>
                             <img
 
                                 src="https://avatars.mds.yandex.net/get-pdb/4562142/11071cd7-22b8-4aee-b1b4-e9f1e9036ed6/s1200"
                                 width="20px"/>
                         </button>
-                        <button onClick={() => handleSolved()} className={style.action_buttons}>
+                        <button onClick={() => handleSolved(risk)}
+                                className={style.action_buttons}
+                                disabled={risk.is_solved}>
                             <img
                                 src="https://avatars.mds.yandex.net/get-pdb/4988356/0104c833-58de-4947-b731-4be10d2ae0c9/s1200"
                                 width="20px"/>

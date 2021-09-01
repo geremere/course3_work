@@ -7,3 +7,7 @@
 .action_buttons:hover{
     background-color: rgba(0, 0, 0, 0.16);
 }
+
+.solvedRisk{
+    background-color: rgba(0, 255, 0, 0.3);
+}

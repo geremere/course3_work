@@ -15,7 +15,6 @@ class MainPage extends Component {
             isLoaded: false,
         };
         this.loadProjects = this.loadProjects.bind(this);
-        this.addProject = this.addProject.bind(this);
     }
 
     loadProjects = () => {
@@ -28,16 +27,14 @@ class MainPage extends Component {
 
     };
 
-    addProject = () => {
-
-    };
-
     componentDidMount() {
         this.loadProjects();
     }
 
     render() {
-        const projects = this.state.projects.map((project) => <ProjectSummary project={project} key={project.id}/>);
+        const projects = this.state.projects.map((project) => <ProjectSummary currentUser={this.props.currentUser}
+                                                                              project={project}
+                                                                              key={project.id}/>);
         if (projects.length === 0) {
             projects.push(<div>Пока таких курсов нет</div>);
         }
@@ -65,7 +62,6 @@ class MainPage extends Component {
 }
 
 export function ProjectSummary(props) {
-    debugger;
     let path = props.project.image_url === null ? PROJECT_ICO
         : props.project.image_url;
     let pathtocourse = "../project/" + props.project.id;

@@ -1,26 +1,18 @@
 import React, {Component} from 'react';
-import style from './NewProject.module.css';
-import {getAllUsers, searchUser, uploadAvatar} from "../ServerAPI/userAPI";
+import style from './ProjectSetting.module.css';
+import {getAllUsers, getCurrentUser, searchUser, uploadAvatar} from "../ServerAPI/userAPI";
 import {PROJECT_ICO, USER_ICO} from "../ServerAPI/utils";
-import {TextAlert} from "../ModalWindow/ModalWindow";
-import {createProject} from "../ServerAPI/ProjectAPI";
-import {Alert, Button, Spinner} from "react-bootstrap";
+import {updateProject} from "../ServerAPI/ProjectAPI";
+import {Button, Form, FormControl, FormGroup, Spinner} from "react-bootstrap";
 import SelectListUsers from "../util/users/SelectListUsers";
 import {saveImage, uploadImage} from "../ServerAPI/simpleRequests";
 import {AlertInfo} from "../ModalWindow/Alert";
 
-class NewProject extends Component {
+class ProjectSettings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: {
-                value: "",
-                correct: false
-            },
-            description: {
-                value: "",
-                correct: false
-            },
+            description: this.props.project.description,
             search: {
                 value: "",
                 correct: false
@@ -34,10 +26,9 @@ class NewProject extends Component {
             },
             image: null
         };
-        this.UploadClick = this.UploadClick.bind(this);
-        this.UploadAvatar = this.UploadAvatar.bind(this);
+        this.uploadAvatar = this.uploadAvatar.bind(this);
         this.searchUsers = this.searchUsers.bind(this);
-        this.createProject = this.createProject.bind(this);
+        this.update = this.update.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.selectUser = this.selectUser.bind(this);
         this.closeAlert = this.closeAlert.bind(this);
@@ -60,7 +51,7 @@ class NewProject extends Component {
         file.click();
     };
 
-    UploadAvatar = (event) => {
+    uploadAvatar = (event) => {
         let formData = new FormData();
         formData.append('image', event.target.files[0]);
         saveImage(formData).then(response => {
@@ -85,12 +76,6 @@ class NewProject extends Component {
         });
     }
 
-    resizeInput = (event) => {
-        const input = event.target;
-        input.style.height = 0;
-        input.style.height = input.scrollHeight + "px";
-    };
-
     searchUsers = (event) => {
         searchUser(event.target.value).then(response => {
             const users = response.map(user => {
@@ -105,16 +90,16 @@ class NewProject extends Component {
         });
     };
 
-    createProject = () => {
+    update = () => {
         if (this.state.selectUsers != null && this.state.selectUsers.length > 1 && this.state.description.correct && this.state.title.correct) {
             const pr = {
                 users: this.state.users,
-                title: this.state.title.value,
+                title: this.props.project.title,
                 description: this.state.description.value,
                 image_id: this.state.image !== null ? this.state.image.id : null,
                 owner_id: this.props.currentUser.id
             };
-            createProject(pr)
+            updateProject(pr)
                 .then(response => {
                     window.location.assign("/project/" + response.id)
                 }).catch(error => {
@@ -142,14 +127,17 @@ class NewProject extends Component {
         }
     })
 
+    getIsTeammate(user) {
+            return this.props.project.users.map(user => user.id).indexOf(user.id) !== -1;
+    }
+
     componentDidMount() {
         getAllUsers().then(response => {
             this.setState({
-                users: response.map(user => ({...user, isSelected: false})),
+                users: response.map(user => ({...user, isSelected: this.getIsTeammate(user)})),
                 isLoaded: true
             });
         })
-
     }
 
     render() {
@@ -157,45 +145,50 @@ class NewProject extends Component {
         if (this.state.isLoaded) {
             return (
                 <div>
-                    <AlertInfo head={this.state.message!=null ?this.state.message.head:""}
-                               content={this.state.message!=null ?this.state.message.content:""}
-                               show={this.state.message!=null ?this.state.message.show:""}
-                               close={this.state.message!=null ?this.closeAlert:""}
+                    <AlertInfo head={this.state.message != null ? this.state.message.head : ""}
+                               content={this.state.message != null ? this.state.message.content : ""}
+                               show={this.state.message != null ? this.state.message.show : ""}
+                               close={this.state.message != null ? this.closeAlert : ""}
                     />
-                    <div id={"new_project"} className={style.alert}>
-                        <div id={"window_new_project"} className={style.window}>
-                            <input id="file_project" type="file" className={style.upload} onChange={this.UploadAvatar}/>
-                            <span className={style.close}
-                                  onClick={() => document.getElementById('new_project').style.display = 'none'}>x</span>
+                    <Form className={style.form}>
+                        <FormGroup className={style.ico_wrap}>
+                            <input id="file_project" type="file" className={style.upload} onChange={this.uploadAvatar}/>
                             <div className={style.avatar_wrapper} onClick={this.UploadClick}>
                                 <img id='project_ico' className={style.avatar}
-                                     src={PROJECT_ICO}
+                                     src={this.props.project.image_url == null ? PROJECT_ICO : this.props.project.image_url}
                                      alt=''/>
-                                <div className={style.hover_wrapper}>
-                                    <img className={style.avatar_hover}
-                                         src="https://cdn.pixabay.com/photo/2016/12/18/13/44/download-1915749_1280.png"
-                                         alt=""/>
-                                </div>
+                                <img className={style.hover_wrapper}
+                                     src="https://cdn.pixabay.com/photo/2016/12/18/13/44/download-1915749_1280.png"
+                                     alt=""/>
                             </div>
-                            <div className={style.info_wrapper}>
-                                <textarea onKeyUp={(event) => this.resizeInput(event)} name='title'
-                                          className={style.input}
-                                          placeholder='Название проекта'
-                                          onChange={(event) => this.handleInputChange(event)}/>
-                                <textarea name='description' onKeyUp={(event) => this.resizeInput(event)}
-                                          className={style.input}
-                                          placeholder='Описание' onChange={(event) => this.handleInputChange(event)}/>
-                            </div>
-                            <div className={style.wrapper_user}>
-                                <SelectListUsers users={this.state.users}
-                                                 selectUser={this.selectUser}
-                                                 searchUsers={this.searchUsers}/>
-                            </div>
-                            <Button onClick={this.createProject}>
-                                {"Создать новый проект"}
-                            </Button>
-                        </div>
-                    </div>
+                        </FormGroup>
+                        <FormGroup className={style.text}>
+                            <Form.Label>Project Title</Form.Label>
+                            <Form.Control
+                                style={{height: '25px'}}
+                                value={this.props.project.title}
+                                disabled={true}
+                            />
+                        </FormGroup>
+                        <FormGroup className={style.text}>
+                            <Form.Label>Project Description</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                style={{height: '50px'}}
+                                value={this.state.description}
+                                onChange={(event)=>this.setState({description:event.target.value})}
+                            />
+                        </FormGroup>
+                        <FormGroup className={style.text}>
+                            <Form.Label>Change Users On Project</Form.Label>
+                            <SelectListUsers users={this.state.users}
+                                             selectUser={this.selectUser}
+                                             searchUsers={this.searchUsers}/>
+                        </FormGroup>
+                        <Button variant="primary" onClick={this.update}>
+                            Save Changes
+                        </Button>
+                    </Form>
                 </div>
             )
         } else
@@ -203,4 +196,4 @@ class NewProject extends Component {
     }
 }
 
-export default NewProject;
+export default ProjectSettings;

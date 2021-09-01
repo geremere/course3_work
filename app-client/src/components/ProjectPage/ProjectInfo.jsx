@@ -5,23 +5,13 @@ import {RiskMapScatterChart} from "../util/charts/RiskMapScatterChart";
 import {Chart} from "react-google-charts";
 
 function ProjectInfo(props) {
-    const [isOuter, setIsOuter] = useState(false);
-    const [data, setData] = useState(null);
-    const [title, setTitle] = useState("Internal Risks");
-
-    const handleSelect = (e) => {
-        setIsOuter(e)
-        debugger
-        if (e === "true")
-            setTitle("Outer Risk")
-        else
-            setTitle("Internal Risks")
-    };
+    const [data, setData] = useState([]);
 
     useEffect(() => {
         const dt = [['X', 'Y', {role: "tooltip", type: "string"}]]
-        props.project.risks.forEach(risk=>{
-            dt.push([risk.probability,risk.cost,risk.risk.name])
+        props.project.risks.forEach(risk => {
+            const message = `${risk.is_outer ? "Outer Risk: " : "Internal Risk: "}${risk.risk.name}`
+            dt.push([risk.probability, risk.cost, message])
         })
         dt.forEach(function (row, index) {
             if (index === 0) {
@@ -41,13 +31,9 @@ function ProjectInfo(props) {
                 }
             }
         });
+        setData(dt)
+    }, [])
 
-        if (!isOuter) {
-            setData(dt)
-        } else {
-            setData(dt)
-        }
-    }, [isOuter])
 
     const options = {
         title: "Risk Map",
@@ -60,12 +46,6 @@ function ProjectInfo(props) {
 
     return (
         <div className={style.Content}>
-            <div className={style.selectMap}>
-                <DropdownButton id="dropdown-basic-button" title={title} onSelect={handleSelect}>
-                    <Dropdown.Item eventKey={false}>Internal</Dropdown.Item>
-                    <Dropdown.Item eventKey={true}>Outer</Dropdown.Item>
-                </DropdownButton>
-            </div>
             <div className="donut">
                 <Chart className={style.mapWrapper}
                        chartType="ScatterChart"

@@ -76,7 +76,8 @@ class App extends Component {
                                render={(props) => <MainPage currentUser={this.state.currentUser}
                                                             isAuthenticated={this.state.isAuthenticated}/>}/>
                         <Route exact path='/'
-                               render={(props) => <MainPage isAuthenticated={this.state.isAuthenticated}/>}/>
+                               render={(props) => <MainPage currentUser={this.state.currentUser}
+                                   isAuthenticated={this.state.isAuthenticated}/>}/>
                         <Route path='/user/:username'
                                render={(props) => <UserAccount user={this.state.currentUser}
                                                                loadUser={this.loadUser}/>}/>

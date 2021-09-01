@@ -1,0 +1,55 @@
+.form{
+    width: 50%;
+    margin: auto ;
+    padding: 10px;
+    background-color: rgba(128, 128, 128, 0.1);
+}
+
+.ico_wrap{
+    margin-bottom: 25px;
+}
+
+.text{
+    width: 80%;
+    margin: auto;
+    margin-bottom: 5px;
+}
+.upload {
+    width: 250px;
+    display: none;
+}
+
+.avatar_wrapper {
+    position: relative;
+    left: calc(50% - 250px);
+    width: 250px;
+    height: 150px;
+}
+
+.avatar {
+    position: absolute;
+    width: 250px;
+    height: 175px;
+}
+
+.avatar_hover {
+    position: absolute;
+    width: 250px;
+    height: 175px;
+}
+
+
+.hover_wrapper {
+    position: absolute;
+    width: 250px;
+    height: 175px;
+    left: 125px;
+    background-color: rgba(0, 0, 0, 0.31);
+    opacity: 0.7;
+    display: none;
+
+}
+
+.avatar_wrapper:hover .hover_wrapper {
+    display: block;
+}

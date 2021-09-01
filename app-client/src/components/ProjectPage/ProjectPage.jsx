@@ -3,38 +3,58 @@ import {Loading} from "../common/Loading/Loading";
 import {getProjectById} from "../ServerAPI/ProjectAPI";
 import ProjectInfo from "./ProjectInfo";
 import style from "./ProjectPage.module.css";
-import {Nav} from "react-bootstrap";
+import {Nav, Overlay, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {RiskTable} from "./RisksPage";
+import {getCurrentUser} from "../ServerAPI/userAPI";
+import ProjectSettings from "./ProjectSettings";
 
 class ProjectPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentUser: null,
             project: null,
             isLoaded: false,
             message: "",
-            eventKey: "/map"
+            eventKey: "/map",
+            teammate: true
         };
         this.loadProject = this.loadProject.bind(this);
         this.handleSelected = this.handleSelected.bind(this);
-        this.updateProject =  this.updateProject.bind(this);
+        this.updateProject = this.updateProject.bind(this);
+        this.setIsTeammate = this.setIsTeammate.bind(this);
     }
 
     loadProject() {
         getProjectById(this.props.match.params.prId).then(response => {
             this.setState({
-                project: response,
-                isLoaded: true,
+                project: response
             });
+
+            console.log(response)
+            this.setIsTeammate();
         }).catch(response => {
             this.setState({
                 message: response.message
             });
         });
     }
-    updateProject(project){
+
+    updateProject(project) {
         this.setState({
-            project:project
+            project: project
+        })
+    }
+
+    setIsTeammate() {
+        getCurrentUser().then(response => {
+            console.log(response)
+            let isTeammate = this.state.project.users.map(user => user.id).indexOf(response.id) !== -1
+            this.setState({
+                isTeammate: isTeammate || response.id === this.state.project.owner_id,
+                currentUser: response,
+                isLoaded: true
+            })
         })
     }
 
@@ -46,22 +66,38 @@ class ProjectPage extends Component {
         switch (this.state.eventKey) {
             case "/statistics":
                 return (
-                    <RiskTable project={this.state.project}
-                               />
+                    <div>
+                        Здесь будет много графиков
+                    </div>
                 )
             case "/risks":
                 return (
                     <RiskTable project={this.state.project}
-                               updateProject ={this.updateProject}/>
+                               updateProject={this.updateProject}/>
                 )
             case "/map":
                 return (
                     <ProjectInfo project={this.state.project}/>
                 )
+            case "/settings":
+                return (
+                    <ProjectSettings project={this.state.project}/>
+                )
 
         }
-
     }
+
+    renderTooltipSettings = (props) => (
+        <Tooltip hidden={this.state.currentUser.id === this.state.project.owner_id} id="button-tooltip" {...props}>
+            You must be owner of project
+        </Tooltip>
+    );
+
+    renderTooltipRisks = (props) => (
+        <Tooltip hidden={this.state.isTeammate} id="button-tooltip" {...props}>
+            You must be in the project
+        </Tooltip>
+    );
 
     render() {
         if (this.state.isLoaded) {
@@ -81,7 +117,20 @@ class ProjectPage extends Component {
                             <Nav.Link eventKey={"/statistics"}>Statistic</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link eventKey={"/risks"}>Risks</Nav.Link>
+                            <OverlayTrigger placement="top"
+                                            overlay={this.renderTooltipRisks}>
+                                <Nav.Link eventKey={"/risks"}
+                                          disabled={!this.state.isTeammate}>Risks</Nav.Link>
+                            </OverlayTrigger>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <OverlayTrigger placement="top"
+                                            overlay={this.renderTooltipSettings}>
+                                <Nav.Link eventKey={"/settings"}
+                                          disabled={this.state.currentUser.id !== this.state.project.owner_id}>
+                                    Settings
+                                </Nav.Link>
+                            </OverlayTrigger>
                         </Nav.Item>
                     </Nav>
                     <br/>
