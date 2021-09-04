@@ -3,7 +3,7 @@ import {Loading} from "../common/Loading/Loading";
 import {getProjectById} from "../ServerAPI/ProjectAPI";
 import ProjectInfo from "./ProjectInfo";
 import style from "./ProjectPage.module.css";
-import {Nav, Overlay, OverlayTrigger, Tooltip} from "react-bootstrap";
+import {Nav, Overlay, OverlayTrigger, Spinner, Tooltip} from "react-bootstrap";
 import {RiskTable} from "./RisksPage";
 import {getCurrentUser} from "../ServerAPI/userAPI";
 import ProjectSettings from "./ProjectSettings";
@@ -90,6 +90,7 @@ class ProjectPage extends Component {
             You must be owner of project
         </Tooltip>
     );
+
     renderTooltipRisks = (props) => (
         <Tooltip hidden={this.state.isTeammate} id="button-tooltip" {...props}>
             You must be in the project
@@ -137,9 +138,7 @@ class ProjectPage extends Component {
                 </div>
             );
         } else {
-            return (
-                <Loading/>
-            );
+            return <Spinner animation="border" variant="success"/>
         }
     }
 }

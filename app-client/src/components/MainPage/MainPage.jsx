@@ -5,7 +5,7 @@ import {Loading} from "../common/Loading/Loading";
 import NewProject from "./NewProject";
 import {getAllProjects} from "../ServerAPI/ProjectAPI";
 import {PROJECT_ICO} from "../ServerAPI/utils";
-import {Card} from "react-bootstrap";
+import {Card, Spinner} from "react-bootstrap";
 
 class MainPage extends Component {
     constructor(props) {
@@ -52,11 +52,7 @@ class MainPage extends Component {
                     {projects}
                 </div>);
         } else {
-            return (
-                <div className={style.Main}>
-                    <Loading/>
-                </div>
-            );
+            return <Spinner animation="border" variant="success"/>
         }
     }
 }

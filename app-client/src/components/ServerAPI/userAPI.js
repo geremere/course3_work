@@ -20,60 +20,6 @@ export function getUserProfile(username) {
     });
 }
 
-export function editPassword(Password) {
-    return request({
-        url: API_BASE_URL + "/user/me/edit/password",
-        method: 'PUT',
-        body: JSON.stringify(Password)
-    });
-}
-
-export function editEmail(email) {
-    return request({
-        url: API_BASE_URL + "/user/me/edit/email?email=" + email,
-        method: 'PUT',
-        body: JSON.stringify(email)
-    });
-}
-
-export function editUsername(username) {
-    return request({
-        url: API_BASE_URL + "/user/me/edit/username?username=" + username,
-        method: 'PUT',
-        body: JSON.stringify(username)
-    });
-}
-
-export function editName(name) {
-    return request({
-        url: API_BASE_URL + "/user/me/edit/name?name=" + name,
-        method: 'PUT',
-        body: JSON.stringify(name)
-    });
-}
-
-export function editSurName(surname) {
-    return request({
-        url: API_BASE_URL + "/user/me/edit/surname?surname=" + surname,
-        method: 'PUT',
-        body: JSON.stringify(surname)
-    });
-}
-
-export function subscribe(courseId) {
-    return request({
-        url: API_BASE_URL + "/course/" + courseId,
-        method: 'POST'
-    });
-}
-
-export function recoverThePassword(usernameOrEmail) {
-    return request({
-        url: API_BASE_URL + "/auth/forgotpassword?usernameOrEmail=" + usernameOrEmail,
-        method: 'POST',
-    });
-}
-
 export function getAllUsers() {
     return request({
         url: API_BASE_URL + "/users/all",
@@ -95,30 +41,6 @@ export function getUserById(id) {
     });
 }
 
-export function createChatRoom(chatRequest) {
-    return request({
-        url: API_BASE_URL + "/chatroom/create",
-        method: 'POST',
-        body: JSON.stringify(chatRequest)
-    });
-}
-
-export function getUserTypes() {
-    return request({
-        url: API_BASE_URL + "/user/me/get/types",
-        method: 'GET',
-    });
-}
-
-export function setRiskTypes(riskTypes) {
-    return request({
-        url: API_BASE_URL + "/user/set/types",
-        method: 'POST',
-        body: JSON.stringify(riskTypes)
-    });
-}
-
-
 export function uploadAvatar(file) {
     let options = {
         url: API_BASE_URL + "/user/me/image",
@@ -130,16 +52,52 @@ export function uploadAvatar(file) {
     };
 
     return fetch(options.url, options)
-        .then(response =>{
-            debugger;
-            response.json().then(json => {
-                if (!response.ok) {
-                    return Promise.reject(json);
-                } else {
-                    return Promise.resolve(json);
-                }
-            })}
+        .then(response => {
+                debugger;
+                response.json().then(json => {
+                    if (!response.ok) {
+                        return Promise.reject(json);
+                    } else {
+                        return Promise.resolve(json);
+                    }
+                })
+            }
         );
+}
+
+export function changePassword(requestDto) {
+    if (!localStorage.getItem("accessToken")) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/user/password",
+        method: "POST",
+        body: JSON.stringify(requestDto)
+    });
+}
+
+export function isDefaultRegType() {
+    if (!localStorage.getItem("accessToken")) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/user/isDefault",
+        method: "GET"
+    });
+}
+
+export function updateUser(user, id) {
+    if (!localStorage.getItem("accessToken")) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/user/" + id,
+        method: "PUT",
+        body: JSON.stringify(user)
+    });
 }
 
 

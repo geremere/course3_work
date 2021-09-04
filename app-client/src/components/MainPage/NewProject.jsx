@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import style from './NewProject.module.css';
-import {getAllUsers, searchUser, uploadAvatar} from "../ServerAPI/userAPI";
-import {PROJECT_ICO, USER_ICO} from "../ServerAPI/utils";
-import {TextAlert} from "../ModalWindow/ModalWindow";
+import {getAllUsers, searchUser} from "../ServerAPI/userAPI";
+import {PROJECT_ICO} from "../ServerAPI/utils";
 import {createProject} from "../ServerAPI/ProjectAPI";
-import {Alert, Button, Spinner} from "react-bootstrap";
+import {Button, Spinner} from "react-bootstrap";
 import SelectListUsers from "../util/users/SelectListUsers";
-import {saveImage, uploadImage} from "../ServerAPI/simpleRequests";
+import {saveImage} from "../ServerAPI/simpleRequests";
 import {AlertInfo} from "../ModalWindow/Alert";
 
 class NewProject extends Component {
