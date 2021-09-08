@@ -47,6 +47,7 @@ export function AddRisk(props) {
 
     const createOrUpdateRisk = () => {
         if (props.selectedRisk == null) {
+            console.log(type)
             props.project.risks.push({
                 is_outer: origin,
                 cost: cost,

@@ -4,7 +4,6 @@ import {NavLink} from "react-router-dom";
 import {TextAlert} from "../ModalWindow/ModalWindow";
 import {Toaster} from "react-hot-toast";
 import {CHAT_ICO, USER_ICO} from "../ServerAPI/utils";
-import {Dropdown, DropdownButton, Nav, NavDropdown} from "react-bootstrap";
 
 class AbstractHeader extends Component {
     constructor(props) {
@@ -76,13 +75,6 @@ class DDMenu extends Component {
                         <NavLink to={`/user/${this.props.username}`} className={style.itemLink}>
                             <label>
                                 Личный кабинет
-                            </label>
-                        </NavLink>
-                    </div>
-                    <div className={style.item}>
-                        <NavLink to="/user/settings/editname" className={style.itemLink}>
-                            <label>
-                                Настройки
                             </label>
                         </NavLink>
                     </div>

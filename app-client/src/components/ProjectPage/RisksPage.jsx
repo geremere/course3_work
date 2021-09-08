@@ -18,6 +18,7 @@ export function RiskTable(props) {
     }
 
     const handleDelete = (risk) => {
+        debugger;
         let ind = -1;
         const project = props.project;
         project.risks.forEach((item, index) => {
@@ -26,6 +27,7 @@ export function RiskTable(props) {
                 return
             }
         })
+        debugger;
         project.risks.splice(ind, 1)
         updateProject(project).then(response => props.updateProject(response))
     }
@@ -40,6 +42,19 @@ export function RiskTable(props) {
             }
         })
         project.risks[ind].is_solved = true
+        updateProject(project).then(response => props.updateProject(response))
+    }
+
+    const handleReturnToWork = (risk) => {
+        let ind = -1;
+        const project = props.project;
+        project.risks.forEach((item, index) => {
+            if (item.id === risk.id) {
+                ind = index
+                return
+            }
+        })
+        project.risks[ind].is_solved = false
         updateProject(project).then(response => props.updateProject(response))
     }
 
@@ -90,13 +105,13 @@ export function RiskTable(props) {
                     <td>
                         <button onClick={() => handleDelete(risk)}
                                 className={style.action_buttons}
-                                disabled={risk.is_solved}>
+                                hidden={risk.is_solved}>
                             <img
                                 src="https://avatars.mds.yandex.net/get-pdb/3029455/e6643c71-0838-4efd-905f-9813f3f92461/s1200"
                                 width="20px"/>
                         </button>
                         <button onClick={() => handleUpdate(risk)}
-                                disabled={risk.is_solved}
+                                hidden={risk.is_solved}
                                 className={style.action_buttons}>
                             <img
 
@@ -105,9 +120,16 @@ export function RiskTable(props) {
                         </button>
                         <button onClick={() => handleSolved(risk)}
                                 className={style.action_buttons}
-                                disabled={risk.is_solved}>
+                                hidden={risk.is_solved}>
                             <img
                                 src="https://avatars.mds.yandex.net/get-pdb/4988356/0104c833-58de-4947-b731-4be10d2ae0c9/s1200"
+                                width="20px"/>
+                        </button>
+                        <button onClick={() => handleReturnToWork(risk)}
+                                className={style.action_buttons}
+                                hidden={!risk.is_solved}>
+                            <img
+                                src="http://cdn.onlinewebfonts.com/svg/img_107827.png"
                                 width="20px"/>
                         </button>
                     </td>

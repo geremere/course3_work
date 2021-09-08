@@ -79,21 +79,6 @@ class Chat extends Component {
     onMessageReceived = (msg) => {
         const notification = JSON.parse(msg.body);
         console.log(notification);
-        // if (notification.chatId === null)
-        //     findChatMessage(notification.id).then((message) => {
-        //         const newMessages = [...this.state.messages];
-        //         if (this.state.currentUser.id !== message.senderId) {
-        //             newMessages.push(message);
-        //             this.setState({messages: newMessages});
-        //         }
-        //     }).catch(error => console.log(error));
-        // else {
-        //     if (this.state.activeChat.id == null) {
-        //         const chat = this.state.activeChat;
-        //         chat.id = notification.chatId;
-        //         this.setState({activeChat: chat})
-        //     }
-        // }
         if (notification.senderName !== null)
             toast("Received a new message from " + notification.senderName);
         this.getChatByUser();

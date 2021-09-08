@@ -15,7 +15,10 @@ export function ChatInfo(props) {
                 {props.chat.title}
             </div>
             <div>
-                {props.chat.lastMessage}
+                {
+                    props.chat.lastMessage != null ?
+                        props.chat.lastMessage.sender.name + ": " + props.chat.lastMessage.content : ""
+                }
             </div>
         </div>
     )

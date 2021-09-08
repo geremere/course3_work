@@ -4,6 +4,7 @@ import {TextAlert} from "../../ModalWindow/ModalWindow";
 import {uploadAvatar} from "../../ServerAPI/userAPI";
 import {Nav, Spinner} from "react-bootstrap";
 import UserSettings from "../Settings/UserSettings";
+import {USER_ICO} from "../../ServerAPI/utils";
 
 class UserAccount extends Component {
     constructor(props) {
@@ -109,7 +110,7 @@ function UserInformation(props) {
             <input id="file" type="file" className={style.upload} onChange={props.UploadAvatar}/>
             <div className={style.avatar_wrapper} onClick={props.UploadClick}>
                 <img id='avatar' className={style.avatar}
-                     src={props.user.image === null ? "https://www.stickpng.com/assets/images/585e4bcdcb11b227491c3396.png" : props.user.image.url}
+                     src={props.user.image === null ? USER_ICO : props.user.image.url}
                      alt=''/>
                 <div className={style.hover_wrapper}>
                     <img className={style.avatar_hover}

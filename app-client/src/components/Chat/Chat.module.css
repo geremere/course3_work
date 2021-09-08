@@ -33,6 +33,7 @@
 .chat_info {
     position: relative;
     width: 100%;
+    cursor: pointer;
     /*border: 1px solid;*/
     height: 75px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.4);
@@ -80,75 +81,6 @@
     padding: 10px;
 }
 
-.message_wrapper::-webkit-scrollbar {
-    width: 0;
-}
-
-.messenger {
-    position: relative;
-    border-left: 1px solid rgba(0, 0, 0, 0.4);
-    min-width: 70%;
-    width: 70%;
-    height: 600px;
-    float: right;
-}
-
-.messanger_info {
-    height: 60px;
-    width: 100%;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-    position: sticky;
-}
-
-.message_wrapper {
-    height: 465px;
-    position: relative;
-    width: 100%;
-    overflow-y: scroll;
-}
-
-.message_div {
-    height: 50px;
-    position: relative;
-    width: 100%;
-}
-
-.owner_message {
-    position: relative;
-    float: right;
-    width: 45%;
-    height: auto;
-    text-align: right;
-    margin-right: 10px;
-    background-color: rgba(66, 68, 76, 0.3);
-    border-radius: 7px;
-    padding: 5px;
-
-}
-
-.recepient_message {
-    position: relative;
-    float: left;
-    width: 45%;
-    height: 50px;
-    text-align: left;
-    margin-left: 10px;
-    padding: 5px;
-    background-color: rgba(66, 68, 76, 0.3);
-    border-radius: 7px;
-}
-
-.message_content {
-    width: 100%;
-    height: 60px;
-    position: relative;
-    border-top: 1px solid rgba(0,0,0,0.4);
-    float: bottom;
-    bottom: -15px;
-    padding: 7px;
-    display: block;
-}
-
 .modal_list_user {
     width: 100%;
     height: 250px;
@@ -169,57 +101,19 @@
     border-radius: 100%;
 }
 
-.selector {
-    display: inline-block;
-    height: 45px;
-    width: calc(80% - 100px);
-    z-index: 5;
-}
 
-.btn {
-    appearance: none;
-    border: 0;
-    border-radius: 5px;
-    background: #4676D7;
-    color: #fff;
-    padding: 8px 16px;
-    font-size: 16px;
-    float: left;
-}
 
-.input_wrap {
-    position: relative;
-    height: 30px;
-    margin-top: 5px;
-    width: 100%;
-}
+/*.btn {*/
+/*    appearance: none;*/
+/*    border: 0;*/
+/*    border-radius: 5px;*/
+/*    background: #4676D7;*/
+/*    color: #fff;*/
+/*    padding: 8px 16px;*/
+/*    font-size: 16px;*/
+/*    float: left;*/
+/*}*/
 
-.chatName {
-    width: 100%;
-    height: 20px;
-}
-
-.input_msg {
-    position: relative;
-    width: calc(100% - 126px);
-    float: left;
-    border-radius: 5px;
-    height: 100%;
-    resize: none;
-}
-
-.sendMes {
-    appearance: none;
-    border: 0;
-    width: 120px;
-    height: 100%;
-    border-radius: 5px;
-    background: #4676D7;
-    color: #fff;
-    padding: 8px 16px;
-    font-size: 16px;
-    float: right;
-}
 
 
 .search {

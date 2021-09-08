@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import style from "./UserSettings.module.css";
 import {AlertInfo} from "../../ModalWindow/Alert";
-import {Button, Form, FormGroup, InputGroup, Row} from "react-bootstrap";
+import {Button, Form, FormGroup} from "react-bootstrap";
 import {checkEmailAvailability, checkUsernameAvailability} from "../../ServerAPI/AuthApi";
 import {changePassword, isDefaultRegType, updateUser} from "../../ServerAPI/userAPI";
 
@@ -17,7 +17,8 @@ class UserSettings extends Component {
                 },
                 username: {
                     isValid: true,
-                    value: this.props.user.username
+                    value: this.props.user.username,
+                    show: false
                 },
                 email: {
                     isValid: true,
@@ -28,24 +29,24 @@ class UserSettings extends Component {
             showChangePassword: false,
             oldPassword: {
                 isValid: true,
-                value: ""
+                value: "",
+                show: false
             },
             firstPassword: "",
             secondPassword: "",
-            showOldPassword: true
         }
         this.update = this.update.bind(this);
     }
 
     update = (event) => {
         if (this.state.user.name.isValid && this.state.user.username.isValid && this.state.user.email.isValid) {
-            const user={
-                name:this.state.user.name.value,
-                username:this.state.user.username.value,
-                email:this.state.user.email.value
+            const user = {
+                name: this.state.user.name.value,
+                username: this.state.user.username.value,
+                email: this.state.user.email.value
             }
-            updateUser(user,this.props.user.id).then(response=>{
-                if(response){
+            updateUser(user, this.props.user.id).then(response => {
+                if (response) {
                     this.setState({
                         message: {
                             head: "User Update",
@@ -69,8 +70,16 @@ class UserSettings extends Component {
     }
 
     componentDidMount() {
-        isDefaultRegType().then(response => this.setState({showOldPassword: !response})
-        )
+        isDefaultRegType().then(response => {
+            const oldPassword = this.state.oldPassword;
+            oldPassword.show = response.isDefault;
+            const user = this.state.user;
+            user.username.show = !response.isVk;
+            this.setState({
+                oldPassword: oldPassword,
+                user: user
+            })
+        })
     }
 
     render() {
@@ -78,10 +87,10 @@ class UserSettings extends Component {
             <>
                 <AlertInfo head={this.state.message != null ? this.state.message.head : ""}
                            content={this.state.message != null ? this.state.message.content : ""}
-                           show={this.state.message != null ? this.state.message.show : ""}
-                           close={this.state.message != null ? () => this.setState({message: {show: false}}) : ""}
+                           show={this.state.message != null ? this.state.message.show : false}
+                           close={() => this.setState({message: {show: false}})}
                 />
-                <Form className={style.form}>
+                <Form>
                     <FormGroup hidden={this.state.showChangePassword}
                                className={style.text}>
                         <Form.Label>Name</Form.Label>
@@ -101,6 +110,7 @@ class UserSettings extends Component {
                                className={style.text}>
                         <Form.Label>Username</Form.Label>
                         <Form.Control
+                            disabled={!this.state.user.username.show}
                             style={{height: '30px'}}
                             isInvalid={!this.state.user.username.isValid}
                             value={this.state.user.username.value}
@@ -152,10 +162,11 @@ class UserSettings extends Component {
                             This email is already in use
                         </Form.Control.Feedback>
                     </FormGroup>
-                    <FormGroup hidden={!this.state.showChangePassword} className={style.text}>
-                        <Form.Label hidden={this.state.showOldPassword}>Old Password</Form.Label>
+                    <FormGroup hidden={!this.state.showChangePassword}
+                               className={style.text}>
+                        <Form.Label hidden={!this.state.oldPassword.show}>Old Password</Form.Label>
                         <Form.Control
-                            hidden={this.state.showOldPassword}
+                            hidden={!this.state.oldPassword.show}
                             type="password"
                             style={{height: '30px'}}
                             value={this.state.oldPassword.value}
@@ -172,7 +183,8 @@ class UserSettings extends Component {
                             Password incorrect
                         </Form.Control.Feedback>
                     </FormGroup>
-                    <FormGroup hidden={!this.state.showChangePassword} className={style.text}>
+                    <FormGroup hidden={!this.state.showChangePassword}
+                               className={style.text}>
                         <Form.Label>New Password</Form.Label>
                         <Form.Control
                             type="password"
@@ -201,7 +213,8 @@ class UserSettings extends Component {
                             Passwords must be the equals
                         </Form.Control.Feedback>
                     </FormGroup>
-                    <FormGroup hidden={!this.state.showChangePassword} className={style.text}>
+                    <FormGroup hidden={!this.state.showChangePassword}
+                               className={style.text}>
                         <Button className={style.submit}
                                 disabled={this.state.secondPassword !== this.state.firstPassword}
                                 onClick={() => {
