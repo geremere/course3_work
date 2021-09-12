@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import style from "./Messaging_Block.module.css";
 import {Card} from "react-bootstrap";
+import {USER_ICO} from "../ServerAPI/utils";
 
 
 class Messaging_Block extends Component {
@@ -39,8 +40,11 @@ class Messaging_Block extends Component {
             )
         } else {
             const messages_list = this.props.chat.messages.map((message) =>
-                <Card style={{width: '200px'}}>
+                <Card className={message.sender.id!==this.props.currentUser.id?style.message_recipient:style.message_sender}>
                     <Card.Body>
+                        <Card.Img className={message.sender.id!==this.props.currentUser.id?style.image_recipient:style.image_sender}
+                                  variant="left"
+                                  src={message.sender.image!=null?message.sender.image.url:USER_ICO} />
                         <Card.Title>{message.sender.name}</Card.Title>
                         <Card.Subtitle className="mb-2 text-muted">{message.updatedAt}</Card.Subtitle>
                         <Card.Text>
@@ -64,9 +68,13 @@ class Messaging_Block extends Component {
                                   onKeyPress={(event) => {
                                       if (event.key === "Enter") {
                                           this.props.sendMessage(this.state.message);
+                                          this.setState({message:""})
                                       }
                                   }}/>
-                        <button className={style.sendMes} onClick={() => this.props.sendMessage(this.state.message)}>
+                        <button className={style.sendMes} onClick={() => {
+                            this.props.sendMessage(this.state.message)
+                            this.setState({message:""})
+                        }}>
                             Отправить
                         </button>
                     </div>

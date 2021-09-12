@@ -1,0 +1,12 @@
+.toast{
+    z-index: 10;
+    position: fixed;
+    right: 10px;
+    bottom: 50px;
+}
+
+.toast_img{
+    border-radius: 50%;
+    height: 40px;
+    margin-right: 5px;
+}

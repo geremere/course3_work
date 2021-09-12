@@ -43,6 +43,20 @@
     background-color: rgba(0, 0, 0, 0.1);
 }
 
+.chat_info_with_new_messages {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+    /*border: 1px solid;*/
+    height: 75px;
+    background-color: rgba(37, 45, 255, 0.3);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.chat_info_with_new_messages:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
 .chats_search {
     height: 60px;
     position: sticky;

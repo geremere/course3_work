@@ -5,34 +5,37 @@ import LoadingIndicator from "../common/LoadingIndicator";
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 import {BASE_URL} from "../ServerAPI/utils";
-import {getChats, getOrCreate} from "../ServerAPI/chatAPI";
+import {getChatById, getChats, getOrCreate} from "../ServerAPI/chatAPI";
 import Messaging_Block from "./Messaging_Block";
 import toast from 'react-hot-toast';
 import {TextAlert} from "../ModalWindow/ModalWindow";
 import {Button, FormControl, ListGroup} from "react-bootstrap";
 import UserSummary from "../util/users/UserSummary";
 import {ChatInfo} from "../util/chat/ChatInfo";
+import {MyToast} from "../util/Toast";
 
 class Chat extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentUser: this.props.currentUser,
             allUsers: null,
             isLoaded: false,
             stompClient: null,
             activeChat: null,
-            messages: [],
-            msg: "",
-            notReadMsg: null,
             chats: null,
-            finded: [],
             path: "",
             chatName: "",
             chatUsers: [],
             alert: "",
             users: [],
             showSearch: false,
+            showToast: false,
+            toast: {
+                img: null,
+                title: "",
+                content: "",
+                chatId: -1
+            }
         };
 
         this.connect = this.connect.bind(this);
@@ -41,52 +44,60 @@ class Chat extends Component {
         this.onMessageReceived = this.onMessageReceived.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.getChatByUser = this.getChatByUser.bind(this);
-        this.changeChat = this.changeChat.bind(this);
         this.searchUsers = this.searchUsers.bind(this);
-        this.newChat = this.newChat.bind(this);
-        this.handleSelectChange = this.handleSelectChange.bind(this);
         this.getChat = this.getChat.bind(this);
+        this.getChatById = this.getChatById.bind(this);
     }
 
-    sendMessage() {
-        if (this.state.msg.trim() !== "") {
-            debugger;
-            const message = {
-                content: this.state.msg,
+    sendMessage(message) {
+        if (message.trim() !== "") {
+            const msg = {
+                content: message,
                 chatId: this.state.activeChat.id,
-                senderId:this.state.currentUser.id
+                senderId: this.props.currentUser.id
             };
 
-            this.state.stompClient.send("/app/chat", {}, JSON.stringify(message));
+            this.state.stompClient.send("/app/chat", {}, JSON.stringify(msg));
 
-
-            const newMessages = [...this.state.messages];
-            newMessages.push(message);
+            msg.sender = this.props.currentUser
+            var options = {hour: 'numeric', minute: 'numeric', second: 'numeric'};
+            msg.updatedAt = new Date().toLocaleString("ru-RU", options)
+            const activeChat = this.state.activeChat;
+            activeChat.messages.push(msg)
             this.setState({
-                messages: newMessages,
-                msg: ""
+                activeChat: activeChat
             });
+            this.getChatByUser();
+
 
         }
     };
 
-    changeChat(chat) {
-        this.setState({
-            activeChat: chat
-        })
-    };
-
     onMessageReceived = (msg) => {
-        const notification = JSON.parse(msg.body);
-        console.log(notification);
-        if (notification.senderName !== null)
-            toast("Received a new message from " + notification.senderName);
+        const toast = JSON.parse(msg.body);
+        this.setState({
+            toast: {
+                img: toast.sender.image,
+                title: toast.title != null ? toast.title : toast.sender.name,
+                content: `${toast.title != null ? toast.sender.name + ":" : ""} ${toast.content}`,
+                chatId: toast.chatId
+            },
+            showToast: true
+        })
+        if (this.state.activeChat != null && this.state.activeChat.id === toast.chatId) {
+            this.getChatById(toast.chatId)
+        }
         this.getChatByUser();
-
     };
 
     onError = (err) => {
-        console.log(err);
+        this.setState({
+            toast: {
+                title: "Error",
+                content: err,
+            },
+            showToast: true
+        })
     };
 
     connect = () => {
@@ -97,7 +108,7 @@ class Chat extends Component {
 
     onConnected = () => {
         this.state.stompClient.subscribe(
-            "/user/" + this.state.currentUser.id + "/queue/messages", this.onMessageReceived
+            "/user/" + this.props.currentUser.id + "/queue/messages", this.onMessageReceived
         );
     };
 
@@ -116,19 +127,16 @@ class Chat extends Component {
     }
 
     buildChat(chat) {
-        debugger;
         if (chat.users.length === 2) {
-            const sender = chat.users.filter(user => user.id !== this.state.currentUser.id)[0];
+            const sender = chat.users.filter(user => user.id !== this.props.currentUser.id)[0];
             chat.title = sender.name
             chat.image = sender.image
         }
-        console.log(chat)
         return chat;
     }
 
     getChatByUser() {
         getChats().then(response => {
-            console.log(response)
             this.setState({
                 chats: response.map(chat => this.buildChat(chat)),
                 isLoaded: true
@@ -136,42 +144,14 @@ class Chat extends Component {
         }).catch(error => console.log(error));
     }
 
+    getChatById(chatId) {
+        getChatById(chatId).then(response => this.setState({activeChat: this.buildChat(response)}))
+    }
+
     handleInputChange = (event) => {
         const msg = event.target.value.length > 50 ? event.target.value + "\n" : event.target.value
 
         this.setState({[event.target.name]: msg.length > 150 ? this.state[event.target.name] : msg})
-    };
-
-    handleSelectChange = (event) => {
-        document.getElementById("chat_diver").style.display = "block"
-        this.setState({
-            chatUsers: event.map(ev => parseInt(ev.value))
-        })
-    };
-
-    async newChat(event) {
-        document.getElementById("chat_diver").style.display = "block"
-        const user = await getUserById(event.value).then(response => response);
-        const chat = {id: null, title: user.name, image: user.image, usersId: [user.id]};
-        let chats = [...this.state.chats];
-        let flag = true;
-        chats.forEach((item, i, chats) => {
-            if (item.title === user.name) {
-                flag = false;
-                this.changeChat(item);
-            }
-        });
-        if (flag) {
-            chats.push(chat);
-            this.setState({
-                activeChat: chat,
-                chats: chats,
-                messages: []
-            });
-        }
-        this.setState({
-            path: ""
-        })
     };
 
     newGroupChat() {
@@ -201,44 +181,54 @@ class Chat extends Component {
     render() {
         if (this.state.isLoaded) {
             return (
-                <div className={style.main_wrapper}>
-                    <TextAlert text={this.state.alert}/>
-                    <div className={style.chat_wrapper}>
-                        <div className={style.chats}>
-                            <div>
-                                <FormControl name="search"
-                                             onChange={this.searchUsers}
-                                             className={style.search}
-                                             placeholder="Введите имя или фамилию"
-                                             onFocus={() => this.setState({showSearch: true})}
-                                             autocomplete="off">
-                                </FormControl>
-                                <Button className={style.new_group}
-                                        onClick={() => this.setState({showSearch: true})}
-                                        hidden={this.state.showSearch}>
-                                    new
-                                </Button>
-                                <Button className={style.new_group}
-                                        hidden={!this.state.showSearch}
-                                        onClick={() => this.setState({showSearch: false})}>
-                                    close
-                                </Button>
+                <>
+                    <div className={style.main_wrapper}>
+                        <TextAlert text={this.state.alert}/>
+                        <div className={style.chat_wrapper}>
+                            <div className={style.chats}>
+                                <div>
+                                    <FormControl name="search"
+                                                 onChange={this.searchUsers}
+                                                 className={style.search}
+                                                 placeholder="Введите имя или фамилию"
+                                                 onFocus={() => this.setState({showSearch: true})}
+                                                 autocomplete="off">
+                                    </FormControl>
+                                    <Button className={style.new_group}
+                                            onClick={() => this.setState({showSearch: true})}
+                                            hidden={this.state.showSearch}>
+                                        new
+                                    </Button>
+                                    <Button className={style.new_group}
+                                            hidden={!this.state.showSearch}
+                                            onClick={() => this.setState({showSearch: false})}>
+                                        close
+                                    </Button>
+                                </div>
+                                <ListGroup hidden={!this.state.showSearch}>
+                                    {this.state.users.map(user => <UserSummary user={user}
+                                                                               getChat={this.getChat}/>)}
+                                </ListGroup>
+                                <ListGroup hidden={this.state.showSearch}>
+                                    {this.state.chats?.map(chat => <ChatInfo chat={chat}
+                                                                             changeChat={this.getChatById}/>)}
+                                </ListGroup>
                             </div>
-                            <ListGroup hidden={!this.state.showSearch}>
-                                {this.state.users.map(user => <UserSummary user={user}
-                                                                           getChat={this.getChat}/>)}
-                            </ListGroup>
-                            <ListGroup hidden={this.state.showSearch}>
-                                {this.state.chats?.map(chat => <ChatInfo chat={chat}
-                                                                         changeChat={this.changeChat}/>)}
-                            </ListGroup>
+                            <Messaging_Block currentUser={this.props.currentUser}
+                                             chat={this.state.activeChat}
+                                             handleInputChange={this.handleInputChange}
+                                             sendMessage={this.sendMessage}/>
                         </div>
-                        <Messaging_Block currentUser={this.state.currentUser}
-                                         chat={this.state.activeChat}
-                                         handleInputChange={this.handleInputChange}
-                                         sendMessage={this.sendMessage}/>
+                        <MyToast show={this.state.showToast}
+                                 select={this.getChatById}
+                                 chatId={this.state.toast.chatId}
+                                 close={() => this.setState({showToast: false})}
+                                 img={this.state.toast.img}
+                                 title={this.state.toast.title}
+                                 content={this.state.toast.content}/>
+
                     </div>
-                </div>
+                </>
             )
         } else
             return (

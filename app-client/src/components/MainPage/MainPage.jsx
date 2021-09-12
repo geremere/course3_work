@@ -62,8 +62,8 @@ export function ProjectSummary(props) {
         : props.project.image_url;
     let pathtocourse = "../project/" + props.project.id;
     return (
-        <NavLink to={pathtocourse}>
-            <Card className={style.CourseBlock}>
+        <NavLink to={pathtocourse} className={style.CourseBlock} >
+            <Card >
                 <Card.Img variant="top" src={path}/>
                 <Card.Body>
                     <Card.Title>{props.project.title}</Card.Title>

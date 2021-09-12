@@ -30,7 +30,18 @@ export function getOrCreate(userId) {
     }
 
     return request({
-        url: API_BASE_URL + "/chat/" + userId,
+        url: API_BASE_URL + "/chat/user/" + userId,
+        method: "GET"
+    });
+}
+
+export function getChatById(chatId) {
+    if (!localStorage.getItem("accessToken")) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: API_BASE_URL + "/chat/" + parseInt(chatId),
         method: "GET"
     });
 }
