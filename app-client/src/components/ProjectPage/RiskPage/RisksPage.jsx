@@ -3,7 +3,7 @@ import {Button, Modal, Pagination, Table} from "react-bootstrap";
 import style from "./RiskPage.module.css"
 import {AddRisk} from "./AddRisk";
 import useForceUpdate from "antd/es/_util/hooks/useForceUpdate";
-import {updateProject} from "../ServerAPI/ProjectAPI";
+import {updateProject} from "../../ServerAPI/ProjectAPI";
 
 
 export function RiskTable(props) {
@@ -86,7 +86,7 @@ export function RiskTable(props) {
                     <th>Origin</th>
                     <th>Description</th>
                     <th>Type</th>
-                    <th>Cost</th>
+                    <th>Impact</th>
                     <th>Probability</th>
                     <th>Action</th>
 

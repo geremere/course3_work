@@ -1,6 +1,6 @@
 import {Chart} from "react-google-charts";
 import React from "react";
-import style from"../../ProjectPage/ProjectInfo.module.css"
+import style from "../../ProjectPage/style/ProjectInfo.module.css"
 
 export function RiskMapScatterChart(props) {
 

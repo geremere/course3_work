@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import style from './ProjectSetting.module.css';
+import style from './style/ProjectSetting.module.css';
 import {getAllUsers, getCurrentUser, searchUser, uploadAvatar} from "../ServerAPI/userAPI";
 import {PROJECT_ICO, USER_ICO} from "../ServerAPI/utils";
 import {updateProject} from "../ServerAPI/ProjectAPI";

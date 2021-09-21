@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import {Loading} from "../common/Loading/Loading";
 import {getProjectById} from "../ServerAPI/ProjectAPI";
 import ProjectInfo from "./ProjectInfo";
-import style from "./ProjectPage.module.css";
+import style from "./style/ProjectPage.module.css";
 import {Nav, Overlay, OverlayTrigger, Spinner, Tooltip} from "react-bootstrap";
-import {RiskTable} from "./RisksPage";
+import {RiskTable} from "./RiskPage/RisksPage";
 import {getCurrentUser} from "../ServerAPI/userAPI";
 import ProjectSettings from "./ProjectSettings";
+import SensitivityAnalysis from "./SensitivityAnalysis";
 
 class ProjectPage extends Component {
     constructor(props) {
@@ -81,6 +82,10 @@ class ProjectPage extends Component {
                 return (
                     <ProjectSettings project={this.state.project}/>
                 )
+            case "/sensitivity":
+                return (
+                    <SensitivityAnalysis project={this.state.project}/>
+                )
 
         }
     }
@@ -109,7 +114,10 @@ class ProjectPage extends Component {
                              })
                          })}>
                         <Nav.Item>
-                            <Nav.Link eventKey="/map">Analytics</Nav.Link>
+                            <Nav.Link eventKey="/map">Risk Map</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link eventKey={"/sensitivity"}>Sensitivity Analysis</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
                             <Nav.Link eventKey={"/statistics"}>Statistic</Nav.Link>

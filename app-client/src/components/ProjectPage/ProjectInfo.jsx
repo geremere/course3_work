@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {Dropdown, DropdownButton} from "react-bootstrap";
-import style from "./ProjectInfo.module.css"
+import style from "./style/ProjectInfo.module.css"
 import {RiskMapScatterChart} from "../util/charts/RiskMapScatterChart";
 import {Chart} from "react-google-charts";
 
@@ -38,9 +38,8 @@ function ProjectInfo(props) {
     const options = {
         title: "Risk Map",
         curveType: "function",
-        colors: ['#f44253'],
-        hAxis: {title: 'Probability'},
-        vAxis: {title: 'Cost'},
+        hAxis: {title: 'Probability',minValue: 0.0, maxValue: 1.0},
+        vAxis: {title: 'Impact', minValue: 0.0, maxValue: 1.0},
         legend: 'none',
     };
 

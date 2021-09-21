@@ -1,6 +1,6 @@
 import React, {Component, useEffect, useState} from 'react';
 import {Button, Form, FormControl, FormSelect, Modal} from "react-bootstrap";
-import {getRisks, updateProject} from "../ServerAPI/ProjectAPI";
+import {getRisks, updateProject} from "../../ServerAPI/ProjectAPI";
 
 
 export function AddRisk(props) {
@@ -29,7 +29,7 @@ export function AddRisk(props) {
             setRisk(props.selectedRisk.risk)
             setDescription(props.selectedRisk.risk.description)
             setType(props.selectedRisk.risk.type)
-            setCost(props.selectedRisk.cost)
+            setCost(props.selectedRisk.cost * 100)
             setPercentage(props.selectedRisk.probability * 100)
             setOrigin(props.selectedRisk.is_outer.toString())
         } else if (close) {
@@ -50,7 +50,7 @@ export function AddRisk(props) {
             console.log(type)
             props.project.risks.push({
                 is_outer: origin,
-                cost: cost,
+                cost: cost / 100,
                 probability: percentage / 100,
                 risk: {
                     id: isNewRisk ? null : risk.id,
@@ -68,7 +68,7 @@ export function AddRisk(props) {
             })
             props.project.risks[ind] = {
                 is_outer: origin,
-                cost: cost,
+                cost: cost / 100,
                 probability: percentage / 100,
                 risk: {
                     id: isNewRisk ? null : risk.id,
@@ -178,8 +178,8 @@ export function AddRisk(props) {
                         <Form.Group hidden={origin === null}>
                             <Form.Label>Risk Cost</Form.Label>
                             <Form.Control
-                                placeholder="Input here risk cost"
                                 value={cost}
+                                placeholder="Input here risk impact from (0 to 100)"
                                 onChange={(event) => {
                                     if (isNaN(parseFloat(event.target.value))) {
                                         setCostError(true)

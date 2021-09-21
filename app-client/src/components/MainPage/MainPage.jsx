@@ -5,7 +5,7 @@ import {Loading} from "../common/Loading/Loading";
 import NewProject from "./NewProject";
 import {getAllProjects} from "../ServerAPI/ProjectAPI";
 import {PROJECT_ICO} from "../ServerAPI/utils";
-import {Card, Spinner} from "react-bootstrap";
+import {Card, Image, Spinner} from "react-bootstrap";
 
 class MainPage extends Component {
     constructor(props) {
@@ -52,7 +52,14 @@ class MainPage extends Component {
                     {projects}
                 </div>);
         } else {
-            return <Spinner animation="border" variant="success"/>
+            return (
+                <div className={style.Main}>
+                    <Image
+                        fluid
+                        src={"https://2.downloader.disk.yandex.ru/preview/02f7c7af27bff3c1eef4f3f1c5892e94606794e0494745ca9eafdbf14618c207/inf/ZJd-Qct48t03mhRtw1ueRl0SLgrf6RY8hDFYCiKoONeqoYHZOwq3aa_XOJXr6IgJDaEWx_zQY6he-sQbd8BArg%3D%3D?uid=166319997&filename=image%20%281%29.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=166319997&tknv=v2&size=1898x937"}/>
+
+                </div>
+            )
         }
     }
 }
