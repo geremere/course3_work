@@ -20,3 +20,7 @@
     margin-left: 50%;
     position: relative;
 }
+
+.uploadExcel{
+    display: none;
+}

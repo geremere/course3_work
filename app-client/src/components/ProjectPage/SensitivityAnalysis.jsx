@@ -1,56 +1,53 @@
 import React, {useState, useEffect} from "react";
-import {Dropdown, DropdownButton, Table} from "react-bootstrap";
+import {Button, Form, Modal, Table} from "react-bootstrap";
 import style from "./style/ProjectInfo.module.css"
 import {Chart} from "react-google-charts";
+import {FormInput} from "semantic-ui-react";
+import {saveImage} from "../ServerAPI/simpleRequests";
+import {saveExcel} from "../ServerAPI/ProjectAPI";
+import {forEach} from "react-bootstrap/ElementChildren";
 
-function SensitivityAnalysis(props) {
-    const [data, setData] = useState([]);
-    const [risks, setRisks] = useState(props.project.risks.map(risk => {
-        return {
-            ...risk,
-            selected: true
-        }
-    }));
+export function SensitivityAnalysis(props) {
+    const [selectedRisk, setSelectedRisk] = useState(null);
+    const [data, setData] = useState(null)
 
-    useEffect(() => {
-        const data = [];
-        const valueAtRisk = [['VaR']]
-        for (let i = 1; i < 100; i++) {
-            valueAtRisk.push([i])
-        }
-        risks.forEach(risk => {
-            console.log(risk)
-            if (risk.selected) {
-                const elastic = risk.cost * risk.probability - risk.cost * (risk.probability - 0.01)
-                valueAtRisk[0].push(risk.risk.name)
-                for (let i = 1; i < 100; i++) {
-                    valueAtRisk[i].push(risk.cost * risk.probability + elastic * (i / 100 - risk.probability))
+    const uploadExcel = (event) => {
+        let formData = new FormData();
+        formData.append('file', event.target.files[0]);
+        saveExcel(selectedRisk.id, formData)
+            .then(response => {
+                    const dt = [[]]
+                    for (let [key, value] of Object.entries(response)) {
+                        dt[0].push(key)
+                    }
+                    for (let i = 1; i <= response["impact"].length; i++) {
+                        dt.push([])
+                        for (let [key, value] of Object.entries(response)) {
+                            dt[i].push(value[i - 1])
+                        }
+                    }
+                    console.log(dt)
+
+                    setData(dt)
                 }
-            }
-        })
-        setData(valueAtRisk)
-
-    }, [risks])
-
-    const select = (riskId) => {
-        let newRisks = risks.map(risk => {
-            if (risk.id === riskId)
-                risk.selected = !risk.selected
-            return risk
-        })
-        setRisks(newRisks)
-    }
+            ).catch(console.log)
+    };
 
 
     const options = {
         title: "Sensitivity Analysis",
         curveType: "function",
-        hAxis: {title: 'Probability'},
-        vAxis: {title: 'VaR'},
+        hAxis: {title: 'Impact'},
+        vAxis: {title: 'Factor'},
     };
 
     return (
         <div className={style.Content}>
+            <FormInput
+                className={style.uploadExcel}
+                id="make_sensitivity"
+                type="file"
+                onChange={uploadExcel}/>
             <Table>
                 <thead>
                 <tr>
@@ -65,7 +62,7 @@ function SensitivityAnalysis(props) {
                 </tr>
                 </thead>
                 <tbody>
-                {risks.map((risk) => <tr key={risk.id}>
+                {props.project.risks.map((risk) => <tr key={risk.id}>
                     <td>{risk.risk.name}</td>
                     <td>{risk.is_outer ? "Outer" : "Internal"}</td>
                     <td>{risk.risk.description}</td>
@@ -73,16 +70,18 @@ function SensitivityAnalysis(props) {
                     <td>{risk.cost}</td>
                     <td>{risk.probability}</td>
                     <td>
-                        <input type="checkbox"
-                               onClick={() => select(risk.id)}
-                               checked={risk.selected}
-                               class="form-check-input"
-                        />
+                        <Button hidden={!risk.hasSensitivity}
+                                onClick={() => {
+                                    setSelectedRisk(risk)
+                                    document.getElementById("make_sensitivity").click()
+                                }}>
+                            make analyse
+                        </Button>
                     </td>
                 </tr>)}
                 </tbody>
             </Table>
-            <div className="donut">
+            <Form hidden={data == null}>
                 <Chart
                     className={style.sensitivityWrapper}
                     width={'720px'}
@@ -93,11 +92,8 @@ function SensitivityAnalysis(props) {
                     options={options}
                     rootProps={{'data-testid': '1'}}
                 />
-            </div>
+            </Form>
         </div>
 
     );
 }
-
-export default SensitivityAnalysis;
-

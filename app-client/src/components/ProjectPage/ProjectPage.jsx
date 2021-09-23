@@ -7,7 +7,7 @@ import {Nav, Overlay, OverlayTrigger, Spinner, Tooltip} from "react-bootstrap";
 import {RiskTable} from "./RiskPage/RisksPage";
 import {getCurrentUser} from "../ServerAPI/userAPI";
 import ProjectSettings from "./ProjectSettings";
-import SensitivityAnalysis from "./SensitivityAnalysis";
+import {SensitivityAnalysis} from "./SensitivityAnalysis";
 
 class ProjectPage extends Component {
     constructor(props) {

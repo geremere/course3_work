@@ -1,5 +1,5 @@
 import {ACCESS_TOKEN, API_BASE_URL, BASE_URL} from "./utils";
-import {request} from "./request";
+import {request, requestNotJSON} from "./request";
 
 const project_url = API_BASE_URL + "/project";
 
@@ -55,5 +55,17 @@ export function getRisks() {
     return request({
         url: API_BASE_URL + "/risks",
         method: 'GET'
+    });
+}
+
+export function saveExcel(riskId, file) {
+    if (!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return requestNotJSON({
+        url: API_BASE_URL + "/risks/file/" + riskId,
+        method: 'POST',
+        body: file
     });
 }
