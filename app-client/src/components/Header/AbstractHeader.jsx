@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import style from './AbstractHeader.module.css'
 import {NavLink} from "react-router-dom";
 import {TextAlert} from "../ModalWindow/ModalWindow";
-import {Toaster} from "react-hot-toast";
 import {CHAT_ICO, USER_ICO} from "../ServerAPI/utils";
 
 class AbstractHeader extends Component {
@@ -34,9 +33,6 @@ class AbstractHeader extends Component {
         }
         return (
             <header className={style.AbstractHeader}>
-                <Toaster
-                    position="bottom-right"
-                    reverseOrder={false}/>
                 <div className={style.HeaderComponents}>
                     {menuItems}
                     {/*<SearchField/>*/}

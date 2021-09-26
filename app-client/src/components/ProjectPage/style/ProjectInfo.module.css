@@ -1,26 +1,35 @@
 .Content {
     position: relative;
     min-width: 1120px;
-    top:-25px;
+    top: -25px;
 }
 
-.selectMap{
+.selectMap {
     position: relative;
     float: left;
 }
 
-.mapWrapper{
+.mapWrapper {
+    z-index: 5;
+    width: 723px;
     border: 1px solid black;
-    left: 50%;
     position: relative;
+    left: 25%;
 }
 
-.sensitivityWrapper{
+.sensitivityWrapper {
     border: 1px solid black;
     margin-left: 50%;
     position: relative;
 }
 
-.uploadExcel{
+.uploadExcel {
     display: none;
+}
+
+.canvasWrap {
+    width: 740px;
+    /*border: 1px solid black;*/
+    top: 0;
+    position: absolute;
 }

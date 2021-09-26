@@ -7,7 +7,6 @@ import Stomp from 'stompjs';
 import {BASE_URL} from "../ServerAPI/utils";
 import {getChatById, getChats, getOrCreate} from "../ServerAPI/chatAPI";
 import Messaging_Block from "./Messaging_Block";
-import toast from 'react-hot-toast';
 import {TextAlert} from "../ModalWindow/ModalWindow";
 import {Button, FormControl, ListGroup} from "react-bootstrap";
 import UserSummary from "../util/users/UserSummary";

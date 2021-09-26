@@ -1,11 +1,9 @@
-import React, {useState, useEffect} from "react";
-import {Button, Form, Modal, Table} from "react-bootstrap";
+import React, {useState} from "react";
+import {Button, Form, Table} from "react-bootstrap";
 import style from "./style/ProjectInfo.module.css"
 import {Chart} from "react-google-charts";
 import {FormInput} from "semantic-ui-react";
-import {saveImage} from "../ServerAPI/simpleRequests";
 import {saveExcel} from "../ServerAPI/ProjectAPI";
-import {forEach} from "react-bootstrap/ElementChildren";
 
 export function SensitivityAnalysis(props) {
     const [selectedRisk, setSelectedRisk] = useState(null);
@@ -70,7 +68,7 @@ export function SensitivityAnalysis(props) {
                     <td>{risk.cost}</td>
                     <td>{risk.probability}</td>
                     <td>
-                        <Button hidden={!risk.hasSensitivity}
+                        <Button
                                 onClick={() => {
                                     setSelectedRisk(risk)
                                     document.getElementById("make_sensitivity").click()

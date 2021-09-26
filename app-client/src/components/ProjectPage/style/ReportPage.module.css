@@ -1,0 +1,24 @@
+.Content {
+    position: relative;
+    top:-25px;
+    width: 210mm;
+    marginLeft: auto;
+    marginRight: auto;
+    margin: 0 auto;
+}
+
+.mapWrapper{
+    border: 1px solid black;
+    left: 35px;
+    position: relative;
+}
+
+.risk_wrap{
+    margin-top:25px ;
+}
+
+.sensitivityWrapper {
+    border: 1px solid black;
+    margin-left: 50%;
+    position: relative;
+}

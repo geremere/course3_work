@@ -25,6 +25,28 @@ export function getAllProjects() {
     });
 }
 
+export function getProjectsById(id) {
+    if (!localStorage.getItem("accessToken")) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: project_url + "/user/" + id,
+        method: "GET",
+    });
+}
+
+export function getAllProjectsByIdClosed(id) {
+    if (!localStorage.getItem("accessToken")) {
+        return Promise.reject("No access token set.");
+    }
+
+    return request({
+        url: project_url + "/closed/" + id,
+        method: "GET",
+    });
+}
+
 export function getProjectById(id) {
     if (!localStorage.getItem("accessToken")) {
         return Promise.reject("No access token set.");
@@ -43,6 +65,16 @@ export function updateProject(project) {
         url: project_url + "/" + project.id,
         method: "PUT",
         body: JSON.stringify(project)
+    });
+}
+
+export function deleteProject(id) {
+    if (!localStorage.getItem("accessToken")) {
+        return Promise.reject("No access token set.");
+    }
+    return request({
+        url: project_url + "/" + id,
+        method: "DELETE"
     });
 }
 
@@ -67,5 +99,16 @@ export function saveExcel(riskId, file) {
         url: API_BASE_URL + "/risks/file/" + riskId,
         method: 'POST',
         body: file
+    });
+}
+
+export function getExcelData(riskId) {
+    if (!localStorage.getItem(ACCESS_TOKEN)) {
+        return Promise.reject("No access token set.");
+    }
+
+    return requestNotJSON({
+        url: API_BASE_URL + "/risks/file/" + riskId,
+        method: 'GET'
     });
 }

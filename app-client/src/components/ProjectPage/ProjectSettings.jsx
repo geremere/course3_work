@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import style from './style/ProjectSetting.module.css';
 import {getAllUsers, getCurrentUser, searchUser, uploadAvatar} from "../ServerAPI/userAPI";
 import {PROJECT_ICO, USER_ICO} from "../ServerAPI/utils";
-import {updateProject} from "../ServerAPI/ProjectAPI";
+import {deleteProject, updateProject} from "../ServerAPI/ProjectAPI";
 import {Button, Form, FormControl, FormGroup, OverlayTrigger, Spinner, Tooltip} from "react-bootstrap";
 import SelectListUsers from "../util/users/SelectListUsers";
 import {saveImage, uploadImage} from "../ServerAPI/simpleRequests";
@@ -196,6 +196,9 @@ class ProjectSettings extends Component {
                         </FormGroup>
                         <Button variant="primary" onClick={this.update}>
                             Save Changes
+                        </Button>
+                        <Button variant="primary" onClick={()=>deleteProject(this.props.project.id)}>
+                            Close Project
                         </Button>
                     </Form>
                 </div>

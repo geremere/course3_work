@@ -5,6 +5,8 @@ import {uploadAvatar} from "../../ServerAPI/userAPI";
 import {Nav, Spinner} from "react-bootstrap";
 import UserSettings from "../Settings/UserSettings";
 import {USER_ICO} from "../../ServerAPI/utils";
+import {ProjectSummary} from "../../MainPage/MainPage";
+import {getAllProjectsByIdClosed, getProjectsById} from "../../ServerAPI/ProjectAPI";
 
 class UserAccount extends Component {
     constructor(props) {
@@ -12,8 +14,11 @@ class UserAccount extends Component {
         this.state = {
             isLoaded: true,
             message: "",
-            eventKey:"/active"
-        };
+            eventKey: "/active",
+            active: [],
+            closed: []
+        }
+        ;
         this.UploadAvatar = this.UploadAvatar.bind(this);
         this.handleSelected = this.handleSelected.bind(this);
     }
@@ -40,6 +45,16 @@ class UserAccount extends Component {
 
     componentDidMount() {
         this.props.loadUser();
+        getAllProjectsByIdClosed(this.props.user.id).then(response => {
+            this.setState({
+                closed: response
+            })
+        })
+        getProjectsById(this.props.user.id).then(response => {
+            this.setState({
+                active: response
+            })
+        })
     }
 
     handleSelected = () => {
@@ -47,18 +62,23 @@ class UserAccount extends Component {
             case "/closed":
                 return (
                     <div>
-                        Здесь будет много графиков
+                        {this.state.closed.map(project => <ProjectSummary currentUser={this.props.user}
+                                                                          project={project}
+                                                                          key={project.id}/>)}
                     </div>
                 )
             case "/active":
                 return (
                     <div>
-                        Здесь законные проекты без натроек будут типо смотрим только графики
+                        {this.state.active.map(project => <ProjectSummary currentUser={this.props.user}
+                                                                          project={project}
+                                                                          key={project.id}/>)}
+
                     </div>
                 )
             case "/settings":
                 return (
-                    <UserSettings loadUser={()=>this.props.loadUser()}
+                    <UserSettings loadUser={() => this.props.loadUser()}
                                   user={this.props.user}/>
                 )
 

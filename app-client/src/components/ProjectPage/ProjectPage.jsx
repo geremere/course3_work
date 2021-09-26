@@ -8,6 +8,7 @@ import {RiskTable} from "./RiskPage/RisksPage";
 import {getCurrentUser} from "../ServerAPI/userAPI";
 import ProjectSettings from "./ProjectSettings";
 import {SensitivityAnalysis} from "./SensitivityAnalysis";
+import ReportPage from "./ReportPage";
 
 class ProjectPage extends Component {
     constructor(props) {
@@ -82,6 +83,10 @@ class ProjectPage extends Component {
                 return (
                     <ProjectSettings project={this.state.project}/>
                 )
+            case "/report":
+                return (
+                    <ReportPage project={this.state.project}/>
+                )
             case "/sensitivity":
                 return (
                     <SensitivityAnalysis project={this.state.project}/>
@@ -120,7 +125,7 @@ class ProjectPage extends Component {
                             <Nav.Link eventKey={"/sensitivity"}>Sensitivity Analysis</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link eventKey={"/statistics"}>Statistic</Nav.Link>
+                            <Nav.Link eventKey={"/report"}>Report</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
                             <OverlayTrigger placement="top"
